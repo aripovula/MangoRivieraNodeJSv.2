@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/js/libs/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/weather-icons.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Assistant' rel='stylesheet'/>
+    <title>Mango Riviera</title>
+
+            <!-- css customized for this page -->
+        <style type="text/css">
+						
+  </style>
+  
+  </head>
+  <body>
+
+  <!--  style="background-size: 100%; background-attachment: fixed;" background="/static/images/sandbeach.jpeg"> -->
+
+    <script src="socket.io/socket.io.js"></script>
+    <script type='text/javascript' src='/js/libs/hbs.js'></script>
+
+    <script src="/js/libs/moment-with-locales.js"></script>
+    
+    <script type="text/javascript" src="/js/weather.js"></script>
+    <script type="text/javascript" src="/js/weatherScheduler.js"></script>
+
+    
+    <!--div class="container"-->
+
+
+
+    <div id="content">
+      
+
+        <!-- code for HEADER - partial -->
+        <script id="header-partial" type="text/x-handlebars-template">
+          {{> header firstlink = "About"}}
+        </script>
+
+        <div id="header_placeholder"></div>
+        
+        <script src="/js/header.js"></script>
+        
+
+      <!-- BS container starts after header -->
+      <div class="container">
+      
+      </div>
+        <div id="left">
+            
+        <!-- code for DASHBOARD - partial -->
+        <script id="dashboard-partial" type="text/x-handlebars-template">
+          {{> dashboard firstlink = "About"}}
+        </script>
+
+        <div id="dashboard_placeholder"></div>
+        
+        <script src="/js/dashboard.js"></script>
+
+
+        </div>
+          
+    <div id="right">
+
+        <div class="boxedtransp">
+      <ol id="messages"></ol>
+
+      <script id="chat-template" type="x-handlebars-template">
+          <!-- {{#each this}} -->
+            <p><span style="color:red">{{from}}</span> - <span style="color:gray">@ {{timePosted}} </span> : <span style="color:green"> {{text}} </span></p>
+          <!-- {{/each}} -->
+      </script>
+  
+
+      <form id="message-form">
+        <input id="messageinput" name="message" type="text" placeholder="message" autofocus autocomplete="off"/>
+        <button>Send</button>
+      </form>
+      </div>
+  
+    </div>
+
+    </div>
+
+      // script for tooltips
+      <script>
+      $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();   
+      });
+      </script>
+
+
+
+    <video autoplay muted loop id="myVideo">
+        <source src="/static/images/whitesand.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </video>
+      
+      <script id="some-template" type="text/x-handlebars-template"> 
+        <table>
+          <!-- <thead> 
+              <th>Name</th> 
+              <th>Occupancy</th> 
+              <th>Booking</th> 
+          </thead> -->
+          <tbody>
+              {{#users}}
+              <tr>
+                  <td>{{fullName fullName}}</td>
+                  <td>{{occupancy}}</td>
+                  <td><a href="/booking/{{linkedName fullName}}">{{bookNow}}</a></td>
+              </tr> 
+              {{/users}} 
+          </tbody> 
+        </table> 
+        </script>
+
+        <script src="/js/index.js"></script>
+
+      <!-- <script id="table-partial" type="text/x-handlebars-template">
+        {{> table firstlink = "About"}}
+      </script>
+
+      <div id="table_placeholder"></div>
+      
+      <script src="/js/table.js"></script> -->
+
+  </body>
+</html>
