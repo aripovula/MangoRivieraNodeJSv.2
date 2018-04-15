@@ -1,14 +1,30 @@
+// $(document).ready(function () {
+//   pausein5sec();
+// });
+
 var socket = io();
-
-
-
+var htmlPrev="";
        
 socket.on('connect', function() {
-  console.log('Connected to server at ');  
+  console.log('Connected to server at ');
 });
 
 socket.on('disconnect', function() {
   console.log('Disconnected to server');
+});
+
+socket.on('newShoutMessage',function(message){
+
+  //var timePosted = moment().format('h:mm a');
+  console.log("it works SHOUT: "+message.text + " timePosted = "+message.createdAt);
+
+  var chatData = [{from:message.from, createdAt:message.createdAt, text:message.text }];
+   var theTemplateScript = $("#shout-template").html(); 
+   var theTemplate = Handlebars.compile(theTemplateScript);
+   var html = theTemplate(chatData);
+   $("#shoutboard").html(htmlPrev+html); 
+   htmlPrev = htmlPrev + html;
+
 });
 
 socket.on('newMessage',function(message){
@@ -36,11 +52,11 @@ jQuery('#message-form').on('submit', function (e) {
   
   // Do somethin g else
   var createdAt = moment().format('h:mm a');
-    var messageTextbox = jQuery('[name=message]');
+  var messageTextbox = jQuery('[name=message]');
   console.log(createdAt);
   socket.emit('createMessage', 
   {
-    from:'USER', 
+    from:'Guest', 
     text:jQuery('[name=message]').val(),
     createdAt: createdAt
   }, 
@@ -50,16 +66,34 @@ jQuery('#message-form').on('submit', function (e) {
 });
 
 var video = document.getElementById("myVideo");
-var btn = document.getElementById("myBtn");
+var btn = document.getElementById("videoBtn");
 
-function myFunction() {
+function videoCtrl() {
   if (video.paused) {
     video.play();
     btn.innerHTML = "Pause";
   } else {
-    video.pause();
-    btn.innerHTML = "Play";
+    videoPause();
   }
 }
 
+var audio = document.getElementById("theaudio");
+var abtn = document.getElementById("audioBtn");
 
+function audioCtrl() {
+  if (audio.paused) {
+    audio.play();
+    abtn.innerHTML = "Mute";
+  } else {
+    audio.pause();
+    abtn.innerHTML = "Un-mute";
+  }
+}
+
+function videoPause() {
+  console.log("in videopause");
+  video.pause();
+  btn.innerHTML = "Play";
+}
+
+setTimeout(function(){ videoPause() }, 4600);

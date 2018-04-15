@@ -14,36 +14,30 @@ $.get("/dashboard.html", function(data){
     var source = $("#some-template").html();
     var template = Handlebars.compile(source);
     
+    // dolphine show, visit ancient castle, sport contest
     var data = {
         users: [ { 
             fullName: {
-                atype: "Garry", 
-                aname: "Finch"
+                atype: "dolphine ", 
+                aname: "show"
             },
-            occupancy: "Front End Technical Lead",
-            bookNow: "gazraa" 
+            occupancy: "rating: 4.3 / 5",
+            bookNow: "buy ticket" 
         }, {
             fullName: {
-                atype: "Garry", 
-                aname: "Finch"
+                atype: "visit ", 
+                aname: "ancient castle"
             }, 
-            occupancy: "Photographer",
-            bookNow: "photobasics"
+            occupancy: "free shuttle bus",
+            bookNow: "register"
         }, {
             fullName: {
-                atype: "Garry", 
-                aname: "Finch"
+                atype: "Sports ", 
+                aname: "contest"
             }, 
-            occupancy: "LEGO Geek",
-            bookNow: "minifigures"
-        }, {
-            fullName: {
-                atype: "Harry", 
-                aname: "Linch"
-            }, 
-            occupancy: "MEGO Geek",
-            bookNow: "ninifigures"
-        } ]
+            occupancy: "free entrance",
+            bookNow: "beach area (see map & schedule)"
+        }]
     }; 
     
     //spa Wellness, fitness O'zone, crossfit ManGo
@@ -51,22 +45,22 @@ $.get("/dashboard.html", function(data){
     var dataspa = {
         users: [ { 
             fullName: {
-                atype: "spa", 
-                aname: "Wellness"
+                atype: "spa ", 
+                aname: "'Wellness'"
             },
             occupancy: "80% occupied",
             bookNow: "book now" 
         }, {
             fullName: {
-                atype: "fitness", 
-                aname: "O-zone"
+                atype: "fitness ", 
+                aname: "'O-zone'"
             }, 
             occupancy: "70% occupied",
             bookNow: "book now"
         }, {
             fullName: {
-                atype: "crossfit", 
-                aname: "ManGo"
+                atype: "crossfit ", 
+                aname: "'ManGo'"
             }, 
             occupancy: "90% occupied",
             bookNow: "book now"
@@ -74,15 +68,67 @@ $.get("/dashboard.html", function(data){
      ]
     }; 
     
+    var datameals = {
+        users: [ { 
+            fullName: {
+                atype: "restaurant ", 
+                aname: "'Madeira'"
+            },
+            occupancy: "78% occupied",
+            bookNow: "see menu" 
+        }, {
+            fullName: {
+                atype: "restaurant ", 
+                aname: "'Seaside Garden'"
+            }, 
+            occupancy: "74% occupied",
+            bookNow: "see menu"
+        }, {
+            fullName: {
+                atype: "Mexican a la carte ", 
+                aname: "'Mockito'"
+            }, 
+            occupancy: "available",
+            bookNow: "book now"
+        }
+     ]
+    }; 
+
+    var dataservices = {
+        users: [ { 
+            fullName: {
+                atype: "Airport ", 
+                aname: "'shuttle'"
+            },
+            occupancy: "every 2 hours",
+            bookNow: "see schedule" 
+        }, {
+            fullName: {
+                atype: "order ", 
+                aname: "taxi"
+            }, 
+            occupancy: "( uses my API )",
+            bookNow: "order form"
+        }, {
+            fullName: {
+                atype: "Room ", 
+                aname: "service"
+            }, 
+            occupancy: "",
+            bookNow: "order form"
+        }
+     ]
+    }; 
     Handlebars.registerHelper('linkedName', function(fullName) {
         return fullName.atype + "_" + fullName.aname;
       });
     
     Handlebars.registerHelper('fullName', function(fullName) {
-      return fullName.atype + " '" + fullName.aname+"'";
+      return fullName.atype + fullName.aname;
     });  
     
     $("#tab").html(template(data));
     $("#tabspa").html(template(dataspa));
-    
+    $("#tabmeals").html(template(datameals));
+    $("#tabservices").html(template(dataservices));
 });

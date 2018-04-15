@@ -17,12 +17,13 @@ hbs.registerPartials(path.join(__dirname , '../views/partials'))
 app.set('view engine', 'hbs');
 
 app.use(express.static(path.join(__dirname , '../public')));
+
 io.on('connection',(socket) => {
   console.log('New user connected');
   console.log(__dirname);
 
   // to emit to one user - MYSELF
-  socket.emit('newMessage', generateMessage('Admin', 'hey, welcome !'));
+  socket.emit('newMessage', generateMessage('Guest services', 'Hey, we wish you a lot of fun! Enjoy it !'));
 
   // to emit broadcast message TO ALL EXcluding MYSELF by sending default message
   socket.broadcast.emit('newMessage', generateMessage('Admin','New user joined'));
@@ -41,6 +42,12 @@ io.on('connection',(socket) => {
     //     createdAt: new Date().getTime()
     //   });
 
+  });  
+
+  socket.on('createShoutMessage', (message, callback) => {
+
+    io.emit('newShoutMessage',generateMessage("", message.text));
+    callback(`from Shouter m = ${message.text} from: ${message.from}  @ ${message.createdAt}`);
   });  
 
   socket.on('disconnect', () => {
