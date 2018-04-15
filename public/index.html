@@ -9,16 +9,9 @@
     <link rel="stylesheet" type="text/css" href="/static/css/weather-icons.min.css">
     <link href='https://fonts.googleapis.com/css?family=Assistant' rel='stylesheet'/>
     <title>Mango Riviera</title>
-
-            <!-- css customized for this page -->
-        <style type="text/css">
-						
-  </style>
   
   </head>
-  <body>
-
-  <!--  style="background-size: 100%; background-attachment: fixed;" background="/static/images/sandbeach.jpeg"> -->
+  <body style="background-size: 100%; background-attachment: fixed;" background="/static/images/sandbeach.jpeg">
 
     <script src="socket.io/socket.io.js"></script>
     <script type='text/javascript' src='/js/libs/hbs.js'></script>
@@ -28,15 +21,10 @@
     <script type="text/javascript" src="/js/weather.js"></script>
     <script type="text/javascript" src="/js/weatherScheduler.js"></script>
 
-    
-    <!--div class="container"-->
-
-
-
     <div id="content">
       
 
-        <!-- code for HEADER - partial -->
+        <!-- code for HEADER partial -->
         <script id="header-partial" type="text/x-handlebars-template">
           {{> header firstlink = "About"}}
         </script>
@@ -44,7 +32,7 @@
         <div id="header_placeholder"></div>
         
         <script src="/js/header.js"></script>
-        
+        <a class="lists" style="position:absolute;top:0;right:10px;font-size:14px" href="#" id="myBtn" onclick="myFunction()">Pause</a>
 
       <!-- BS container starts after header -->
       <div class="container">
@@ -52,7 +40,7 @@
       </div>
         <div id="left">
             
-        <!-- code for DASHBOARD - partial -->
+        <!-- code for DASHBOARD partial -->
         <script id="dashboard-partial" type="text/x-handlebars-template">
           {{> dashboard firstlink = "About"}}
         </script>

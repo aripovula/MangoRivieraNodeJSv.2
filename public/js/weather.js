@@ -39,10 +39,7 @@
             "brief": `${open}wi-thermometer${close} ${forecast.currently.temperature}&deg;F &nbsp; ${open}wi-strong-wind${close} ${forecast.currently.windSpeed} mph  &nbsp; ${open}wi-humidity${close} ${forecast.currently.humidity}`
           }
 
-          var dt = new Date($.now());
-          var hour = dt.getHours()+''; if (hour.length==1) hour = "0"+hour;
-          var min = dt.getMinutes()+''; if (min.length==1) min = "0"+min;
-          apiReadTime = hour + ":" + min;
+          apiReadTime = moment().format('h:mm a');
 
           console.log("before S");
           updated = true;
