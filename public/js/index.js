@@ -4,7 +4,7 @@
 
 var socket = io();
 var htmlPrev="";
-       
+
 socket.on('connect', function() {
   console.log('Connected to server at ');
 });
@@ -22,8 +22,8 @@ socket.on('newShoutMessage',function(message){
    var theTemplateScript = $("#shout-template").html(); 
    var theTemplate = Handlebars.compile(theTemplateScript);
    var html = theTemplate(chatData);
-   $("#shoutboard").html(htmlPrev+html); 
-   htmlPrev = htmlPrev + html;
+   $("#shoutboard").html(html+htmlPrev); 
+   htmlPrev = html + htmlPrev;
 
 });
 

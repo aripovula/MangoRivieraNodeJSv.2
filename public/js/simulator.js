@@ -3,7 +3,7 @@ var bb = 0;
 var shoutMessage;
 
 var messages = [
-    "Dear all, finally the day of sports contests has come - are you ready to have a lot of fun in the beach area today? Don't forget - contests start at 11:00 in beach area",
+    "Dear all, finally the day of sports contests has come - are you ready to have a lot of fun in the beach area today? Don't forget - contests start at 11:00 in the beach area",
     "Today's special - bla bla",
     "to greet our new guests bla bla "
 ];

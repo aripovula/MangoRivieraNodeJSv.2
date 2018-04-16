@@ -18,7 +18,7 @@ $.get("/dashboard.html", function(data){
     var data = {
         users: [ { 
             fullName: {
-                atype: "dolphine ", 
+                atype: "dolphin ", 
                 aname: "show"
             },
             occupancy: "rating: 4.3 / 5",
