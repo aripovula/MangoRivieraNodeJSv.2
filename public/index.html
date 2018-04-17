@@ -54,7 +54,7 @@
     <link href='https://fonts.googleapis.com/css?family=Assistant' rel='stylesheet'/>
     
     <!-- included local html's -->
-    <script> $(function(){$("#includedContent").load("datepick.html"); });</script> 
+    <script> $(function(){$("#includedContent").load("pickform.html"); });</script> 
 
     <title>Mango Riviera</title>
   </head>
@@ -89,16 +89,6 @@
       <div id="left">
 
         <div style="overflow: scroll;">
-
-            <div class="form-group">
-                <label for="dtp_input1" class="col-md-2 control-label">DateTime Picking</label>
-                <div class="input-group date form_datetime col-md-5" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
-                    <input class="form-control" size="16" type="text" value="" readonly>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-					<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                </div>
-				<input type="hidden" id="dtp_input1" value="" /><br/>
-            </div>
           
           <!-- code for DASHBOARD partial -->
           <script id="dashboard-partial" type="text/x-handlebars-template">
@@ -114,7 +104,7 @@
       
       <!-- start of RIGHT hand side panel -->
     <div id="right">
-      <!-- <div id="includedContent"></div> -->
+      <div id="includedContent"></div>
       <div class="boxedtransp">
         <label>Announcements and specials !</label>
         <div style="height:250px;overflow: scroll;">
@@ -134,8 +124,8 @@
           <ol id="messages"></ol>
         </div>
       <form id="message-form">
-        <input id="messageinput" style="width: 80%" name="message" type="text" placeholder="message" autofocus autocomplete="off"/><br/>
-        <button>Send</button> &nbsp;&nbsp;Interest groups:
+        <input id="messageinput" style="width: 80%" name="message" type="text" placeholder="message" autofocus autocomplete="off"/>
+        <button>Send</button><br/><label style="width:80%;text-align:center">Interest groups:</label>
         <div style="margin:4px;">
           <button>Surfing</button>
           <button>Diving</button>
