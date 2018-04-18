@@ -16,6 +16,7 @@
     "jquery-datetimepicker": "^2.5.20",
     "moment": "^2.21.0",
     "mongodb": "^3.0.5",
+    "mongoose": "^5.0.15",
     "socket.io": "^1.7.4"
   },
   "devDependencies": {
