@@ -1,6 +1,6 @@
 
 $.get("/dashboard.html", function(data){
-    console.log("data="+data);
+    //console.log("data="+data);
     Handlebars.registerPartial("dashboard", data);
 
     var template = $('#dashboard-partial').html();

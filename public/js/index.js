@@ -16,13 +16,14 @@ socket.on('disconnect', function() {
 socket.on('newShoutMessage',function(message){
 
   //var timePosted = moment().format('h:mm a');
-  console.log("it works SHOUT: "+message.text + " timePosted = "+message.createdAt);
+  //console.log("it works SHOUT: "+message.text + " timePosted = "+message.createdAt);
 
   var chatData = [{from:message.from, createdAt:message.createdAt, text:message.text }];
    var theTemplateScript = $("#shout-template").html(); 
    var theTemplate = Handlebars.compile(theTemplateScript);
    var html = theTemplate(chatData);
    $("#shoutboard").html(html+htmlPrev); 
+   $("#shoutboard2").html(html+htmlPrev); 
    htmlPrev = html + htmlPrev;
 
 });
@@ -30,7 +31,7 @@ socket.on('newShoutMessage',function(message){
 socket.on('newMessage',function(message){
 
   var timePosted = moment().format('h:mm a');
-  console.log("it works: "+message.text + " timePosted = "+timePosted);
+  //console.log("it works: "+message.text + " timePosted = "+timePosted);
 
   // var html = `<p>${message.from}: ${message.text}</p>`;
   // jQuery('#messages').append(html);
@@ -38,9 +39,9 @@ socket.on('newMessage',function(message){
   var chatData = [{from:message.from, timePosted:timePosted, text:message.text }];
    var theTemplateScript = $("#chat-template").html(); 
    var theTemplate = Handlebars.compile(theTemplateScript); 
-   console.log("data = " + chatData[0].from);
-   console.log("data = " + chatData[0].text);
-   console.log("html = " + theTemplate(chatData));
+   //console.log("data = " + chatData[0].from);
+   //console.log("data = " + chatData[0].text);
+   //console.log("html = " + theTemplate(chatData));
    $("#messages").append(theTemplate(chatData)); 
 
   jQuery('[name=message]').val('');
@@ -53,7 +54,7 @@ jQuery('#message-form').on('submit', function (e) {
   // Do somethin g else
   var createdAt = moment().format('h:mm a');
   var messageTextbox = jQuery('[name=message]');
-  console.log(createdAt);
+  //console.log(createdAt);
   socket.emit('createMessage', 
   {
     from:'Guest', 
@@ -61,7 +62,7 @@ jQuery('#message-form').on('submit', function (e) {
     createdAt: createdAt
   }, 
   function(data){
-    console.log('Got it', data);
+    //console.log('Got it', data);
   });
 });
 

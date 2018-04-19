@@ -13,7 +13,12 @@ exports.bookingtype_list = function(req, res, next) {
   BookingType.find()
     .sort([['name', 'ascending']])
     .exec(function (err, list_bookingtypes) {
-      console.log('in controLLER 22 = '+list_bookingtypes +list_bookingtypes.name );
+      var thebookingtypes = list_bookingtypes;
+    
+      //console.log('in controLLER 22 = '+list_bookingtypes +list_bookingtypes.name );
+      console.log('in 22 1='+thebookingtypes[0].name);
+      console.log('in 22 1='+thebookingtypes[6].name);
+    
       if (err) { return next(err); }
       // Successful, so render.
       console.log('in controLLER 44');

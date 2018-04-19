@@ -4,6 +4,22 @@
 <body>
 
 <h2>{{title}}</h2>
+
+
+
+    <div class="form-group">
+        <label for="dtp_input2" class="col-md-2 control-label">Position</label>
+              <!-- <span style="display:inline-block; width: 10px;"></span> -->
+        <span class="">
+              <select id="soflow"  class="" name="position">
+                {{#each list_bookingtypes}}
+                  <option style="color:#59b3b3">{{name}}</option>
+                {{/each}}
+              </select>
+          </span>  
+      </div>
+
+
 <div id="comments">
     <h2><a href="/posts/#{{id}}">test test</a></h2>
   {{#each list_bookingtypes}}
@@ -11,4 +27,5 @@
   <div>{{body}}</div>
   {{/each}}
 </div>
+
 </body>

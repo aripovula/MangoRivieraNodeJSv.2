@@ -17,6 +17,7 @@ var server = http.createServer(app);
 var io = socketIO(server); 
 
 
+
 //Set up default mongoose connection
 var mongoDB = 'mongodb://localhost:27017/MangoRivDB';
 mongoose.connect(mongoDB);
@@ -28,17 +29,33 @@ var db = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var BookingType = require('../models/bookingtype');
+// PART TO CUSTOM SAVE TO DB
+// var BookingType = require('../models/bookingtype');
 
-var bt = new BookingType(
-  { name: "bt2 yes, shukur" }
-);
+// var bt = new BookingType(
+//   { name: "bt2 yes, shukur" }
+// );
 
-bt.save(function (err) {
-  if (err) { return next(err); }
-  // Genre saved. Redirect to genre detail page.
-  //res.redirect(genre.url);
-});
+// bt.save(function (err) {
+//   if (err) { return next(err); }
+// });
+
+// END OF PART TO CUSTOM SAVE TO DB
+
+// START OF CUSTOM READ PART
+
+// BookingType.find()
+// .sort([['name', 'ascending']])
+// .exec(function (err, list_bookingtypes) {
+//   var thebookingtypes = list_bookingtypes;
+
+//   //console.log('in controLLER 22 = '+list_bookingtypes +list_bookingtypes.name );
+//   console.log('in 22 1='+thebookingtypes[0].name);
+//   console.log('in 22 1='+thebookingtypes[6].name);
+
+// });
+
+// END OF CUSTOM READ PART
 
 // var MongoClient = require('mongodb').MongoClient;
 // var url = "mongodb://localhost:27017/MangoRivDB";
@@ -77,6 +94,19 @@ io.on('connection',(socket) => {
 
   // to emit broadcast message TO ALL EXcluding MYSELF by sending default message
   socket.broadcast.emit('newMessage', generateMessage('Admin','New user joined'));
+
+
+  var x = 0;
+  var intervalID = setInterval(function () {
+
+    console.log('SENT IT x = '+x);
+    // Your logic here
+    io.sockets.emit('newShoutMessage', generateMessage('Admin',`New BOY joined = ${x}`));
+
+    if (++x === 8) {
+        clearInterval(intervalID);
+    }
+  }, 4000);
 
   socket.on('createMessage', (message, callback) => {
     console.log('createMessage',message);
@@ -124,3 +154,4 @@ server.listen(port, () => {
   var createdAt = moment().format('h:mm a');
   console.log(`Server is up on port ${port} - started at ${createdAt}`);
 });
+

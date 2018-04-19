@@ -17,7 +17,7 @@ $(document).ready(function () {
 
 function slide() {
     // your code here
-    console.log("3a="+bb+ ` msg = ${messages[bb]}`);
+    //console.log("3a="+bb+ ` msg = ${messages[bb]}`);
     
     if (bb<messages.length) {
         var createdAt = moment().format('h:mm a');
@@ -28,7 +28,7 @@ function slide() {
         createdAt: createdAt
         }, 
         function(data){
-        console.log('Got it ', data);
+        //console.log('Got it ', data);
         });        
     }
 
