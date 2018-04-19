@@ -8,7 +8,7 @@
     <!-- all JS -->
     <script src="/js/libs/jquery-3.3.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="socket.io/socket.io.js"></script>
+    <script src="../socket.io/socket.io.js"></script>
     <script type='text/javascript' src='/js/libs/hbs.js'></script>
     <script src="/js/libs/moment-with-locales.js"></script>
 
@@ -17,9 +17,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- included local html's -->
-    <script> $(function(){$("#pickform").load("pickform.html"); });</script> 
-    <script> $(function(){$("#leftpanel").load("leftpanel.html"); });</script> 
-    <script> $(function(){$("#rightpanel").load("rightpanel.html"); });</script> 
+    <script> $(function(){$("#pickform").load("../pickform.html"); });</script> 
+    <script> $(function(){$("#leftpanel").load("../leftpanel.html"); });</script> 
+    <script> $(function(){$("#rightpanel").load("../rightpanel.html"); });</script> 
 
     <title>Mango Riviera</title>
   
@@ -36,8 +36,7 @@
       </div>
           
     <div id="right">
-      <div id="rightpanel"></div>
-      {{> sendform}}
+      {{> pickform list_bookingtypes = list_bookingtypes}}
     </div>
   
     </div>

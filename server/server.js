@@ -6,6 +6,7 @@ const socketIO = require('socket.io');
 const moment = require('moment');
 const http = require('http');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
 
 const {generateMessage} = require('./utils/message');
@@ -82,6 +83,8 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 hbs.registerPartials(path.join(__dirname , '../views/partials'))
 app.set('view engine', 'hbs');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname , '../public')));
 app.use('/lists', lists);
 
@@ -142,7 +145,7 @@ io.on('connection',(socket) => {
 });
 
 app.get('/home', (req, res) => {
-  res.render('homeOld.hbs', {
+  res.render('home.hbs', {
     pageTitle: 'Home Page',
     welcomeMessage: 'Enjoy our resort more with this app - accurate statistics, bookings, schedules, requests and more'
   });

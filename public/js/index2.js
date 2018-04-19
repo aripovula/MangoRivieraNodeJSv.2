@@ -48,6 +48,8 @@ socket.on('newMessage',function(message){
 });
 
 
+// window.addEventListener('submit', function(evt) {
+  //   evt.preventDefault();
 jQuery('#message-form').on('submit', function (e) {
     e.preventDefault();
   

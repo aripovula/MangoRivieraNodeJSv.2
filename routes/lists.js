@@ -92,6 +92,8 @@ var bookingtype_controller = require('../controllers/bookingtypeController');
 router.get('/bookingtypes', bookingtype_controller. bookingtype_list);
 
 
+router.post('/bookingtype/save', bookingtype_controller. bookingtype_create_post);
+
 /// BOOKINSTANCE ROUTES ///
 
 // GET request for creating a BookInstance. NOTE This must come before route that displays BookInstance (uses id).
