@@ -16,19 +16,55 @@ socket.on('disconnect', function() {
 socket.on('newShoutMessage',function(message){
 
   //var timePosted = moment().format('h:mm a');
-  console.log("it works SHOUT form2: "+message.text + " timePosted = "+message.createdAt);
+  //console.log("it works SHOUT: "+message.text + " timePosted = "+message.createdAt);
 
-   var chatData = [{from:message.from, createdAt:message.createdAt, text:message.text }];
-   var theTemplateScript = $("#shout-template2").html(); 
+  var chatData = [{from:message.from, createdAt:message.createdAt, text:message.text }];
+   var theTemplateScript = $("#shout-template").html(); 
    var theTemplate = Handlebars.compile(theTemplateScript);
    var html = theTemplate(chatData);
-
-   $("#shoutboard2").html(html+htmlPrev);
+   $("#shoutboard").html(html+htmlPrev); 
+  //  $("#shoutboard2").html(html+htmlPrev); 
    htmlPrev = html + htmlPrev;
 
 });
 
+socket.on('newMessage',function(message){
 
+  var timePosted = moment().format('h:mm a');
+  //console.log("it works: "+message.text + " timePosted = "+timePosted);
+  // var html = `<p><span style="color:red">${message.from}}</span> - <span style="color:gray">@ ${timePosted}} </span> : <span style="color:green"> ${message.text}} </span></p>`;
+  // var html = `<p>${message.from} @ ${timePosted}: ${message.text}</p>`;
+  // jQuery('#messages').append(html);
+
+  var chatData = [{from:message.from, timePosted:timePosted, text:message.text }];
+   var theTemplateScript = $("#chat-template").html(); 
+   var theTemplate = Handlebars.compile(theTemplateScript); 
+  //  console.log("data = " + chatData[0].from);
+  //  console.log("data = " + chatData[0].text);
+  //  console.log("html = " + theTemplate(chatData));
+   $("#messages").append(theTemplate(chatData)); 
+
+  jQuery('[name=message]').val('');
+});
+
+
+jQuery('#message-form').on('submit', function (e) {
+    e.preventDefault();
+  
+  // Do somethin g else
+  var createdAt = moment().format('h:mm a');
+  var messageTextbox = jQuery('[name=message]');
+  //console.log(createdAt);
+  socket.emit('createMessage', 
+  {
+    from:'Guest', 
+    text:jQuery('[name=message]').val(),
+    createdAt: createdAt
+  }, 
+  function(data){
+    //console.log('Got it', data);
+  });
+});
 
 var video = document.getElementById("myVideo");
 var btn = document.getElementById("videoBtn");

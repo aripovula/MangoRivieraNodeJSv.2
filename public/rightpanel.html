@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- all CSS -->
+    <!-- <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/weather-icons.min.css">
+  
+    <!-- all JS -->
+    <script src="/js/libs/jquery-3.3.1.min.js"></script>
+    <!-- <script src="/js/libs/bootstrap.min.js"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script type='text/javascript' src='/js/libs/hbs.js'></script>
+    <script src="/js/libs/moment-with-locales.js"></script>
+
+    <!-- fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Assistant' rel='stylesheet'/>
+    
+    <!-- included local html's -->
+    <script> $(function(){$("#pickform").load("pickform.html"); });</script> 
+    <!-- <script> $(function(){$("#testfrag").load("frag.hbs"); });</script>  -->
+
+    <title>Mango Riviera</title>
+  </head>
+
+  <body>
+            
+      <div class="boxedtransp">
+        <label>Announcements and specials !</label>
+        <div style="height:200px;overflow: scroll;">
+          <ol id="shoutboard"></ol>
+        </div>
+        <script id="shout-template" type="x-handlebars-template">
+            <!-- {{#each this}} -->
+              <p><span style="color:gray">{{createdAt}} </span> : <span style="color:green"> {{text}} </span></p>
+            <!-- {{/each}} -->
+        </script>
+  
+        </div>
+  
+    <div class="boxedtransp">
+        <label>Chat with other guests sharing similar interests - select an Interest group first !</label>
+        <div style="height:100px;overflow: scroll;">
+          <ol id="messages"></ol>
+        </div>
+    </div>
+
+    <script id="chat-template" type="x-handlebars-template">
+        <!-- {{#each this}} -->
+          <p><span style="color:red">{{from}}</span> - <span style="color:gray">@ {{timePosted}} </span> : <span style="color:green"> {{text}} </span></p>
+        <!-- {{/each}} -->
+      </script>
+
+  </body>
+</html>

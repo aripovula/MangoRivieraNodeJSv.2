@@ -95,18 +95,23 @@ io.on('connection',(socket) => {
   // to emit broadcast message TO ALL EXcluding MYSELF by sending default message
   socket.broadcast.emit('newMessage', generateMessage('Admin','New user joined'));
 
-
+  // var x2;
   var x = 0;
+  console.log('new x = '+x);
+  // if ( x2 == null || x2 != "true" ) {
   var intervalID = setInterval(function () {
 
-    console.log('SENT IT x = '+x);
-    // Your logic here
-    io.sockets.emit('newShoutMessage', generateMessage('Admin',`New BOY joined = ${x}`));
+      // x2 = true;
+      console.log('SENT IT x = '+x);
+      // Your logic here
+      io.sockets.emit('newShoutMessage', generateMessage('Admin',`New BOY joined = ${x}`));
 
-    if (++x === 8) {
-        clearInterval(intervalID);
-    }
-  }, 4000);
+      if (++x === 8) {
+          clearInterval(intervalID);
+          // x2 = false;
+      }
+    }, 4000);
+  // }
 
   socket.on('createMessage', (message, callback) => {
     console.log('createMessage',message);
@@ -137,7 +142,7 @@ io.on('connection',(socket) => {
 });
 
 app.get('/home', (req, res) => {
-  res.render('home.hbs', {
+  res.render('homeOld.hbs', {
     pageTitle: 'Home Page',
     welcomeMessage: 'Enjoy our resort more with this app - accurate statistics, bookings, schedules, requests and more'
   });

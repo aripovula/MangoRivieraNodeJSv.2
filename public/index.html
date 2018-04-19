@@ -59,7 +59,21 @@
           
           <!-- code for DASHBOARD partial -->
           <script id="dashboard-partial" type="text/x-handlebars-template">
-            {{> dashboard firstlink = "About"}}
+            <div class="boxedtransp">
+                <div>    
+                        <!-- <legend>Booking:</legend>     -->
+                    <legend style="font-size:16px">Activities</legend>
+                    <ul id="tab"></ul>
+                </div>
+            
+                <h4>Spa and Wellness</h4>  <!- spa Wellness, fitness O'zone, crossfit ManGo->
+                    <ul id="tabspa"></ul>
+                <h4>Meals</h4>  <!- dolphine show, visit ancient castle, sport contest ->
+                    <ul id="tabmeals"></ul>
+                <h4>Services</h4>  <!- airport shuttle, room service, sport contest ->
+                    <ul id="tabservices"></ul>
+            </div>
+            
           </script>
 
           <div id="dashboard_placeholder"></div>
@@ -118,7 +132,7 @@
 
     </div>
 
-      // script for tooltips
+      <!-- // script for tooltips -->
       <script>
       $(document).ready(function(){
           $('[data-toggle="tooltip"]').tooltip();   

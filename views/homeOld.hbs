@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/js/libs/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css">
+
+    {{!-- <link rel="stylesheet" type="text/css" href="/static/css/weather-icons.css"> --}}
+    <link href='https://fonts.googleapis.com/css?family=Assistant' rel='stylesheet'/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- included local html's -->
+    <script> $(function(){$("#pickform").load("pickform.html"); });</script> 
+    <script> $(function(){$("#leftpanel").load("leftpanel.html"); });</script> 
+    <script> $(function(){$("#rightpanel").load("rightpanel.html"); });</script> 
+
+    <title>Mango Riviera</title>
+
+            <!-- css customized for this page -->
+        <style type="text/css">
+						
+  </style>
+  
+  </head>
+  {{!-- <body style="background-size: 100%; background-attachment: fixed;   opacity: 0.2;position: absolute;z-index: -1;" background="/static/images/sandbeach.jpeg"> --}}
+<body style="background-size: 100%; background-attachment: fixed; " background="/static/images/sandbeach.jpeg"></body>
+    <script src="socket.io/socket.io.js"></script>
+    <script type='text/javascript' src='/js/libs/hbs.js'></script>
+
+    <script src="/js/libs/moment-with-locales.js"></script>
+  
+    
+    <!--div class="container"-->
+
+      {{!-- <script type="text/javascript" src="/js/weather.js"></script>
+      <script type="text/javascript" src="/js/weatherScheduler.js"></script> --}}
+
+
+
+    <div id="content">
+
+        <!-- controls for video background -->
+        <a class="lists" style="position:absolute;top:0;right:10px;font-size:14px" href="#" id="videoBtn" onclick="videoCtrl()">Pause</a>
+        <a class="lists" style="position:absolute;top:30px;right:10px;font-size:14px" href="#" id="audioBtn" onclick="audioCtrl()">Un-mute</a>
+
+        {{!-- <script id="menu_partial_template" type="text/x-handlebars-template">
+          {{> partialTemplate_MENU currentpage = "Wind: 40 miles/h, 82"}}<br>
+        </script>
+
+        <div id="menu_placeholder"></div>
+        
+        <script src="/js/menu.js"></script> --}}
+        {{> header firstlink = "About"}}
+      <div class="container">
+      
+      </div>
+        <div id="left">
+            
+        {{!-- <div id="weather_placeholder"></div>
+        
+        <script src="/js/weather.js"></script> --}}
+
+
+      <div id="leftpanel"></div>
+
+        {{!-- {{> dashboard firstlink = "About"}} --}}
+
+          {{!-- <div id="dashboard_placeholder"></div>
+
+        <script src="/js/dashboard.js"></script> --}}
+
+        </div>
+          
+    <div id="right">
+
+      <div id="rightpanel"></div>
+
+      {{> sendform}}
+        {{!-- <div class="boxedtransp">
+      <form id="message-form">
+        <input id="messageinput" style="width: 80%" name="message" type="text" placeholder="message" autofocus autocomplete="off"/>
+        <button>Send</button><br/><label style="width:80%;text-align:center">Interest groups:</label>
+        <div style="margin:4px;">
+          <button>Surfing</button>
+          <button>Diving</button>
+          <button>Boat trip</button>
+          <button>Paragliding</button>
+          <button>Water polo</button>
+          <button>Beach valley</button>
+          <button>Sea skiing</button>
+          <button>Yoga</button>
+      </div>
+      </form> --}}
+    </div>
+  
+    </div>
+        {{> footer}}
+    </div>
+
+      {{!-- script for tooltips --}}
+      <script>
+      $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();   
+      });
+      </script>
+
+        <video autoplay muted loop id="myVideo">
+      <!-- whitesand.mp4 , Lifeguard.mp4 -->
+        <source src="/static/images/whitesand.mp4" type="video/mp4"> 
+        Your browser does not support HTML5 video.
+      </video>
+
+      <audio loop id="theaudio">
+        <source src="/static/images/wavesound.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+
+      <script src="/js/index2.js"></script>
+  </body>
+</html>
