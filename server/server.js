@@ -5,15 +5,22 @@ const path = require('path');
 const socketIO = require('socket.io');
 const moment = require('moment');
 const http = require('http');
-var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
-
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const favicon = require('serve-favicon');
+const flash = require('connect-flash');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 const {generateMessage} = require('./utils/message');
-var lists = require('../routes/lists'); // Import routes for "catalog" area of site
+
+var lists = require('../routes/lists'); 
+var admin = require('../routes/admin');
 
 const port = process.env.PORT || 3001;
+
 var app = express();
+
 var server = http.createServer(app);
 var io = socketIO(server); 
 
@@ -86,7 +93,19 @@ app.set('view engine', 'hbs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname , '../public')));
+
+// set sessions and cookie parser
+app.use(cookieParser());
+app.use(session({
+  secret: 'C48A211FA6856354F5457FA4F732C', 
+  cookie: { maxAge: 60000 },
+  resave: true,    // forces the session to be saved back to the store
+  saveUninitialized: true  // dont save unmodified
+}));
+app.use(flash());
+
 app.use('/lists', lists);
+app.use('/admin', admin);
 
 io.on('connection',(socket) => {
   console.log('New user connected');
@@ -148,6 +167,13 @@ app.get('/home', (req, res) => {
   res.render('home.hbs', {
     pageTitle: 'Home Page',
     welcomeMessage: 'Enjoy our resort more with this app - accurate statistics, bookings, schedules, requests and more'
+  });
+});
+
+app.get('/admin', (req, res) => {
+  res.render('/adminpage.hbs', {
+    pageTitle: 'Admin Page',
+    welcomeMessage: 'A page that in real life would require an admin password'
   });
 });
 

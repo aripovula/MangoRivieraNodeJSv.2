@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- all CSS -->
+    {{!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> --}}
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css">
+    <!-- all JS -->
+    <script src="/js/libs/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../socket.io/socket.io.js"></script>
+    <script type='text/javascript' src='/js/libs/hbs.js'></script>
+    <script src="/js/libs/moment-with-locales.js"></script>
+
+    <!-- fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Assistant' rel='stylesheet'/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- included local html's -->
+    <script> $(function(){$("#pickform").load("../pickform.html"); });</script> 
+    <script> $(function(){$("#leftpanel").load("../leftpanel.html"); });</script> 
+    <script> $(function(){$("#rightpanel").load("../rightpanel.html"); });</script> 
+
+    <title>Mango Riviera</title>
+  
+  </head>
+
+<body style="background-size: 100%; background-attachment: fixed; " background="/static/images/sandbeach.jpeg">
+  
+    <div id="content">
+
+        {{> header firstlink = "Home"}}
+
+    {{#if locals.message}}
+      <div class="alert alert-success" role="alert">
+          <strong>Well done!</strong> {{message.success}}
+    </div>
+    {{/if}}
+
+
+      {{#if success}}
+          <div class="alert alert-success">Success message:{{success}}</div>
+      {{/if}}
+      
+      {{#if error}}
+          <div class="alert alert-danger">Error message:{{error}}</div>
+      {{/if}}
+      <div id="left">        
+        <div id="leftpanel"></div>
+      </div>
+          
+    <div id="right">
+
+{{#if success }}
+    <div class="alert alert-success">{{success}}</div>
+    <div class="alert alert-success">SUCCESS: {{success}}</div>
+{{/if}}
+
+{{!-- <script> $(console.log("Success = "+req.flash('success')));</script>  --}}
+
+      <div class="boxedtransp">
+        <label style="margin-left:5px;">Admin functions: &nbsp; (would require password in real life)</label>
+        <ul>
+        <li><a  href="#"  onclick="myFunction()">add new or edit existing booking type</a><br/></li>
+        <div id="myDIV" style="display:none">
+          <p>to add new 'Booking type' add its name &amp; hit 'Save':</p>
+          <form action="/admin/bookingtype/save"  role="form" method="POST">
+            <input type="text" name="name"/> <button type="submit">Save</button>
+          </form>
+          
+          <br/>
+          <a  href="#"  onclick="myFunction()">to edit or delete existing 'Booking type' use relevant buttons:</a>
+          <ul>
+          {{#each list_bookingtypes}}
+                  <li><span>{{name}}</span> &nbsp; <a class="addn" href="#"> edit </a> &nbsp; <a class="addn" href="#"> delete </a> </li>
+          {{/each}}
+          </ul>
+          <br/>
+      </div>
+
+
+        {{!-- <li><a  href="/admin/editbookingtype.html">edit / delete existing booking type</a><br/></li> --}}
+        <li><a  href="/admin/addbookingsubtype.html">add new booking SUB-type</a><br/></li>
+        <li><a  href="/admin/editbookingsubtype.html">edit / delete existing booking SUB-type</a><br/></li>
+        <li><a  href="/admin/addselltype.html">add new sell type</a><br/></li>
+        <li><a  href="/admin/editselltype.html">edit / delete existing sell type</a><br/></li>
+        <li><a  href="/admin/addsellsubtype.html">add new sell SUB-type</a><br/></li>
+        <li><a  href="/admin/editsellsubtype.html">edit / delete existing sell SUB-type</a><br/></li>
+        <li><a  href="/admin/addinfotype.html">add new info type</a><br/></li>
+        <li><a  href="/admin/editinfotype.html">edit / delete existing info type</a><br/></li>
+        </ul>
+      </div>
+
+      <div class="boxedtransp">
+        <label>Send Broadcast ( Shoutboard ) message - ( Admin only ) :</label>
+        <div style="height:100px;overflow: scroll;">
+          <ol id="messages"></ol>
+        </div>
+      <form id="message-form">
+        <textarea id="messageinput" rows="3" cols="50" style="width: 80%" name="message" type="text" placeholder="message" autofocus autocomplete="off"></textarea>
+        <br/>
+        <button>Send</button>
+      </form>
+
+    </div>
+
+    <script id="chat-template" type="x-handlebars-template">
+        <!-- {{#each this}} -->
+          <p><span style="color:gray">@ {{timePosted}} </span> : <span style="color:green"> {{text}} </span></p>
+        <!-- {{/each}} -->
+      </script>
+
+    </div>
+  
+    </div>
+        {{> footer}}
+    </div>
+
+      {{> videopartial}}
+
+      <script src="/js/index2.js"></script>
+
+      <script>
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+      </script>
+
+  </body>
+</html>

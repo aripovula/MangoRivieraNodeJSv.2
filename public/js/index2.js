@@ -20,12 +20,13 @@ socket.on('newShoutMessage',function(message){
 
   var chatData = [{from:message.from, createdAt:message.createdAt, text:message.text }];
    var theTemplateScript = $("#shout-template").html(); 
-   var theTemplate = Handlebars.compile(theTemplateScript);
-   var html = theTemplate(chatData);
-   $("#shoutboard").html(html+htmlPrev); 
-  //  $("#shoutboard2").html(html+htmlPrev); 
-   htmlPrev = html + htmlPrev;
-
+   if (theTemplateScript != null) {
+      var theTemplate = Handlebars.compile(theTemplateScript);
+      var html = theTemplate(chatData);
+      $("#shoutboard").html(html+htmlPrev); 
+      //  $("#shoutboard2").html(html+htmlPrev); 
+      htmlPrev = html + htmlPrev;
+   }
 });
 
 socket.on('newMessage',function(message){
@@ -37,14 +38,16 @@ socket.on('newMessage',function(message){
   // jQuery('#messages').append(html);
 
   var chatData = [{from:message.from, timePosted:timePosted, text:message.text }];
-   var theTemplateScript = $("#chat-template").html(); 
-   var theTemplate = Handlebars.compile(theTemplateScript); 
-  //  console.log("data = " + chatData[0].from);
-  //  console.log("data = " + chatData[0].text);
-  //  console.log("html = " + theTemplate(chatData));
-   $("#messages").append(theTemplate(chatData)); 
+  var theTemplateScript = $("#chat-template").html(); 
+   if (theTemplateScript != null) {
+      var theTemplate = Handlebars.compile(theTemplateScript); 
+      //  console.log("data = " + chatData[0].from);
+      //  console.log("data = " + chatData[0].text);
+      //  console.log("html = " + theTemplate(chatData));
+      $("#messages").append(theTemplate(chatData)); 
 
-  jQuery('[name=message]').val('');
+      jQuery('[name=message]').val('');
+  }
 });
 
 
