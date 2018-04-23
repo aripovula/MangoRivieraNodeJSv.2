@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
@@ -24,7 +26,7 @@ var app = express();
 var server = http.createServer(app);
 var io = socketIO(server); 
 
-
+console.log("API = "+process.env.WEATHERAPIKEY); 
 
 //Set up default mongoose connection
 var mongoDB = 'mongodb://localhost:27017/MangoRivDB';
@@ -97,7 +99,7 @@ app.use(express.static(path.join(__dirname , '../public')));
 // set sessions and cookie parser
 app.use(cookieParser());
 app.use(session({
-  secret: 'C48A211FA6856354F5457FA4F732C', 
+  secret: process.env.SECRET, 
   cookie: { maxAge: 60000 },
   resave: true,    // forces the session to be saved back to the store
   saveUninitialized: true  // dont save unmodified

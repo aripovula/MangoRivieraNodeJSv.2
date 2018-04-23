@@ -95,6 +95,8 @@ router.get('/infoforadmin', admin_controller. admins_list);
 
 router.post('/bookingtype/save', admin_controller. bookingtype_create_post);
 
+router.post('/bookingtype/:id/update', admin_controller.bookingtype_update_post);
+
 /// BOOKINSTANCE ROUTES ///
 
 // GET request for creating a BookInstance. NOTE This must come before route that displays BookInstance (uses id).

@@ -47,7 +47,7 @@ exports.bookingtype_list = function(req, res, next) {
 
 
 // Handle Genre create on POST.
-exports.bookingtype_create_post = 
+exports.bookingtype_create_post = [
 
   // Validate that the name field is not empty.
   // body('type', 'Type name required').isLength({ min: 1 }).trim(),
@@ -72,9 +72,52 @@ exports.bookingtype_create_post =
         console.log("from system = " + req.flash('success'));
         res.redirect('/admin/infoforadmin');
       });
-  };
+  }];
 
+
+
+  // Handle Genre update on POST.
+exports.bookingtype_update_post = [
+   
+  // Validate that the name field is not empty.
+  // body('name', 'Genre name required').isLength({ min: 1 }).trim(),
   
+  // Sanitize (trim and escape) the name field.
+  // sanitizeBody('name').trim().escape(),
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+
+      
+      // Extract the validation errors from a request .
+      // const errors = validationResult(req);
+
+  // Create a genre object with escaped and trimmed data (and the old id!)
+      var bt = new BookingType(
+        {
+        name: req.body.name,
+        _id: req.params.id
+        }
+      );
+
+      console.log("IIIDD="+req.params.id);
+      console.log("NNNAme="+req.body.name);
+
+      // if (!errors.isEmpty()) {
+      //     // There are errors. Render the form again with sanitized values and error messages.
+      //     res.render('genre_form', { title: 'Update Genre', genre: genre, errors: errors.array()});
+      // return;
+      // }
+      // else {
+          // Data from form is valid. Update the record.
+          BookingType.findByIdAndUpdate(req.params.id, bt, {}, function (err,cback) {
+              if (err) { return next(err); }
+                 // Successful - redirect to genre detail page.
+                 res.redirect('/admin/infoforadmin');
+              });
+      //}
+  }
+];
   
 
   

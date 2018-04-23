@@ -9,8 +9,8 @@
       var html = '<div class="boxed">... updating weather info ...</div> ';
       $("#weather_placeholder").html(html);
       var updated = false;
-
-      var apiKey       = 'e2633fdd11698cb204f35a082af5b6b1',
+      
+      var apiKey       = process.env.WEATHERAPIKEY,
       url          = 'https://api.darksky.net/forecast/',
       locationData         = '39.3469952,-84.4013568',  //'25.8102247,-80.2101822',
       api_call = url + apiKey + "/" + locationData + "?extend=hourly&callback=?";
