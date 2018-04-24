@@ -50,18 +50,26 @@
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>Modal Header</h2>
     </div>
     <div class="modal-body">
-          <p>Add a new booking type:</p>
+          <p id="maintext"></p>
           <form id="updateform"  role="form" method="POST">
             <input id="btid" type="hidden" name="id"/>
-            <input id="btname" type="text" name="name"/> 
-            <button onclick="formSubmit()">Save</button>
+            <input id="bttype" type="hidden" name="type"/>
+            <p id="bttext" style="color:red"></p>
+            <input id="btname" size="30" type="text" name="name"/> 
+            <input id="btsubname" size="30" type="text" name="subname"/> 
+            <input id="btmessage" size="30" type="text" name="message"/>
+            <input id="btprice" size="10" type="text" name="price"/> 
+            <br/>
+            <button id="Submit" class="button1" onclick="formSubmit()">Submit</button>
+            <button type="button" class="button2" onclick="modal.style.display = 'none';">Cancel</button>
+
           </form>
+          <br/>
     </div>
+
     <div class="modal-footer">
-      <h3>Modal Footer</h3>
     </div>
   </div>
 
@@ -75,11 +83,32 @@ var modal = document.getElementById('myModal');
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal 
-function showModal(idn, name) {
+//( 11, '{{id}}', '{{name}}','sub-name','message',0, 'Edit the booking type name:', '')
+function showModal(type, idn, name, subname, message, price, maintext) {
     console.log("IDN="+idn);
     modal.style.display = "block";
-    document.getElementById('btid').setAttribute('value',idn);
-    document.getElementById('btname').setAttribute('value',name);
+    document.getElementById('bttype').setAttribute('value',type);
+    document.getElementById('btid').setAttribute('value',idn);    
+    var dname = document.getElementById('btname');        
+    var dsubname = document.getElementById('btsubname');  
+    var dmessage = document.getElementById('btmessage');  
+    var dprice = document.getElementById('btprice');      
+    var dtext = document.getElementById('bttext');        
+    var dmaintext = document.getElementById('maintext');  
+    
+    dname.setAttribute('value',name);
+    dsubname.setAttribute('value',subname);
+    dmessage.setAttribute('value',message);
+    dprice.setAttribute('value',price);
+    dtext.innerHTML = name;
+    dmaintext.innerHTML = maintext;
+
+
+    if ( type== 10 || type== 11 ) dtext.style.display = 'none'; else dtext.style.display = 'block';
+    if ( type== 12 ) dname.style.display = 'none'; else dname.style.display = 'block';
+    if ( type < 14 ) dsubname.style.display = 'none'; else dsubname.style.display = 'block';
+    if ( type < 14 ) dmessage.style.display = 'none'; else dmessage.style.display = 'block';
+    if ( type < 14 ) dprice.style.display = 'none'; else dprice.style.display = 'block';
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -97,8 +126,9 @@ window.onclick = function(event) {
 function formSubmit() {
       var idn = document.getElementById("btid").value;
       var name = document.getElementById("btname").value;
+      var type = document.getElementById("bttype").value;
       var act = "/admin/bookingtype/"+idn+"/update";
-      {{!-- alert("ACT = "+act); --}}
+      alert("type = "+type);
       document.getElementById('updateform').setAttribute('action',act).submit();
       return false;
     };
@@ -110,20 +140,22 @@ function formSubmit() {
       <div class="boxedtransp">
         <label style="margin-left:5px;">Admin functions: &nbsp; (would require password in real life)</label>
         <ul>
-        <li><a  href="#"  onclick="myFunction()">add new or edit existing booking type</a><br/></li>
+        <li><a onclick="showModal( 10, '', '','sub-name','message',0, 'Add a new booking type:', '')" href="#"> add a new booking type </a></li>
+        <li><a  href="#"  onclick="myFunction()">edit / delete existing booking type</a><br/></li>
         <div id="myDIV" style="display:none">
-          <p>to add new 'Booking type' add its name &amp; hit 'Save':</p>
+          {{!-- <p>to add new 'Booking type' add its name &amp; hit 'Save':</p>
           <form action="/admin/bookingtype/save"  role="form" method="POST">
-            <input type="text" name="name"/> <button type="submit">Save</button>
-          </form>
+            <input type="text" name="name"/> <button  class="button1" type="submit">Save</button>
+          </form> --}}
           
           {{#if list_bookingtypes }}
-            <br/>
-            <a  href="#"  onclick="myFunction()">to edit or delete existing 'Booking type' use relevant buttons:</a>
+            <a  href="#"  onclick="myFunction()">List of existing 'Booking type's - please use relevant buttons:</a>
           {{/if}}
           <ul>
           {{#each list_bookingtypes}}
-                  <li><span>{{name}}</span> &nbsp; <a class="addn" onclick="showModal('{{id}}', '{{name}}')" href="#"> edit </a> &nbsp; <a class="addn" href="#"> delete </a> </li>
+            <li><span>{{name}}</span> &nbsp; 
+            <a class="addn" onclick="showModal( 11, '{{id}}', '{{name}}','sub-name','message',0, 'Edit the booking type name:', '')" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 12, '{{id}}', '{{name}}','sub-name','message',0, 'Delete the booking type ?', '')" href="#"> delete </a> &nbsp; 
           {{/each}}
           </ul>
           <br/>
@@ -150,7 +182,7 @@ function formSubmit() {
       <form id="message-form">
         <textarea id="messageinput" rows="3" cols="50" style="width: 80%" name="message" type="text" placeholder="message" autofocus autocomplete="off"></textarea>
         <br/>
-        <button>Send</button>
+        <button class="button1">Send</button>
       </form>
 
     </div>
