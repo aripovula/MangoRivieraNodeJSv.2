@@ -10,11 +10,20 @@
       $("#weather_placeholder").html(html);
       var updated = false;
       
-      var apiKey       = process.env.WEATHERAPIKEY,
+      // Since I did not learn how to pass data from server to front end (may be using webpacks)
+      // as a TEMPORARY measure I am reading API from local file to protect it from saving in github.com
+      var apiTemp;
+      console.log("I WAS HERE");
+
+  jQuery.get('../api.txt', function(apiTemp) {
+
+      var apiKey       = apiTemp,
       url          = 'https://api.darksky.net/forecast/',
       locationData         = '39.3469952,-84.4013568',  //'25.8102247,-80.2101822',
       api_call = url + apiKey + "/" + locationData + "?extend=hourly&callback=?";
   
+      console.log("apiKey = "+apiKey);
+
         $.getJSON(api_call, function(forecast) {
         
           var open = "</span><i style='color:#FF69B4' class='wi ";
@@ -47,6 +56,9 @@
           resolve("Success!");
             
         });
+
+      });
+
         setTimeout(function(){
           console.log("updatedF = "+ updated);
           if (!updated) reject("Failed!");     

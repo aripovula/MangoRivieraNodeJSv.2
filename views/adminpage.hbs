@@ -164,7 +164,8 @@ function formSubmit() {
           
           {{#if list_bookingtypes }}
             <a  href="#"  onclick="myFunction('myDIV')">&nbsp; &nbsp; &nbsp; - list of existing Booking types - please use relevant buttons:</a>
-            {{!-- <script>myFunction('myDIV');</script> --}}
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no Booking types are found</label>
           {{/if}}
           <ul>
           {{#each list_bookingtypes}}
@@ -172,9 +173,9 @@ function formSubmit() {
             <a class="addn" onclick="showModal( 11, '{{id}}', '{{name}}','sub-name','message',0, 'Edit the booking type name:', '')" href="#"> edit </a> &nbsp; 
             <a class="addn" onclick="showModal( 12, '{{id}}', '{{name}}','sub-name','message',0, 'Delete the booking type ?', '')" href="#"> delete </a> &nbsp; 
             <a class="addn" onclick="showModal( 20, '{{id}}', '{{name}}','','message',0, 'Add a new booking SUB-type:', '')" href="#"> add new SUB-type </a>
+            <br/>
           {{/each}}
           </ul>
-          <br/>
         </div>
 
         <li><a  href="#"  onclick="myFunction('myDIV1')">add new booking SUB-type</a><br/></li>
@@ -182,30 +183,35 @@ function formSubmit() {
           
           {{#if list_bookingtypes }}
             <a  href="#"  onclick="myFunction('myDIV1')">&nbsp; &nbsp; &nbsp; - select an existing Booking type &amp; click add button</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no Booking types are found</label>
           {{/if}}
           <ul>
           {{#each list_bookingtypes}}
             <li><span>{{name}}</span> &nbsp; 
             <a class="addn" onclick="showModal( 20, '{{id}}', '{{name}}','','message',0, 'Add a new booking SUB-type:', '')" href="#"> add new SUB-type </a>
+            <br/>
           {{/each}}
           </ul>
-          <br/>
         </div>
 
         <li><a  href="#"  onclick="myFunction('myDIV2')">edit / delete existing booking SUB-type</a><br/></li>
         <div id="myDIV2" style="display:none">
-          
+
           {{#if list_subbookingtypes }}
             <a  href="#"  onclick="myFunction('myDIV2')">&nbsp; &nbsp; &nbsp; - list of existing 'Booking SUB-type's - please use relevant buttons:</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no Booking SUB-types are found</label>
           {{/if}}
+
           <ul>
           {{#each list_subbookingtypes}}
             <li><span>{{subname}} ( {{name}} )</span> &nbsp; 
             <a class="addn" onclick="showModal( 21, '{{id}}', '{{name}}','{{subname}}','message',0, 'Edit the booking SUB-type name:', '')" href="#"> edit </a> &nbsp; 
             <a class="addn" onclick="showModal( 22, '{{id}}', '{{name}}','{{subname}}','message',0, 'Delete the booking SUB-type ?', '')" href="#"> delete </a> &nbsp; 
+            <br/>
           {{/each}}
           </ul>
-          <br/>
       </div>
 
         <li><a  href="/admin/addselltype.html">add new sell type</a><br/></li>

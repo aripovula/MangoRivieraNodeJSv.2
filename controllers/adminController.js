@@ -177,11 +177,11 @@ exports.subbookingtype_create_post = [
     //                  return found_bt;
     //              });
 
-    console.log("type="+req.body.subname);
+    console.log("subname="+req.body.subname);
     // console.log("name="+name.name);
     var sbt = new SubBookingType({ 
       subname: req.body.subname,
-      name:req.params.id
+      parent:req.params.id
     });
       
       sbt.save(function (err) {
@@ -194,11 +194,11 @@ exports.subbookingtype_create_post = [
         // res.redirect('/admin/infoforadmin');
       });
 
-      SubBookingType.findOne({ subname: 'eee33' }).
-      populate('name').
-      exec(function (err, name2) {
+      SubBookingType.findOne({ subname: 'eee33' })
+      .populate('parent')
+      .exec(function (err, subtype) {
         if (err) return handleError(err);
-        console.log('The name is %s', name2.name._id);
+        if (subtype != null) console.log('The name is %s', subtype.parent.name);
         // prints "The author is Ian Fleming"
       });
       res.redirect('/admin/infoforadmin');
