@@ -53,14 +53,14 @@
     </div>
     <div class="modal-body">
           <p id="maintext"></p>
-          <form id="updateform"  role="form" method="POST">
+          <form id="universalForm"  role="form" method="POST">
             <input id="btid" type="hidden" name="id"/>
             <input id="bttype" type="hidden" name="type"/>
             <p id="bttext" style="color:red"></p>
-            <input id="btname" size="30" type="text" name="name"/> 
-            <input id="btsubname" size="30" type="text" name="subname"/> 
-            <input id="btmessage" size="30" type="text" name="message"/>
-            <input id="btprice" size="10" type="text" name="price"/> 
+            <input id="btname" size="30" type="text" name="name" placeholder="name"/> 
+            <input id="btsubname" size="30" type="text" name="subname" placeholder="sub-type name" style="margin-top:10px;"/> 
+            <input id="btmessage" size="30" type="text" name="message" placeholder="message" style="margin-top:10px;"/>
+            <input id="btprice" size="10" type="text" name="price" placeholder="price, USD" style="margin-top:10px;"/> 
             <br/>
             <button id="Submit" class="button1" onclick="formSubmit()">Submit</button>
             <button type="button" class="button2" onclick="modal.style.display = 'none';">Cancel</button>
@@ -85,30 +85,44 @@ var span = document.getElementsByClassName("close")[0];
 // When the user clicks the button, open the modal 
 //( 11, '{{id}}', '{{name}}','sub-name','message',0, 'Edit the booking type name:', '')
 function showModal(type, idn, name, subname, message, price, maintext) {
-    console.log("IDN="+idn);
+    console.log("IDN1="+idn);
     modal.style.display = "block";
-    document.getElementById('bttype').setAttribute('value',type);
-    document.getElementById('btid').setAttribute('value',idn);    
-    var dname = document.getElementById('btname');        
-    var dsubname = document.getElementById('btsubname');  
-    var dmessage = document.getElementById('btmessage');  
-    var dprice = document.getElementById('btprice');      
-    var dtext = document.getElementById('bttext');        
-    var dmaintext = document.getElementById('maintext');  
-    
-    dname.setAttribute('value',name);
-    dsubname.setAttribute('value',subname);
-    dmessage.setAttribute('value',message);
-    dprice.setAttribute('value',price);
-    dtext.innerHTML = name;
-    dmaintext.innerHTML = maintext;
+
+    var fe = getElementVars();
+
+    fe.type.setAttribute('value',type);
+    fe.idn.setAttribute('value',idn);
+    fe.dname.setAttribute('value',name);
+    fe.dsubname.setAttribute('value',subname);
+    fe.dmessage.setAttribute('value',message);
+    fe.dprice.setAttribute('value',price);
+    fe.dtext.innerHTML = name;
+    fe.dmaintext.innerHTML = maintext;
 
 
-    if ( type== 10 || type== 11 ) dtext.style.display = 'none'; else dtext.style.display = 'block';
-    if ( type== 12 ) dname.style.display = 'none'; else dname.style.display = 'block';
-    if ( type < 14 ) dsubname.style.display = 'none'; else dsubname.style.display = 'block';
-    if ( type < 14 ) dmessage.style.display = 'none'; else dmessage.style.display = 'block';
-    if ( type < 14 ) dprice.style.display = 'none'; else dprice.style.display = 'block';
+    fe.dtext.style.display = 'none'; 
+    if ( type == 12 || type == 20 || type == 22 || type == 32 || type == 42 ) fe.dtext.style.display = 'block';
+    if ( type == 12 || type == 20 || type == 22 || type == 32 || type == 42 ) fe.dname.style.display = 'none'; 
+                                                else fe.dname.style.display = 'block';
+    if ( type < 14 || type == 22 || type == 32 || type == 42 ) fe.dsubname.style.display = 'none'; 
+                                                else fe.dsubname.style.display = 'block';
+    if ( type != 22 || type != 32 || type != 42 ) fe.dmessage.style.display = 'none'; 
+                                                else fe.dmessage.style.display = 'block';
+    if ( type < 34 ) fe.dprice.style.display = 'none'; else fe.dprice.style.display = 'block';
+}
+
+function getElementVars(){
+  var fe = new Object();
+    fe.type = document.getElementById('bttype');
+    fe.idn = document.getElementById('btid');    
+    fe.dname = document.getElementById('btname');        
+    fe.dsubname = document.getElementById('btsubname');  
+    fe.dmessage = document.getElementById('btmessage');  
+    fe.dprice = document.getElementById('btprice');      
+    fe.dtext = document.getElementById('bttext');  
+    fe.dmaintext = document.getElementById('maintext');
+    fe.labl = document.getElementById('labl');
+    return fe;
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -124,12 +138,16 @@ window.onclick = function(event) {
 }
 
 function formSubmit() {
-      var idn = document.getElementById("btid").value;
-      var name = document.getElementById("btname").value;
-      var type = document.getElementById("bttype").value;
-      var act = "/admin/bookingtype/"+idn+"/update";
-      alert("type = "+type);
-      document.getElementById('updateform').setAttribute('action',act).submit();
+      var fe = getElementVars();
+      var idn = fe.idn.value;
+      var name = fe.dname.value;
+      var type = fe.type.value;
+      var subname = fe.dsubname.value;
+      if ( type == 10 ) var act = "/admin/bookingtype/save";
+      if ( type == 11 ) var act = "/admin/bookingtype/"+idn+"/update";
+      if ( type == 20 ) var act = "/admin/subbookingtype/"+idn+"/save";
+      //alert("type = "+type);
+      document.getElementById('universalForm').setAttribute('action',act).submit();
       return false;
     };
 
@@ -138,33 +156,58 @@ function formSubmit() {
 {{!-- <script> $(console.log("Success = "+req.flash('success')));</script>  --}}
 
       <div class="boxedtransp">
-        <label style="margin-left:5px;">Admin functions: &nbsp; (would require password in real life)</label>
+        <label id="labl" style="margin-left:5px;">Admin functions: &nbsp; (change any &amp; see tables change, would require password in real life)</label>
         <ul>
-        <li><a onclick="showModal( 10, '', '','sub-name','message',0, 'Add a new booking type:', '')" href="#"> add a new booking type </a></li>
-        <li><a  href="#"  onclick="myFunction()">edit / delete existing booking type</a><br/></li>
+        <li><a onclick="showModal( 10, '', '','sub-name','message',0, 'Add a new booking type:', '')" href="#"> add new booking type </a></li>
+        <li><a  href="#"  onclick="myFunction('myDIV')">edit / delete existing booking type</a><br/></li>
         <div id="myDIV" style="display:none">
-          {{!-- <p>to add new 'Booking type' add its name &amp; hit 'Save':</p>
-          <form action="/admin/bookingtype/save"  role="form" method="POST">
-            <input type="text" name="name"/> <button  class="button1" type="submit">Save</button>
-          </form> --}}
           
           {{#if list_bookingtypes }}
-            <a  href="#"  onclick="myFunction()">List of existing 'Booking type's - please use relevant buttons:</a>
+            <a  href="#"  onclick="myFunction('myDIV')">&nbsp; &nbsp; &nbsp; - list of existing Booking types - please use relevant buttons:</a>
+            {{!-- <script>myFunction('myDIV');</script> --}}
           {{/if}}
           <ul>
           {{#each list_bookingtypes}}
             <li><span>{{name}}</span> &nbsp; 
             <a class="addn" onclick="showModal( 11, '{{id}}', '{{name}}','sub-name','message',0, 'Edit the booking type name:', '')" href="#"> edit </a> &nbsp; 
             <a class="addn" onclick="showModal( 12, '{{id}}', '{{name}}','sub-name','message',0, 'Delete the booking type ?', '')" href="#"> delete </a> &nbsp; 
+            <a class="addn" onclick="showModal( 20, '{{id}}', '{{name}}','','message',0, 'Add a new booking SUB-type:', '')" href="#"> add new SUB-type </a>
+          {{/each}}
+          </ul>
+          <br/>
+        </div>
+
+        <li><a  href="#"  onclick="myFunction('myDIV1')">add new booking SUB-type</a><br/></li>
+        <div id="myDIV1" style="display:none">
+          
+          {{#if list_bookingtypes }}
+            <a  href="#"  onclick="myFunction('myDIV1')">&nbsp; &nbsp; &nbsp; - select an existing Booking type &amp; click add button</a>
+          {{/if}}
+          <ul>
+          {{#each list_bookingtypes}}
+            <li><span>{{name}}</span> &nbsp; 
+            <a class="addn" onclick="showModal( 20, '{{id}}', '{{name}}','','message',0, 'Add a new booking SUB-type:', '')" href="#"> add new SUB-type </a>
+          {{/each}}
+          </ul>
+          <br/>
+        </div>
+
+        <li><a  href="#"  onclick="myFunction('myDIV2')">edit / delete existing booking SUB-type</a><br/></li>
+        <div id="myDIV2" style="display:none">
+          
+          {{#if list_subbookingtypes }}
+            <a  href="#"  onclick="myFunction('myDIV2')">&nbsp; &nbsp; &nbsp; - list of existing 'Booking SUB-type's - please use relevant buttons:</a>
+          {{/if}}
+          <ul>
+          {{#each list_subbookingtypes}}
+            <li><span>{{subname}} ( {{name}} )</span> &nbsp; 
+            <a class="addn" onclick="showModal( 21, '{{id}}', '{{name}}','{{subname}}','message',0, 'Edit the booking SUB-type name:', '')" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 22, '{{id}}', '{{name}}','{{subname}}','message',0, 'Delete the booking SUB-type ?', '')" href="#"> delete </a> &nbsp; 
           {{/each}}
           </ul>
           <br/>
       </div>
 
-
-        {{!-- <li><a  href="/admin/editbookingtype.html">edit / delete existing booking type</a><br/></li> --}}
-        <li><a  href="/admin/addbookingsubtype.html">add new booking SUB-type</a><br/></li>
-        <li><a  href="/admin/editbookingsubtype.html">edit / delete existing booking SUB-type</a><br/></li>
         <li><a  href="/admin/addselltype.html">add new sell type</a><br/></li>
         <li><a  href="/admin/editselltype.html">edit / delete existing sell type</a><br/></li>
         <li><a  href="/admin/addsellsubtype.html">add new sell SUB-type</a><br/></li>
@@ -204,8 +247,9 @@ function formSubmit() {
       <script src="/js/index2.js"></script>
 
       <script>
-        function myFunction() {
-            var x = document.getElementById("myDIV");
+        function myFunction(divName) {
+            console.log("divName = "+divName);
+            var x = document.getElementById(divName);
             if (x.style.display === "none") {
                 x.style.display = "block";
             } else {
