@@ -14,7 +14,7 @@ exports.admins_list = function(req, res, next) {
       BookingType.find({}).sort([['name', 'ascending']]).exec(callback);
     },
     function(callback){
-      SubBookingType.find({}).sort([['subname', 'ascending']]).exec(callback);
+      SubBookingType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
     },
   ], function(err, results){
       res.render('adminpage.hbs',{
@@ -194,10 +194,11 @@ exports.subbookingtype_create_post = [
         // res.redirect('/admin/infoforadmin');
       });
 
-      SubBookingType.findOne({ subname: 'eee33' })
+      SubBookingType.findOne({ subname: 'act1' })
       .populate('parent')
       .exec(function (err, subtype) {
         if (err) return handleError(err);
+        console.log('a subtype'+subtype);
         if (subtype != null) console.log('The name is %s', subtype.parent.name);
         // prints "The author is Ian Fleming"
       });

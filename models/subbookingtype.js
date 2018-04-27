@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var BookingType = mongoose.model('BookingType', BookingType);
 
 var SubBookingTypeSchema = new Schema({
-    parent: [{ type: Schema.Types.ObjectId, ref: 'BookingType' }],
+    parent: { type: Schema.Types.ObjectId, ref: 'BookingType' },
     subname: {type: String, required: true, unique: true, min: 3, max: 100}
 });
 
