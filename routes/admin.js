@@ -95,9 +95,11 @@ router.get('/infoforadmin', admin_controller. admins_list);
 
 router.post('/bookingtype/save', admin_controller. bookingtype_create_post);
 
-router.post('/subbookingtype/:id/save', admin_controller.subbookingtype_create_post);
+router.post('/subbookingtype/:parent_id/save', admin_controller.subbookingtype_create_post);
 
 router.post('/bookingtype/:id/update', admin_controller.bookingtype_update_post);
+
+router.post('/subbookingtype/:id/:parent_id/update', admin_controller.subbookingtype_update_post);
 
 /// BOOKINSTANCE ROUTES ///
 
