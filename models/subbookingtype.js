@@ -6,7 +6,11 @@ var BookingType = mongoose.model('BookingType', BookingType);
 
 var SubBookingTypeSchema = new Schema({
     parent: { type: Schema.Types.ObjectId, ref: 'BookingType' },
-    subname: {type: String, required: true, unique: true, min: 3, max: 100}
+    subname: {type: String, required: true, unique: true, min: 3, max: 100},
+    infotype : {type: String},
+    message: {type: String, min: 3, max: 100},
+    infowebpage: {type: String, min: 3, max: 100},
+    actionmsg: {type: String, required: true, min: 3, max: 100}
 });
 
 // Virtual for this genre instance URL.

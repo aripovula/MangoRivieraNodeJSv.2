@@ -58,21 +58,21 @@
             <input id="btparent_id" type="hidden" name="parent_id"/>
             <input id="bttype" type="hidden" name="type"/>
             <p id="bttext" style="color:red"></p>
-            <input id="btname" size="30" type="text" name="name" placeholder="name"/> 
-            <input id="btsubname" size="30" type="text" name="subname" placeholder="sub-type name (for first column)" style="margin-top:10px;"/> 
+            <input id="btname" size="60" type="text" name="name" placeholder="name"/> 
+            <input id="btsubname" size="60" type="text" name="subname" placeholder="sub-type name (for first column)" style="margin-top:10px;"/> 
             
             <span id="btradio" style="color:black">
               <br/>
               <p>info type (for second column) :</p>
-              <input type="radio" name="displaytype" onclick="btmessage.style.display = 'none'; bturl.style.display = 'none';" value="occupancy" checked> &nbsp; display current occupancy<br/>
-              <input type="radio" name="displaytype" onclick="btmessage.style.display = 'block'; bturl.style.display = 'none';"  value="message"> &nbsp; display message<br/>
-              <input type="radio" name="displaytype" onclick="btmessage.style.display = 'none'; bturl.style.display = 'block';"  value="webpage"> &nbsp; link to a web page
+              <input id="btrad1" type="radio" name="displaytype" onclick="btmessage.style.display = 'none'; bturl.style.display = 'none';" value="occupancy" checked> &nbsp; display current occupancy<br/>
+              <input id="btrad2" type="radio" name="displaytype" onclick="btmessage.style.display = 'block'; bturl.style.display = 'none';"  value="themessage"> &nbsp; display message<br/>
+              <input id="btrad3" type="radio" name="displaytype" onclick="btmessage.style.display = 'block'; bturl.style.display = 'block';"  value="webpage"> &nbsp; link to a web page
               <br/>
             </span>
-            <input id="btmessage" size="30" type="text" name="message" placeholder="please type the message" style="margin-top:10px;display: none"/>
-            <input id="bturl" size="30" type="text" name="url" placeholder="please add webpage address" style="margin-top:10px;display: none"/>
+            <input id="btmsg" size="60" type="text" name="msg" placeholder="message (for 2nd column)" style="margin-top:10px;display: none;"/>
+            <input id="bturl" size="60" type="text" name="url" placeholder="webpage address (message above is displayed as a link)" style="margin-top:10px;display: none;"/>
             <input id="btprice" size="10" type="text" name="price" placeholder="price, USD" style="margin-top:10px;display: none"/>
-            <input id="btbookmsg" size="30" type="text" name="bookmsg" placeholder="book message (for third column)" style="margin-top:10px;display: none"/>
+            <input id="btactionmsg" size="60" type="text" name="actionmsg" placeholder="action message (for 3rd column - e.g. book now, buy ticket &amp; etc.)" style="margin-top:10px;display: none"/>
             <br/>
             <button id="Submit" class="button1" onclick="formSubmit()" style="margin-top:10px;">Submit</button>
             <button type="button" class="button2" onclick="modal.style.display = 'none';" style="margin-top:10px;">Cancel</button>
@@ -98,10 +98,11 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal 
 //( 11, '{{id}}', '{{name}}','sub-name','message',0, 'Edit the header type name:', '')
-function showModal(type, idn, parent_id, name, subname, message, price, maintext, url, bookmsg) {
+function showModal(type, idn, parent_id, name, subname, msg, price, maintext, infotype, url, actionmsg) {
     console.log("IDN1="+idn);
     console.log("NAME1="+name);
-    console.log("message="+message);
+    console.log("message="+msg);
+    console.log("infotype="+infotype);
 
     modal.style.display = "block";
 
@@ -112,25 +113,26 @@ function showModal(type, idn, parent_id, name, subname, message, price, maintext
     fe.parent_id.setAttribute('value',parent_id);
     fe.dname.setAttribute('value',name);
     fe.dsubname.setAttribute('value',subname);
-    fe.dmessage.setAttribute('value',message);
+    console.log("message2="+msg);
+    fe.dmsg.setAttribute('value', msg);
     fe.durl.setAttribute('value',url);
-    fe.dbookmsg.setAttribute('value',bookmsg);
+    fe.dactionmsg.setAttribute('value',actionmsg);
     fe.dprice.setAttribute('value',price);
     fe.dtext.innerHTML = name;
     fe.dmaintext.innerHTML = maintext;
 
-
-    fe.dtext.style.display = 'block'; if ( type == 10 || type == 11 ) fe.dtext.style.display = 'none';
-    
+    fe.rad1.checked = true; fe.dmsg.style.display = 'none'; fe.durl.style.display = 'none';
+    if (infotype === 'themessage') { fe.rad2.checked = true; fe.dmsg.style.display = 'block'; fe.durl.style.display = 'none'; }
+    if (infotype === 'webpage') { fe.rad3.checked = true; fe.dmsg.style.display = 'block'; fe.durl.style.display = 'block'; }
+    fe.dtext.style.display = 'block'; if ( type == 10 || type == 11 ) fe.dtext.style.display = 'none';    
     fe.dname.style.display = 'none'; if ( type == 10 || type == 11 ) fe.dname.style.display = 'block';
-    
+
+    if ( type < 14 ) fe.dradio.style.display = 'none'; else fe.dradio.style.display = 'block';
+    if ( type < 14 ) fe.dactionmsg.style.display = 'none';  else fe.dactionmsg.style.display = 'block';
+
     if ( type < 14 || type == 22 || type == 32 || type == 42 ) fe.dsubname.style.display = 'none'; 
-      else fe.dsubname.style.display = 'block';
+      else fe.dsubname.style.display = 'block'; 
     
-    if ( type < 14 ) fe.dradio.style.display = 'none'; 
-      else fe.dradio.style.display = 'block';
-    if ( type < 14 ) fe.dbookmsg.style.display = 'none'; 
-      else fe.dbookmsg.style.display = 'block';
 
 }
 
@@ -149,13 +151,16 @@ function getElementVars(){
     fe.dname = document.getElementById('btname');        
     fe.dsubname = document.getElementById('btsubname');
     fe.dradio = document.getElementById('btradio');
-    fe.dmessage = document.getElementById('btmessage');
+    fe.dmsg = document.getElementById('btmsg');
     fe.durl = document.getElementById('bturl');
     fe.dprice = document.getElementById('btprice');
-    fe.dbookmsg = document.getElementById('btbookmsg');  
+    fe.dactionmsg = document.getElementById('btactionmsg');  
     fe.dtext = document.getElementById('bttext');  
     fe.dmaintext = document.getElementById('maintext');
     fe.labl = document.getElementById('labl');
+    fe.rad1 = document.getElementById('btrad1');
+    fe.rad2 = document.getElementById('btrad2');
+    fe.rad3 = document.getElementById('btrad3');
     return fe;
 }
 
@@ -178,14 +183,24 @@ function formSubmit() {
       var name = fe.dname.value;
       var type = fe.type.value;
       var subname = fe.dsubname.value;
+      var infotype = $("input:radio[name='displaytype']:checked").val();
+      console.log("infotype - "+infotype);
       if ( type == 10 ) var act = "/admin/bookingtype/save";
       if ( type == 11 ) var act = "/admin/bookingtype/"+idn+"/update";
-      if ( type == 20 ) var act = "/admin/subbookingtype/"+parent_id+"/save";
-      if ( type == 21 ) var act = "/admin/subbookingtype/"+idn+"/"+parent_id+"/update";
+      if ( type == 20 ) var act = "/admin/subbookingtype/"+parent_id+"/"+infotype+"/save";
+      if ( type == 21 ) var act = "/admin/subbookingtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
       //alert("type = "+type);
       document.getElementById('universalForm').setAttribute('action',act).submit();
+      resetForm($('#universalForm'));
       return false;
     };
+
+    function resetForm($form) {
+        $form.find('input:text, input:password, input:file, select, textarea').val('');
+        $form.find('input:radio, input:checkbox')
+            .removeAttr('checked').removeAttr('selected');
+        console.log('in resetForm - just RESET');
+    }
 
 </script>
 
@@ -194,7 +209,7 @@ function formSubmit() {
       <div class="boxedtransp">
         <label id="labl" style="margin-left:5px;">Admin functions: &nbsp; (change any &amp; see tables change, would require password in real life)</label>
         <ul>
-        <li><a onclick="showModal( 10, '', '', '','sub-name','message',0, 'Add a new header type:', '','', '')" href="#"> add new header type </a>
+        <li><a onclick="showModal( 10, '', '', '','sub-name','',0, 'Add a new header type:', '','', '')" href="#"> add new header type </a>
           <span style="display:inline-block; width: 80px;"></span>
           <a data-toggle="tooltip" data-placement="bottom" title='Upon a click it deletes all changes made by you to Mongoose collections, restores all initial entries to collections as if you never had changed anything. Defaults are auto-restored every night at 4 a.m. EST !' onclick="" href="#">( Undo all changes, restore defaults )</a>
         </li>
@@ -209,9 +224,9 @@ function formSubmit() {
           <ul>
           {{#each list_bookingtypes}}
             <li><span>{{name}}</span> &nbsp; 
-            <a class="addn" onclick="showModal( 11, '{{id}}', '', '{{name}}','sub-name','message',0, 'Edit the header type name:', '','', '')" href="#"> edit </a> &nbsp; 
-            <a class="addn" onclick="showModal( 12, '{{id}}', '', '{{name}}','sub-name','message',0, 'Delete the header type ?', '','', '')" href="#"> delete </a> &nbsp;
-            {{!-- <a class="addn" onclick="showModal( 20, '', '{{id}}', '{{name}}','','message',0, 'Add a new booking SUB-type:', '', '', '')" href="#"> add new SUB-type </a> --}}
+            <a class="addn" onclick="showModal( 11, '{{id}}', '', '{{name}}','sub-name','',0, 'Edit the header type name:', '','', '')" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 12, '{{id}}', '', '{{name}}','sub-name','',0, 'Delete the header type ?', '','', '')" href="#"> delete </a> &nbsp;
+            {{!-- <a class="addn" onclick="showModal( 20, '', '{{id}}', '{{name}}','','',0, 'Add a new booking SUB-type:', '', '', '')" href="#"> add new SUB-type </a> --}}
             <br/>
           {{/each}}
           </ul>
@@ -230,7 +245,7 @@ function formSubmit() {
           <ul>
           {{#each list_bookingtypes}}
             <li><span>{{name}}</span> &nbsp; 
-            <a class="addn" onclick="showModal( 20, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{name}}','','message',0, 'Add a new booking SUB-type:', '','', '')" href="#"> add new SUB-type </a>
+            <a class="addn" onclick="showModal( 20, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{name}}','','',0, 'Add a new booking SUB-type:', '','', '')" href="#"> add new SUB-type </a>
             <br/>
           {{/each}}
           </ul>
@@ -248,8 +263,8 @@ function formSubmit() {
           <ul>
           {{#each list_subbookingtypes}}
             <li><span>{{subname}} &nbsp; &nbsp; ( {{parent.name}} )</span> &nbsp; 
-            <a class="addn" onclick="showModal( 21, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','',0, 'Edit the booking SUB-type name:', '','', '')" href="#"> edit </a> &nbsp; 
-            <a class="addn" onclick="showModal( 22, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','message',0, 'Delete the booking SUB-type ?', '','', '')" href="#"> delete </a> &nbsp; 
+            <a class="addn" onclick="showModal( 21, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the booking SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}')" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 22, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','',0, 'Delete the booking SUB-type ?', '','', '')" href="#"> delete </a> &nbsp; 
             <br/>
           {{/each}}
           </ul>

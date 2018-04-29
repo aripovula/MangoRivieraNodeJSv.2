@@ -93,6 +93,9 @@ exports.bookingtype_create_post = [
       });
   }];
 
+
+
+
 // Handle sbt create on POST.
 exports.subbookingtype_create_post = [
 
@@ -117,8 +120,12 @@ exports.subbookingtype_create_post = [
     console.log("subname="+req.body.subname);
     // console.log("name="+name.name);
     var sbt = new SubBookingType({ 
-      subname: req.body.subname,
-      parent:req.params.parent_id
+      parent : req.params.parent_id,
+      subname : req.body.subname,
+      infotype : req.params.infotype,
+      message : req.body.message,
+      infowebpage : req.body.url,
+      actionmsg : req.body.actionmsg
     });
       
       sbt.save(function (err) {
@@ -195,9 +202,14 @@ exports.bookingtype_update_post = [
   
     // Create a genre object with escaped and trimmed data (and the old id!)
     var sbt = new SubBookingType({ 
-      subname: req.body.subname,
       _id: req.params.id,
-      parent:req.params.parent_id
+      parent:req.params.parent_id,
+      subname: req.body.subname,
+      infotype : req.params.infotype,
+      message : req.body.msg,
+      infowebpage : req.body.url,
+      actionmsg : req.body.actionmsg
+
     });
   
         // if (!errors.isEmpty()) {
