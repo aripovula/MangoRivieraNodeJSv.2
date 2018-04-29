@@ -40,9 +40,9 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // PART TO CUSTOM SAVE TO DB
-// var BookingType = require('../models/bookingtype');
+// var HeaderType = require('../models/headertype');
 
-// var bt = new BookingType(
+// var bt = new HeaderType(
 //   { name: "bt2 yes, shukur" }
 // );
 
@@ -54,14 +54,14 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // START OF CUSTOM READ PART
 
-// BookingType.find()
+// HeaderType.find()
 // .sort([['name', 'ascending']])
-// .exec(function (err, list_bookingtypes) {
-//   var thebookingtypes = list_bookingtypes;
+// .exec(function (err, list_headertypes) {
+//   var theheadertypes = list_headertypes;
 
-//   //console.log('in controLLER 22 = '+list_bookingtypes +list_bookingtypes.name );
-//   console.log('in 22 1='+thebookingtypes[0].name);
-//   console.log('in 22 1='+thebookingtypes[6].name);
+//   //console.log('in controLLER 22 = '+list_headertypes +list_headertypes.name );
+//   console.log('in 22 1='+theheadertypes[0].name);
+//   console.log('in 22 1='+theheadertypes[6].name);
 
 // });
 
@@ -75,12 +75,12 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 //   console.log("Database created!");
   
 //   var dbo = db.db("MangoRivDB");
-//   dbo.createCollection("bookingtype", function(err, res) {
+//   dbo.createCollection("headertype", function(err, res) {
 //     if (err) throw err;
 //     console.log("Collection created!");
 //   });
 //   var myobj = { name: "fitness trainer" };
-//   dbo.collection("bookingtype").insertOne(myobj, function(err, res) {
+//   dbo.collection("headertype").insertOne(myobj, function(err, res) {
 //     if (err) throw err;
 //     console.log("1 document inserted");
 //   });

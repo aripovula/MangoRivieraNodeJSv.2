@@ -3,7 +3,7 @@ var router = express.Router();
 
 
 // Require our controllers.
-var bookingtype_controller = require('../controllers/bookingtypeController'); 
+var headertype_controller = require('../controllers/headertypeController'); 
 // var author_controller = require('../controllers/authorController');
 // var genre_controller = require('../controllers/genreController');
 // var book_instance_controller = require('../controllers/bookinstanceController');
@@ -89,10 +89,10 @@ var bookingtype_controller = require('../controllers/bookingtypeController');
 // router.get('/genre/:id', genre_controller.genre_detail);
 
 // GET request for list of all Genre.
-router.get('/bookingtypes', bookingtype_controller. bookingtype_list);
+router.get('/headertypes', headertype_controller. headertype_list);
 
 
-router.post('/bookingtype/save', bookingtype_controller. bookingtype_create_post);
+router.post('/headertype/save', headertype_controller. headertype_create_post);
 
 /// BOOKINSTANCE ROUTES ///
 

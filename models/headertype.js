@@ -2,17 +2,17 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var BookingTypeSchema = new Schema({
+var HeaderTypeSchema = new Schema({
     name: {type: String, required: true, unique: true, min: 3, max: 100}
 });
 
 // Virtual for this genre instance URL.
-BookingTypeSchema
+HeaderTypeSchema
 .virtual('url')
 .get(function () {
     console.log('READ FROM ');
-  return '/bookingtype/'+this._id;
+  return '/headertype/'+this._id;
 });
 
 // Export model.
-module.exports = mongoose.model('BookingType', BookingTypeSchema);
+module.exports = mongoose.model('HeaderType', HeaderTypeSchema);

@@ -58,21 +58,23 @@
             <input id="btparent_id" type="hidden" name="parent_id"/>
             <input id="bttype" type="hidden" name="type"/>
             <p id="bttext" style="color:red"></p>
-            <input id="btname" size="60" type="text" name="name" placeholder="name"/> 
-            <input id="btsubname" size="60" type="text" name="subname" placeholder="sub-type name (for first column)" style="margin-top:10px;"/> 
+            <input id="btname" size="60" type="text" name="name" placeholder="name" autofocus="autofocus" /> 
+            <input id="btsubname" size="60" type="text" name="subname" placeholder="sub-type name (for first column)" style="margin-top:10px;" autofocus="autofocus" /> 
             
             <span id="btradio" style="color:black">
               <br/>
               <p>info type (for second column) :</p>
-              <input id="btrad1" type="radio" name="displaytype" onclick="btmessage.style.display = 'none'; bturl.style.display = 'none';" value="occupancy" checked> &nbsp; display current occupancy<br/>
-              <input id="btrad2" type="radio" name="displaytype" onclick="btmessage.style.display = 'block'; bturl.style.display = 'none';"  value="themessage"> &nbsp; display message<br/>
-              <input id="btrad3" type="radio" name="displaytype" onclick="btmessage.style.display = 'block'; bturl.style.display = 'block';"  value="webpage"> &nbsp; link to a web page
+              <input id="btrad1" type="radio" name="displaytype" onclick="btmsg.style.display = 'none'; bturl.style.display = 'none';" value="occupancy" checked> &nbsp; display current occupancy<br/>
+              <input id="btrad2" type="radio" name="displaytype" onclick="btmsg.style.display = 'block'; bturl.style.display = 'none';"  value="themessage"> &nbsp; display message<br/>
+              <input id="btrad3" type="radio" name="displaytype" onclick="btmsg.style.display = 'block'; bturl.style.display = 'block';"  value="webpage"> &nbsp; link to a web page
               <br/>
             </span>
             <input id="btmsg" size="60" type="text" name="msg" placeholder="message (for 2nd column)" style="margin-top:10px;display: none;"/>
             <input id="bturl" size="60" type="text" name="url" placeholder="webpage address (message above is displayed as a link)" style="margin-top:10px;display: none;"/>
-            <input id="btprice" size="10" type="text" name="price" placeholder="price, USD" style="margin-top:10px;display: none"/>
-            <input id="btactionmsg" size="60" type="text" name="actionmsg" placeholder="action message (for 3rd column - e.g. book now, buy ticket &amp; etc.)" style="margin-top:10px;display: none"/>
+            
+            <label id="btplab" style="color:black;margin-top:10px;display: none">Price, USD: </label>
+            <input id="btprice" size="10" type="text" name="price" style="display: none"/>
+            <input id="btactionmsg" size="60" type="text" name="actionmsg" placeholder="action message (3rd column-book now, buy ticket, more info, etc.)" style="margin-top:10px;display: none"/>
             <br/>
             <button id="Submit" class="button1" onclick="formSubmit()" style="margin-top:10px;">Submit</button>
             <button type="button" class="button2" onclick="modal.style.display = 'none';" style="margin-top:10px;">Cancel</button>
@@ -132,7 +134,8 @@ function showModal(type, idn, parent_id, name, subname, msg, price, maintext, in
 
     if ( type < 14 || type == 22 || type == 32 || type == 42 ) fe.dsubname.style.display = 'none'; 
       else fe.dsubname.style.display = 'block'; 
-    
+    fe.dprice.style.display = 'none'; if ( type == 30 || type == 31 ) fe.dprice.style.display = 'block';
+    fe.dplab.style.display = 'none'; if ( type == 30 || type == 31 ) fe.dplab.style.display = 'block';
 
 }
 
@@ -157,6 +160,7 @@ function getElementVars(){
     fe.dactionmsg = document.getElementById('btactionmsg');  
     fe.dtext = document.getElementById('bttext');  
     fe.dmaintext = document.getElementById('maintext');
+    fe.dplab = document.getElementById('btplab');
     fe.labl = document.getElementById('labl');
     fe.rad1 = document.getElementById('btrad1');
     fe.rad2 = document.getElementById('btrad2');
@@ -178,17 +182,23 @@ window.onclick = function(event) {
 
 function formSubmit() {
       var fe = getElementVars();
+      console.log("message22="+fe.dmsg.value);
       var idn = fe.idn.value;
       var parent_id = fe.parent_id.value;
-      var name = fe.dname.value;
+      //var name = fe.dname.value;
       var type = fe.type.value;
-      var subname = fe.dsubname.value;
+      //var subname = fe.dsubname.value;
       var infotype = $("input:radio[name='displaytype']:checked").val();
       console.log("infotype - "+infotype);
-      if ( type == 10 ) var act = "/admin/bookingtype/save";
-      if ( type == 11 ) var act = "/admin/bookingtype/"+idn+"/update";
-      if ( type == 20 ) var act = "/admin/subbookingtype/"+parent_id+"/"+infotype+"/save";
-      if ( type == 21 ) var act = "/admin/subbookingtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 10 ) var act = "/admin/headertype/save";
+      if ( type == 11 ) var act = "/admin/headertype/"+idn+"/update";
+      if ( type == 20 ) var act = "/admin/booking_subtype/"+parent_id+"/"+infotype+"/save";
+      if ( type == 21 ) var act = "/admin/booking_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 30 ) var act = "/admin/sell_subtype/"+parent_id+"/"+infotype+"/save";
+      if ( type == 31 ) var act = "/admin/sell_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 40 ) var act = "/admin/info_subtype/"+parent_id+"/"+infotype+"/save";
+      if ( type == 41 ) var act = "/admin/info_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+
       //alert("type = "+type);
       document.getElementById('universalForm').setAttribute('action',act).submit();
       resetForm($('#universalForm'));
@@ -216,13 +226,13 @@ function formSubmit() {
         <li><a  href="#"  onclick="myFunction('myDIV')">edit / delete existing header type</a><br/></li>
         <div id="myDIV" style="display:none">
           
-          {{#if list_bookingtypes }}
+          {{#if list_headertypes }}
             <a  href="#"  onclick="myFunction('myDIV')">&nbsp; &nbsp; &nbsp; - list of existing header types - please use relevant buttons:</a>
           {{else}}
             <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no header types are found</label>
           {{/if}}
           <ul>
-          {{#each list_bookingtypes}}
+          {{#each list_headertypes}}
             <li><span>{{name}}</span> &nbsp; 
             <a class="addn" onclick="showModal( 11, '{{id}}', '', '{{name}}','sub-name','',0, 'Edit the header type name:', '','', '')" href="#"> edit </a> &nbsp; 
             <a class="addn" onclick="showModal( 12, '{{id}}', '', '{{name}}','sub-name','',0, 'Delete the header type ?', '','', '')" href="#"> delete </a> &nbsp;
@@ -232,18 +242,20 @@ function formSubmit() {
           </ul>
         </div>
 
-        <li><a  href="#"  onclick='showModalByTypes(JSON.stringify("{{list_bookingtypes}}"));' >booking SUB-types of existing header types</a><br/></li>
+        <li><a  href="#"  onclick='showModalByTypes(JSON.stringify("{{list_headertypes}}"));' >booking SUB-types of existing header types</a><br/></li>
+
+
 
         <li><a  href="#"  onclick="myFunction('myDIV1')">add new booking SUB-type</a><br/></li>
         <div id="myDIV1" style="display:none">
           
-          {{#if list_bookingtypes }}
+          {{#if list_headertypes }}
             <a  href="#"  onclick="myFunction('myDIV1')">&nbsp; &nbsp; &nbsp; - select an existing header type &amp; click add button</a>
           {{else}}
             <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no header types are found</label>
           {{/if}}
           <ul>
-          {{#each list_bookingtypes}}
+          {{#each list_headertypes}}
             <li><span>{{name}}</span> &nbsp; 
             <a class="addn" onclick="showModal( 20, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{name}}','','',0, 'Add a new booking SUB-type:', '','', '')" href="#"> add new SUB-type </a>
             <br/>
@@ -251,29 +263,109 @@ function formSubmit() {
           </ul>
         </div>
 
+
+
         <li><a  href="#"  onclick="myFunction('myDIV2')">edit / delete existing booking SUB-type</a><br/></li>
         <div id="myDIV2" style="display:none">
 
-          {{#if list_subbookingtypes }}
+          {{#if list_booking_subtypes }}
             <a  href="#"  onclick="myFunction('myDIV2')">&nbsp; &nbsp; &nbsp; - list of existing Booking SUB-types - please use relevant buttons:</a>
           {{else}}
             <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no Booking SUB-types are found</label>
           {{/if}}
 
           <ul>
-          {{#each list_subbookingtypes}}
+          {{#each list_booking_subtypes}}
             <li><span>{{subname}} &nbsp; &nbsp; ( {{parent.name}} )</span> &nbsp; 
             <a class="addn" onclick="showModal( 21, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the booking SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}')" href="#"> edit </a> &nbsp; 
             <a class="addn" onclick="showModal( 22, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','',0, 'Delete the booking SUB-type ?', '','', '')" href="#"> delete </a> &nbsp; 
             <br/>
           {{/each}}
           </ul>
+        </div>
+
+
+
+        <li><a  href="#"  onclick="myFunction('myDIV3')">add new Sell SUB-type</a><br/></li>
+        <div id="myDIV3" style="display:none">
+          
+          {{#if list_headertypes }}
+            <a  href="#"  onclick="myFunction('myDIV3')">&nbsp; &nbsp; &nbsp; - select an existing header type &amp; click add button</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no header types are found</label>
+          {{/if}}
+          <ul>
+          {{#each list_headertypes}}
+            <li><span>{{name}}</span> &nbsp; 
+            <a class="addn" onclick="showModal( 30, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{name}}','','',0, 'Add a new sell SUB-type:', '','', '')" href="#"> add new SUB-type </a>
+            <br/>
+          {{/each}}
+          </ul>
+        </div>
+
+        
+        
+        
+        <li><a  href="#"  onclick="myFunction('myDIV4')">edit / delete existing sell SUB-type</a><br/></li>
+        <div id="myDIV4" style="display:none">
+
+          {{#if list_sell_subtypes }}
+            <a  href="#"  onclick="myFunction('myDIV4')">&nbsp; &nbsp; &nbsp; - list of existing Sell SUB-types - please use relevant buttons:</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no Sell SUB-types are found</label>
+          {{/if}}
+
+          <ul>
+          {{#each list_sell_subtypes}}
+            <li><span>{{subname}} &nbsp; &nbsp; ( {{parent.name}} )</span> &nbsp; 
+            <a class="addn" onclick="showModal( 31, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the sell SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}')" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 32, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','',0, 'Delete the sell SUB-type ?', '','', '')" href="#"> delete </a> &nbsp; 
+            <br/>
+          {{/each}}
+          </ul>
       </div>
 
-        <li><a  href="/admin/addsellsubtype.html">add new sell SUB-type</a><br/></li>
-        <li><a  href="/admin/editsellsubtype.html">edit / delete existing sell SUB-type</a><br/></li>
-        <li><a  href="/admin/addinfosubtype.html">add new info SUB-type</a><br/></li>
-        <li><a  href="/admin/editinfosubtype.html">edit / delete existing info SUB-type</a><br/></li>
+
+
+        <li><a  href="#"  onclick="myFunction('myDIV5')">add new info SUB-type</a><br/></li>
+        <div id="myDIV5" style="display:none">
+          
+          {{#if list_headertypes }}
+            <a  href="#"  onclick="myFunction('myDIV5')">&nbsp; &nbsp; &nbsp; - select an existing header type &amp; click add button</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no header types are found</label>
+          {{/if}}
+          <ul>
+          {{#each list_headertypes}}
+            <li><span>{{name}}</span> &nbsp; 
+            <a class="addn" onclick="showModal( 40, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{name}}','','',0, 'Add a new info SUB-type:', '','', '')" href="#"> add new SUB-type </a>
+            <br/>
+          {{/each}}
+          </ul>
+        </div>
+
+
+
+
+        <li><a  href="#"  onclick="myFunction('myDIV6')">edit / delete existing info SUB-type</a><br/></li>
+        <div id="myDIV6" style="display:none">
+
+          {{#if list_info_subtypes }}
+            <a  href="#"  onclick="myFunction('myDIV6')">&nbsp; &nbsp; &nbsp; - list of existing Info SUB-types - please use relevant buttons:</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no Info SUB-types are found</label>
+          {{/if}}
+
+          <ul>
+          {{#each list_info_subtypes}}
+            <li><span>{{subname}} &nbsp; &nbsp; ( {{parent.name}} )</span> &nbsp; 
+            <a class="addn" onclick="showModal( 41, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the booking SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}')" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 42, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','',0, 'Delete the booking SUB-type ?', '','', '')" href="#"> delete </a> &nbsp; 
+            <br/>
+          {{/each}}
+          </ul>
+      </div>
+
         </ul>
       </div>
 

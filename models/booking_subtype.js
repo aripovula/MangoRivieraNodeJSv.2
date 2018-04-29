@@ -2,10 +2,10 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var BookingType = mongoose.model('BookingType', BookingType);
+var HeaderType = mongoose.model('HeaderType', HeaderType);
 
-var SubBookingTypeSchema = new Schema({
-    parent: { type: Schema.Types.ObjectId, ref: 'BookingType' },
+var Booking_SubTypeSchema = new Schema({
+    parent: { type: Schema.Types.ObjectId, ref: 'HeaderType' },
     subname: {type: String, required: true, unique: true, min: 3, max: 100},
     infotype : {type: String},
     message: {type: String, min: 3, max: 100},
@@ -14,14 +14,14 @@ var SubBookingTypeSchema = new Schema({
 });
 
 // Virtual for this genre instance URL.
-SubBookingTypeSchema
+Booking_SubTypeSchema
 .virtual('url')
 .get(function () {
     console.log('READ FROM ');
-  return '/subbookingtype/'+this._id;
+  return '/booking_subtype/'+this._id;
 });
 
 
 
 // Export model.
-module.exports = mongoose.model('SubBookingType', SubBookingTypeSchema);
+module.exports = mongoose.model('Booking_SubType', Booking_SubTypeSchema);

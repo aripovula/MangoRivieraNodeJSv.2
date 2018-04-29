@@ -4,7 +4,7 @@ var router = express.Router();
 
 // Require our controllers.
 var admin_controller = require('../controllers/adminController'); 
-var bookingtype_controller = require('../controllers/bookingtypeController'); 
+var headertype_controller = require('../controllers/headertypeController'); 
 // var author_controller = require('../controllers/authorController');
 // var genre_controller = require('../controllers/genreController');
 // var book_instance_controller = require('../controllers/bookinstanceController');
@@ -89,17 +89,30 @@ var bookingtype_controller = require('../controllers/bookingtypeController');
 // router.get('/genre/:id', genre_controller.genre_detail);
 
 // GET request for list of all Genre.
-router.get('/bookingtypes', admin_controller. bookingtype_list);
+router.get('/headertypes', admin_controller. headertype_list);
 
 router.get('/infoforadmin', admin_controller. admins_list);
 
-router.post('/bookingtype/save', admin_controller. bookingtype_create_post);
 
-router.post('/subbookingtype/:parent_id/:infotype/save', admin_controller.subbookingtype_create_post);
+router.post('/headertype/save', admin_controller. headertype_create_post);
 
-router.post('/bookingtype/:id/update', admin_controller.bookingtype_update_post);
+router.post('/headertype/:id/update', admin_controller.headertype_update_post);
 
-router.post('/subbookingtype/:id/:parent_id/:infotype/update', admin_controller.subbookingtype_update_post);
+
+router.post('/booking_subtype/:parent_id/:infotype/save', admin_controller.booking_subtype_create_post);
+
+router.post('/booking_subtype/:id/:parent_id/:infotype/update', admin_controller.booking_subtype_update_post);
+
+
+router.post('/sell_subtype/:parent_id/:infotype/save', admin_controller.sell_subtype_create_post);
+
+router.post('/sell_subtype/:id/:parent_id/:infotype/update', admin_controller.sell_subtype_update_post);
+
+
+router.post('/info_subtype/:parent_id/:infotype/save', admin_controller.info_subtype_create_post);
+
+router.post('/info_subtype/:id/:parent_id/:infotype/update', admin_controller.info_subtype_update_post);
+
 
 /// BOOKINSTANCE ROUTES ///
 

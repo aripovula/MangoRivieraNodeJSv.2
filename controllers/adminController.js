@@ -1,72 +1,82 @@
-var BookingType = require('../models/bookingtype');
-var SubBookingType = require('../models/subbookingtype');
+var HeaderType = require('../models/headertype');
+var Booking_SubType = require('../models/booking_subtype');
+var Sell_SubType = require('../models/sell_subtype');
+var Info_SubType = require('../models/info_subtype');
 // var Book = require('../models/book');
 var async = require('async');
 
 // const { body,validationResult } = require('express-validator/check');
 // const { sanitizeBody } = require('express-validator/filter');
 
-// Display list of all BookingTypes.
+// Display list of all HeaderTypes.
 
 exports.admins_list = function(req, res, next) {
   async.series([
     function(callback){
-      BookingType.find({}).sort([['name', 'ascending']]).exec(callback);
+      HeaderType.find({}).sort([['name', 'ascending']]).exec(callback);
     },
     function(callback){
-      SubBookingType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+      Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Sell_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
     },
   ], function(err, results){
       res.render('adminpage.hbs',{
         //title:'custom',
-        list_bookingtypes: results[0],
-        list_subbookingtypes: results[1]
+        list_headertypes: results[0],
+        list_booking_subtypes: results[1],
+        list_sell_subtypes: results[2],
+        list_info_subtypes: results[3]
     });
   });
 }
 
-// Display list of all BookingTypes.
-exports.bookingtype_list = function(req, res, next) {
+// Display list of all HeaderTypes.
+exports.headertype_list = function(req, res, next) {
 
   console.log('in controLLER');
   
-  BookingType.find()
+  HeaderType.find()
     .sort([['name', 'ascending']])
-    .exec(function (err, list_bookingtypes) {
-      var thebookingtypes = list_bookingtypes;
+    .exec(function (err, list_headertypes) {
+      var theheadertypes = list_headertypes;
         
       if (err) { return next(err); }
       // Successful, so render.
       console.log('in controLLER 44');
-      res.render('adminpage.hbs', { list_bookingtypes:  list_bookingtypes});
+      res.render('adminpage.hbs', { list_headertypes:  list_headertypes});
     });
 
 };
 
-// Display list of all SubBookingTypes.
-exports.subbookingtype_list = function(req, res, next) {
+// Display list of all Booking_SubTypes.
+exports.booking_subtype_list = function(req, res, next) {
 
   console.log('in controLLER');
   
-  SubBookingType.find()
+  Booking_SubType.find()
     .sort([['name', 'ascending']])
-    .exec(function (err, list_subbookingtypes) {
-      var thesubbookingtypes = list_subbookingtypes;
+    .exec(function (err, list_booking_subtypes) {
+      var thebooking_subtypes = list_booking_subtypes;
     
-      //console.log('in controLLER 22 = '+list_bookingtypes +list_bookingtypes.name );
-      console.log('in 22 1='+thesubbookingtypes[0].name);
-      console.log('in 22 1='+thesubbookingtypes[6].name);
+      //console.log('in controLLER 22 = '+list_headertypes +list_headertypes.name );
+      console.log('in 22 1='+thebooking_subtypes[0].name);
+      console.log('in 22 1='+thebooking_subtypes[6].name);
     
       if (err) { return next(err); }
       // Successful, so render.
       console.log('in controLLER 44');
-      res.render('booking.hbs', { list_bookingtypes:  list_bookingtypes});
+      res.render('booking.hbs', { list_headertypes:  list_headertypes});
     });
 
 };
 
 // Handle bt create on POST.
-exports.bookingtype_create_post = [
+exports.headertype_create_post = [
 
   // Validate that the name field is not empty.
   // body('type', 'Type name required').isLength({ min: 1 }).trim(),
@@ -78,7 +88,7 @@ exports.bookingtype_create_post = [
   (req, res, next) => {
 
     console.log("type="+req.body.name);
-    var bt = new BookingType(
+    var bt = new HeaderType(
         { name: req.body.name }
       );
       
@@ -96,8 +106,8 @@ exports.bookingtype_create_post = [
 
 
 
-// Handle sbt create on POST.
-exports.subbookingtype_create_post = [
+// Handle bst create on POST.
+exports.booking_subtype_create_post = [
 
   // Validate that the name field is not empty.
   // body('type', 'Type name required').isLength({ min: 1 }).trim(),
@@ -110,7 +120,7 @@ exports.subbookingtype_create_post = [
 
   (req, res, next) => {
 
-    // var name = BookingType.findOne({ '_id': req.params.id })
+    // var name = HeaderType.findOne({ '_id': req.params.id })
     //             .exec( function(err, found_bt) {
     //                  if (err) { return next(err); }
 
@@ -119,11 +129,11 @@ exports.subbookingtype_create_post = [
 
     console.log("subname="+req.body.subname);
     // console.log("name="+name.name);
-    var sbt = new SubBookingType({ 
+    var sbt = new Booking_SubType({ 
       parent : req.params.parent_id,
       subname : req.body.subname,
       infotype : req.params.infotype,
-      message : req.body.message,
+      message : req.body.msg,
       infowebpage : req.body.url,
       actionmsg : req.body.actionmsg
     });
@@ -140,8 +150,102 @@ exports.subbookingtype_create_post = [
 
   }];
 
+
+
+  // Handle sst create on POST.
+exports.sell_subtype_create_post = [
+
+  // Validate that the name field is not empty.
+  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
+
+  // Sanitize (trim and escape) the name field.
+  //sanitizeBody('name').trim().escape(),
+
+  // Process request after validation and sanitization.
+
+
+  (req, res, next) => {
+
+    // var name = HeaderType.findOne({ '_id': req.params.id })
+    //             .exec( function(err, found_bt) {
+    //                  if (err) { return next(err); }
+
+    //                  return found_bt;
+    //              });
+
+    console.log("subname="+req.body.subname);
+    // console.log("name="+name.name);
+    var sbt = new Sell_SubType({ 
+      parent : req.params.parent_id,
+      subname : req.body.subname,
+      infotype : req.params.infotype,
+      message : req.body.msg,
+      infowebpage : req.body.url,
+      actionmsg : req.body.actionmsg,
+      price : req.body.price
+    });
+      
+      sbt.save(function (err) {
+        if (err) { return next(err); }
+        // Success
+        req.flash('success', 'Successfuly created event! 11');
+        console.log("flash= Successfuly created event! 11");
+        console.log("from system = " + req.flash('success'));
+        res.redirect('/admin/infoforadmin');
+      });
+
+
+  }];
+
+
+
+// Handle ist create on POST.
+exports.info_subtype_create_post = [
+
+  // Validate that the name field is not empty.
+  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
+
+  // Sanitize (trim and escape) the name field.
+  //sanitizeBody('name').trim().escape(),
+
+  // Process request after validation and sanitization.
+
+
+  (req, res, next) => {
+
+    // var name = HeaderType.findOne({ '_id': req.params.id })
+    //             .exec( function(err, found_bt) {
+    //                  if (err) { return next(err); }
+
+    //                  return found_bt;
+    //              });
+
+    console.log("subname="+req.body.subname);
+    // console.log("name="+name.name);
+    var sbt = new Info_SubType({ 
+      parent : req.params.parent_id,
+      subname : req.body.subname,
+      infotype : req.params.infotype,
+      message : req.body.msg,
+      infowebpage : req.body.url,
+      actionmsg : req.body.actionmsg
+    });
+      
+      sbt.save(function (err) {
+        if (err) { return next(err); }
+        // Success
+        req.flash('success', 'Successfuly created event! 11');
+        console.log("flash= Successfuly created event! 11");
+        console.log("from system = " + req.flash('success'));
+        res.redirect('/admin/infoforadmin');
+      });
+
+
+  }];
+
+
   // Handle BT update on POST.
-exports.bookingtype_update_post = [
+exports.headertype_update_post = [
    
   // Validate that the name field is not empty.
   // body('name', 'Genre name required').isLength({ min: 1 }).trim(),
@@ -157,7 +261,7 @@ exports.bookingtype_update_post = [
       // const errors = validationResult(req);
 
   // Create a genre object with escaped and trimmed data (and the old id!)
-      var bt = new BookingType(
+      var bt = new HeaderType(
         {
         name: req.body.name,
         _id: req.params.id
@@ -174,7 +278,7 @@ exports.bookingtype_update_post = [
       // }
       // else {
           // Data from form is valid. Update the record.
-          BookingType.findByIdAndUpdate(req.params.id, bt, {}, function (err,cback) {
+          HeaderType.findByIdAndUpdate(req.params.id, bt, {}, function (err,cback) {
               if (err) { return next(err); }
                  // Successful - redirect to genre detail page.
                  res.redirect('/admin/infoforadmin');
@@ -184,8 +288,10 @@ exports.bookingtype_update_post = [
 ];
   
 
-  // Handle SBT update on POST.
-  exports.subbookingtype_update_post = [
+
+
+// Handle SBT update on POST.
+  exports.booking_subtype_update_post = [
    
     // Validate that the name field is not empty.
     // body('name', 'Genre name required').isLength({ min: 1 }).trim(),
@@ -201,7 +307,7 @@ exports.bookingtype_update_post = [
         // const errors = validationResult(req);
   
     // Create a genre object with escaped and trimmed data (and the old id!)
-    var sbt = new SubBookingType({ 
+    var sbt = new Booking_SubType({ 
       _id: req.params.id,
       parent:req.params.parent_id,
       subname: req.body.subname,
@@ -219,7 +325,7 @@ exports.bookingtype_update_post = [
         // }
         // else {
             // Data from form is valid. Update the record.
-            SubBookingType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
+            Booking_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
                 if (err) { return next(err); }
                    // Successful - redirect to genre detail page.
                    res.redirect('/admin/infoforadmin');
@@ -228,12 +334,111 @@ exports.bookingtype_update_post = [
     }
   ];
 
+
+
+
+
+  // Handle SST update on POST.
+  exports.sell_subtype_update_post = [
+   
+    // Validate that the name field is not empty.
+    // body('name', 'Genre name required').isLength({ min: 1 }).trim(),
+    
+    // Sanitize (trim and escape) the name field.
+    // sanitizeBody('name').trim().escape(),
+  
+    // Process request after validation and sanitization.
+    (req, res, next) => {
+  
+        
+        // Extract the validation errors from a request .
+        // const errors = validationResult(req);
+  
+    // Create a genre object with escaped and trimmed data (and the old id!)
+    var sbt = new Sell_SubType({ 
+      _id: req.params.id,
+      parent:req.params.parent_id,
+      subname: req.body.subname,
+      infotype : req.params.infotype,
+      message : req.body.msg,
+      infowebpage : req.body.url,
+      actionmsg : req.body.actionmsg,
+      price : req.body.price
+
+    });
+  
+        // if (!errors.isEmpty()) {
+        //     // There are errors. Render the form again with sanitized values and error messages.
+        //     res.render('genre_form', { title: 'Update Genre', genre: genre, errors: errors.array()});
+        // return;
+        // }
+        // else {
+            // Data from form is valid. Update the record.
+            Sell_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
+                if (err) { return next(err); }
+                   // Successful - redirect to genre detail page.
+                   res.redirect('/admin/infoforadmin');
+                });
+        //}
+    }
+  ];
+
+
+
+
+
+  // Handle SBT update on POST.
+  exports.info_subtype_update_post = [
+   
+    // Validate that the name field is not empty.
+    // body('name', 'Genre name required').isLength({ min: 1 }).trim(),
+    
+    // Sanitize (trim and escape) the name field.
+    // sanitizeBody('name').trim().escape(),
+  
+    // Process request after validation and sanitization.
+    (req, res, next) => {
+  
+        
+        // Extract the validation errors from a request .
+        // const errors = validationResult(req);
+  
+    // Create a genre object with escaped and trimmed data (and the old id!)
+    var sbt = new Info_SubType({ 
+      _id: req.params.id,
+      parent:req.params.parent_id,
+      subname: req.body.subname,
+      infotype : req.params.infotype,
+      message : req.body.msg,
+      infowebpage : req.body.url,
+      actionmsg : req.body.actionmsg
+
+    });
+  
+        // if (!errors.isEmpty()) {
+        //     // There are errors. Render the form again with sanitized values and error messages.
+        //     res.render('genre_form', { title: 'Update Genre', genre: genre, errors: errors.array()});
+        // return;
+        // }
+        // else {
+            // Data from form is valid. Update the record.
+            Info_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
+                if (err) { return next(err); }
+                   // Successful - redirect to genre detail page.
+                   res.redirect('/admin/infoforadmin');
+                });
+        //}
+    }
+  ];
+
+
+
 // Handle Genre delete on POST.
-exports.bookingtype_delete_post = function(req, res, next) {
+exports.headertype_delete_post = function(req, res, next) {
 
   async.parallel({
       bt: function(callback) {
-        BookingType.findById(req.params.id).exec(callback);
+        HeaderType.findById(req.params.id).exec(callback);
       },
       genre_books: function(callback) {
           Book.find({ 'genre': req.params.id }).exec(callback);
@@ -260,11 +465,11 @@ exports.bookingtype_delete_post = function(req, res, next) {
 };
 
 // Handle SBT delete on POST.
-exports.subbookingtype_delete_post = function(req, res, next) {
+exports.booking_subtype_delete_post = function(req, res, next) {
 
   async.parallel({
       bt: function(callback) {
-        BookingType.findById(req.params.id).exec(callback);
+        HeaderType.findById(req.params.id).exec(callback);
       },
       genre_books: function(callback) {
           Book.find({ 'genre': req.params.id }).exec(callback);
