@@ -41,7 +41,7 @@
     <div class="alert alert-success">{{success}}</div>
     <div class="alert alert-success">SUCCESS: {{success}}</div>
 {{/if}}
-
+<div class="alert alert-success">{{nameconf}} is successfully added</div>
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -64,13 +64,13 @@
             <span id="btradio" style="color:black">
               <br/>
               <p>info type (for second column) :</p>
-              <input id="btrad1" type="radio" name="displaytype" onclick="btmsg.style.display = 'none'; bturl.style.display = 'none';" value="occupancy" checked> &nbsp; display current occupancy<br/>
+              <input id="btrad3" type="radio" name="displaytype" onclick="btmsg.style.display = 'block'; bturl.style.display = 'block';"  value="webpage" checked> &nbsp; link to a web page<br/>
               <input id="btrad2" type="radio" name="displaytype" onclick="btmsg.style.display = 'block'; bturl.style.display = 'none';"  value="themessage"> &nbsp; display message<br/>
-              <input id="btrad3" type="radio" name="displaytype" onclick="btmsg.style.display = 'block'; bturl.style.display = 'block';"  value="webpage"> &nbsp; link to a web page
-              <br/>
+              <span id="btradl1"><input id="btrad1" type="radio" name="displaytype" onclick="btmsg.style.display = 'none'; bturl.style.display = 'none';" value="occupancy"> &nbsp; display current occupancy<br/></span>
+              <span id="btradl4"><input id="btrad4" type="radio" name="displaytype" onclick="btmsg.style.display = 'none'; bturl.style.display = 'none';" value="availability"> &nbsp; display current availability<br/></span>
             </span>
-            <input id="btmsg" size="60" type="text" name="msg" placeholder="message (for 2nd column)" style="margin-top:10px;display: none;"/>
-            <input id="bturl" size="60" type="text" name="url" placeholder="webpage address (message above is displayed as a link)" style="margin-top:10px;display: none;"/>
+            <input id="btmsg" size="60" type="text" name="msg" placeholder="message (for 2nd column)" style="margin-top:10px;"/>
+            <input id="bturl" size="60" type="text" name="url" placeholder="webpage address (message above is displayed as a link)" style="margin-top:10px;"/>
             
             <label id="btplab" style="color:black;margin-top:10px;display: none">Price, USD: </label>
             <input id="btprice" size="10" type="text" name="price" style="display: none"/>
@@ -123,9 +123,12 @@ function showModal(type, idn, parent_id, name, subname, msg, price, maintext, in
     fe.dtext.innerHTML = name;
     fe.dmaintext.innerHTML = maintext;
 
-    fe.rad1.checked = true; fe.dmsg.style.display = 'none'; fe.durl.style.display = 'none';
+    fe.rad3.checked = true; fe.dmsg.style.display = 'block'; fe.durl.style.display = 'block';
+    if (infotype === 'occupancy') {fe.rad1.checked = true; fe.dmsg.style.display = 'none'; fe.durl.style.display = 'none';}
     if (infotype === 'themessage') { fe.rad2.checked = true; fe.dmsg.style.display = 'block'; fe.durl.style.display = 'none'; }
-    if (infotype === 'webpage') { fe.rad3.checked = true; fe.dmsg.style.display = 'block'; fe.durl.style.display = 'block'; }
+    if (type == 30 || type == 31) {fe.radl1.style.display = 'none';fe.radl4.style.display = 'block';} else {fe.radl1.style.display = 'block';fe.radl4.style.display = 'none';}
+    if (type > 34) {fe.radl1.style.display = 'none';fe.radl4.style.display = 'none';}
+
     fe.dtext.style.display = 'block'; if ( type == 10 || type == 11 ) fe.dtext.style.display = 'none';    
     fe.dname.style.display = 'none'; if ( type == 10 || type == 11 ) fe.dname.style.display = 'block';
 
@@ -165,6 +168,8 @@ function getElementVars(){
     fe.rad1 = document.getElementById('btrad1');
     fe.rad2 = document.getElementById('btrad2');
     fe.rad3 = document.getElementById('btrad3');
+    fe.radl1 = document.getElementById('btradl1');
+    fe.radl4 = document.getElementById('btradl4');
     return fe;
 }
 
@@ -223,7 +228,7 @@ function formSubmit() {
           <span style="display:inline-block; width: 80px;"></span>
           <a data-toggle="tooltip" data-placement="bottom" title='Upon a click it deletes all changes made by you to Mongoose collections, restores all initial entries to collections as if you never had changed anything. Defaults are auto-restored every night at 4 a.m. EST !' onclick="" href="#">( Undo all changes, restore defaults )</a>
         </li>
-        <li><a  href="#"  onclick="myFunction('myDIV')">edit / delete existing header type</a><br/></li>
+        <li><a  href="#"  onclick="myFunction('myDIV')">edit / delete existing header type</a><span style="color:dimgrey;font-size:12px;"> &nbsp; ( {{headertypes}} added )</span><br/></li>
         <div id="myDIV" style="display:none">
           
           {{#if list_headertypes }}
@@ -246,7 +251,7 @@ function formSubmit() {
 
 
 
-        <li><a  href="#"  onclick="myFunction('myDIV1')">add new booking SUB-type</a><br/></li>
+        <li><a  href="#"  onclick="myFunction('myDIV1')">add new Booking SUB-type</a><br/></li>
         <div id="myDIV1" style="display:none">
           
           {{#if list_headertypes }}
@@ -265,7 +270,7 @@ function formSubmit() {
 
 
 
-        <li><a  href="#"  onclick="myFunction('myDIV2')">edit / delete existing booking SUB-type</a><br/></li>
+        <li><a  href="#"  onclick="myFunction('myDIV2')">edit / delete existing Booking SUB-type</a><span style="color:dimgrey;font-size:12px;"> &nbsp; ( {{booking_subtypes}} added )</span><br/></li>
         <div id="myDIV2" style="display:none">
 
           {{#if list_booking_subtypes }}
@@ -306,7 +311,7 @@ function formSubmit() {
         
         
         
-        <li><a  href="#"  onclick="myFunction('myDIV4')">edit / delete existing sell SUB-type</a><br/></li>
+        <li><a  href="#"  onclick="myFunction('myDIV4')">edit / delete existing Sell SUB-type</a><span style="color:dimgrey;font-size:12px;"> &nbsp; ( {{sell_subtypes}} added )</span><br/></li>
         <div id="myDIV4" style="display:none">
 
           {{#if list_sell_subtypes }}
@@ -327,7 +332,7 @@ function formSubmit() {
 
 
 
-        <li><a  href="#"  onclick="myFunction('myDIV5')">add new info SUB-type</a><br/></li>
+        <li><a  href="#"  onclick="myFunction('myDIV5')">add new Info SUB-type</a><br/></li>
         <div id="myDIV5" style="display:none">
           
           {{#if list_headertypes }}
@@ -347,7 +352,7 @@ function formSubmit() {
 
 
 
-        <li><a  href="#"  onclick="myFunction('myDIV6')">edit / delete existing info SUB-type</a><br/></li>
+        <li><a  href="#"  onclick="myFunction('myDIV6')">edit / delete existing Info SUB-type</a><span style="color:dimgrey;font-size:12px;"> &nbsp; ( {{info_subtypes}} added )</span><br/></li>
         <div id="myDIV6" style="display:none">
 
           {{#if list_info_subtypes }}

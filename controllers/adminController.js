@@ -30,7 +30,11 @@ exports.admins_list = function(req, res, next) {
         list_headertypes: results[0],
         list_booking_subtypes: results[1],
         list_sell_subtypes: results[2],
-        list_info_subtypes: results[3]
+        list_info_subtypes: results[3],
+        headertypes: results[0].length,
+        booking_subtypes: results[1].length,
+        sell_subtypes: results[2].length,
+        info_subtypes: results[3].length
     });
   });
 }
@@ -62,14 +66,9 @@ exports.booking_subtype_list = function(req, res, next) {
     .sort([['name', 'ascending']])
     .exec(function (err, list_booking_subtypes) {
       var thebooking_subtypes = list_booking_subtypes;
-    
-      //console.log('in controLLER 22 = '+list_headertypes +list_headertypes.name );
-      console.log('in 22 1='+thebooking_subtypes[0].name);
-      console.log('in 22 1='+thebooking_subtypes[6].name);
-    
+        
       if (err) { return next(err); }
       // Successful, so render.
-      console.log('in controLLER 44');
       res.render('booking.hbs', { list_headertypes:  list_headertypes});
     });
 
