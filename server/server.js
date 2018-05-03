@@ -16,7 +16,7 @@ const cookieParser = require('cookie-parser');
 
 const {generateMessage} = require('./utils/message');
 
-var lists = require('../routes/lists'); 
+//var lists = require('../routes/lists'); 
 var admin = require('../routes/admin');
 
 const port = process.env.PORT || 3001;
@@ -92,6 +92,39 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 hbs.registerPartials(path.join(__dirname , '../views/partials'))
 app.set('view engine', 'hbs');
 
+hbs.registerHelper("printItems", function(items) {
+    //safeItems = hbs.Utils.escapeExpression(items);  
+    //console.log('headers='+items);
+    var html = "<table><tbody>";
+    var item1 = items[0];
+    //console.log('item 0 subname='+item1[0].subname);
+    items[1].forEach(function(entry) {
+      //html += "<p>Next sub-type:</p>"
+      entry.forEach(function(entry2) {
+        console.log("entry2="+entry2);
+        // escape all entries that will be made by users
+        html += "<tr>";
+        html += "<td>" + hbs.Utils.escapeExpression(entry2.infotype) + "</td>";
+        html += "<td>" + hbs.Utils.escapeExpression(entry2.subname) + "</td>";
+        html += "<td>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
+        //html += "<td><a href=`/booking/${hbs.Utils.escapeExpression(entry2)`>{{bookNow}}</a></td>";
+        html += "</tr>";
+        
+        //html += "<li>" + hbs.Utils.escapeExpression(entry2) + "</li><br/>";
+      });
+    });
+    html += "</tbody></table>";
+    html += "<ul>";    
+    
+    items[0].forEach(function(entry) {
+        // escape all entries that will be made by users
+        html += "<li>" + hbs.Utils.escapeExpression(entry) + "</li><br/>";
+    });
+    html += "</ul>";
+
+    return new hbs.SafeString(html);
+});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname , '../public')));
@@ -106,7 +139,7 @@ app.use(session({
 }));
 app.use(flash());
 
-app.use('/lists', lists);
+//app.use('/lists', lists);
 app.use('/admin', admin);
 
 io.on('connection',(socket) => {

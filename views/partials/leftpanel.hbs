@@ -47,22 +47,16 @@
                     <ul id="tabservices"></ul>
             </div>
             <a class="addn" onclick="showData( '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the sell SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}', '{{price}}')" href="#"> show data </a>
-            <ul>
-                <li>show all:</li>
-                {{#each list_sell_subtypes}}
-                  <li><span>{{subname}} &nbsp; &nbsp; ( {{parent.name}} )</span> &nbsp; 
-                  <a class="addn" onclick="showData( '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the sell SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}', '{{price}}')" href="#"> show data </a>
-                  <!-- <a class="addn" alert('{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}', '{{price}}') href="#"> show data </a> -->
-                  <br/>
-                  </li>
-                {{/each}}
-            </ul>
       
           </script>
 
-          <div id="dashboard_placeholder"></div>
+            <div class="boxedtransp">
+                {{printItems for_partial}}
+            </div>
 
-        <script src="/js/dashboard.js"></script>
+          {{!-- <div id="dashboard_placeholder"></div>
+
+        <script src="/js/dashboard.js"></script> --}}
 
       <script>
       $(document).ready(function(){

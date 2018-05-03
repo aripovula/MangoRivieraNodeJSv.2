@@ -17,6 +17,7 @@
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
+    "express-validator": "^5.1.2",
     "hbs": "^4.0.1",
     "jquery-datetimepicker": "^2.5.20",
     "moment": "^2.21.0",

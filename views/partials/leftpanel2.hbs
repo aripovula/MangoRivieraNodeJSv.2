@@ -31,6 +31,8 @@
 
           
           <!-- code for DASHBOARD partial -->
+
+
           <script id="dashboard-partial" type="text/x-handlebars-template">
             <div class="boxedtransp">
                 <div>    
@@ -45,7 +47,7 @@
                     <ul id="tabmeals"></ul>
                 <h4>Services</h4>  <!- airport shuttle, room service, sport contest ->
                     <ul id="tabservices"></ul>
-            </div>
+            
             <a class="addn" onclick="showData( '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the sell SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}', '{{price}}')" href="#"> show data </a>
             <ul>
                 <li>show all:</li>
@@ -57,10 +59,31 @@
                   </li>
                 {{/each}}
             </ul>
+        </div>
+
+
       
           </script>
 
           <div id="dashboard_placeholder"></div>
+
+        <div class="boxedtransp">
+            <br/>
+        <p style="color:black">Table place:</p>
+        <table>
+            
+          <!-- <thead> 
+              <th>Name</th> 
+              <th>Occupancy</th> 
+              <th>Booking</th> 
+          </thead> -->
+        {{#each list_sell_subtypes}}
+          <tbody>Acts:
+                {{> tableraw this  }}
+          </tbody> 
+          {{/each}}
+        </table> 
+        </div>
 
         <script src="/js/dashboard.js"></script>
 

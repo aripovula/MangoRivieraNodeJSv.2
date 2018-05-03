@@ -5,15 +5,15 @@ var Info_SubType = require('../models/info_subtype');
 // var Book = require('../models/book');
 var async = require('async');
 
-// const { body,validationResult } = require('express-validator/check');
-// const { sanitizeBody } = require('express-validator/filter');
+const { body,validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all HeaderTypes.
 
 exports.admins_list = function(req, res, next) {
   async.series([
     function(callback){
-      HeaderType.find({}).sort([['name', 'ascending']]).exec(callback);
+      HeaderType.find({}).sort('-createdAt').exec(callback);
     },
     function(callback){
       Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
@@ -24,6 +24,19 @@ exports.admins_list = function(req, res, next) {
     function(callback){
       Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
     },
+    // function(callback){
+    //   Sell_SubType
+    //   .find({})
+    //   .populate(
+    //     {
+    //       path: 'parent',
+    //       match: { name: 'Activities'}
+    //     }
+    //   )
+    //   .sort([['subname', 'ascending']])
+    //   .exec(callback);
+    // },
+
   ], function(err, results){
       res.render('adminpage.hbs',{
         //title:'custom',
@@ -34,7 +47,9 @@ exports.admins_list = function(req, res, next) {
         headertypes: results[0].length,
         booking_subtypes: results[1].length,
         sell_subtypes: results[2].length,
-        info_subtypes: results[3].length
+        info_subtypes: results[3].length,
+        //all_subtypes: [results[1], results[2], results[3]],
+        for_partial: [ results[0] , [results[1], results[2], results[3] ] ]
     });
   });
 }
@@ -78,10 +93,10 @@ exports.booking_subtype_list = function(req, res, next) {
 exports.headertype_create_post = [
 
   // Validate that the name field is not empty.
-  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
+  body('type', 'Type name is required').isLength({ min: 3 }).trim(),
 
   // Sanitize (trim and escape) the name field.
-  //sanitizeBody('name').trim().escape(),
+  sanitizeBody('name').trim().escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -455,12 +470,10 @@ exports.headertype_delete_post = function(req, res, next) {
           Genre.findByIdAndRemove(req.body.id, function deleteGenre(err) {
               if (err) { return next(err); }
               // Success - go to genres list.
-              res.redirect('/catalog/genres');
+              res.redirect('/admin/infoforadmin');
           });
-
       }
   });
-
 };
 
 // Handle SBT delete on POST.
@@ -486,10 +499,8 @@ exports.booking_subtype_delete_post = function(req, res, next) {
           Genre.findByIdAndRemove(req.body.id, function deleteGenre(err) {
               if (err) { return next(err); }
               // Success - go to genres list.
-              res.redirect('/catalog/genres');
+              res.redirect('/admin/infoforadmin');
           });
-
       }
   });
-
 };
