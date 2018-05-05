@@ -207,17 +207,19 @@ function formSubmit() {
       if ( type == 41 ) var act = "/admin/info_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
 
       //alert("type = "+type);
-      document.getElementById('universalForm').setAttribute('action',act).submit();
-      resetForm($('#universalForm'));
+      let formuniv = document.getElementById('universalForm');
+      formuniv.setAttribute('action',act).submit();
+      formuniv.reset();
+      //resetForm($('#universalForm'));
       return false;
     };
 
-    function resetForm($form) {
+    /*function resetForm($form) {
         $form.find('input:text, input:password, input:file, select, textarea').val('');
         $form.find('input:radio, input:checkbox')
             .removeAttr('checked').removeAttr('selected');
         console.log('in resetForm - just RESET');
-    }
+    }*/
 
 </script>
 

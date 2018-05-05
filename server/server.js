@@ -16,7 +16,7 @@ const cookieParser = require('cookie-parser');
 
 const {generateMessage} = require('./utils/message');
 
-//var lists = require('../routes/lists'); 
+var users = require('../routes/users'); 
 var admin = require('../routes/admin');
 
 const port = process.env.PORT || 3001;
@@ -104,8 +104,10 @@ hbs.registerHelper("printItems", function(items) {
       headername = entry.name;
     html += "<table><tbody>";
     //console.log('item 0 subname='+item1[0].subname);
+    let subtype = 0; 
     items[1].forEach(function(entry) {
       //html += "<p>Next sub-type:</p>"
+      subtype++;
       entry.forEach(function(entry2) {
 
         console.log("entry2a="+entry2.parent.name);
@@ -118,6 +120,7 @@ hbs.registerHelper("printItems", function(items) {
           html += "<td>" + hbs.Utils.escapeExpression(entry2.infotype) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.subname) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
+          if (subtype == 1) html += "<td><a href='/users/bookform'>book it</a></td>";
           //html += "<td><a href=`/booking/${hbs.Utils.escapeExpression(entry2)`>{{bookNow}}</a></td>";
           html += "</tr>";
         }
@@ -149,6 +152,7 @@ app.use(flash());
 
 //app.use('/lists', lists);
 app.use('/admin', admin);
+app.use('/users', users);
 
 io.on('connection',(socket) => {
   console.log('New user connected');
@@ -206,11 +210,12 @@ io.on('connection',(socket) => {
 
 });
 
+app.get('/', (req, res) => {
+  res.redirect('/users/home');
+});
+
 app.get('/home', (req, res) => {
-  res.render('home.hbs', {
-    pageTitle: 'Home Page',
-    welcomeMessage: 'Enjoy our resort more with this app - accurate statistics, bookings, schedules, requests and more'
-  });
+  res.redirect('/users/home');
 });
 
 app.get('/admin', (req, res) => {
@@ -219,6 +224,22 @@ app.get('/admin', (req, res) => {
     welcomeMessage: 'A page that in real life would require an admin password'
   });
 });
+
+app.get('/datepick', (req, res) => {
+  res.render('datepick.hbs', {
+    pageTitle: 'Admin Page',
+    welcomeMessage: 'A page that in real life would require an admin password'
+  });
+});
+
+
+// app.get('/bookform/:userID', (req, res) => {
+//   res.render('bookform.hbs', {
+//     id: req.params.userID,
+//     pageTitle: 'Book Page',
+//     welcomeMessage: 'A page that in real life would require an admin password'
+//   });
+// });
 
 // /bad - send back json with errorMessage
 app.get('/bad', (req, res) => {

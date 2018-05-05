@@ -3,14 +3,15 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"> -->
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-datetimepicker.min.css">
     <!-- <link href="../css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"> -->
 
-    <script src="/js/libs/jquery-3.3.1.min.js"></script>
+    <script src="../js/libs/jquery-3.3.1.min.js"></script>
 <!-- <script type="text/javascript" src="./jquery/jquery-1.8.3.min.js" charset="UTF-8"></script> -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- <script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script> -->
-<script type="text/javascript" src="/js/libs/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+{{!-- <script type="text/javascript" src="/js/libs/bootstrap-datetimepicker.js" charset="UTF-8"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
 <!--<script type="text/javascript" src="../js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>-->
 <script type="text/javascript">
     $('.form_datetime').datetimepicker({
@@ -49,7 +50,7 @@
 
 <body>
 <div class="boxedtransp">
-    <form action="/lists/headertype/save"  role="form" method="POST">
+    <form action=""  role="form">
         <fieldset>
             <legend>Booking:</legend>
             <!-- <div class="form-group">
@@ -62,26 +63,14 @@
 				<input type="hidden" id="dtp_input1" value="" /><br/>
             </div> -->
 
-      <div class="form-group">
-        <label for="dtp_input2" class="col-md-2 control-label">Position</label>
-              <!-- <span style="display:inline-block; width: 10px;"></span> -->
-        <span class="">
-              <select id="soflow"  class="" name="position">
-                {{#each list_headertypes}}
-                  <option style="color:#59b3b3">{{name}}</option>
-                {{/each}}
-              </select>
-          </span>  
-      </div>
-
             <div class="form-group">
                     <label for="dtp_input2" class="col-md-2 control-label">Procedure</label>
                     <!-- <span style="display:inline-block; width: 10px;"></span> -->
                 <span class="">
-                    <select id="soflow"  class="" name="type">
+                    <select id="soflow"  class="">
                         <option style="color:#59b3b3">Framework Not Specified</option>
-                        <option style="color:#59b3b3">Type2</option>
-                        <option style="color:#59b3b3">Other</option>
+                        <option style="color:#59b3b3">Framework Not Specified2</option>
+                        <option style="color:#59b3b3">Framework Not Specified3</option>
                     </select>
                 </span>  
             </div>
@@ -125,7 +114,7 @@
                     </div>
                     <input type="hidden" id="dtp_input4" value="" /><br/>
                 </div>
-            <button type="submit">Save</button>
+    
         </fieldset>
     </form>
 </div>
