@@ -120,7 +120,7 @@ hbs.registerHelper("printItems", function(items) {
           html += "<td>" + hbs.Utils.escapeExpression(entry2.infotype) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.subname) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
-          if (subtype == 1) html += "<td><a href='/users/bookform'>book it</a></td>";
+          if (subtype == 1) html += "<td><a href='/users/bookform/" + hbs.Utils.escapeExpression(entry2._id) + "'>book it</a></td>";
           //html += "<td><a href=`/booking/${hbs.Utils.escapeExpression(entry2)`>{{bookNow}}</a></td>";
           html += "</tr>";
         }
@@ -218,6 +218,10 @@ app.get('/home', (req, res) => {
   res.redirect('/users/home');
 });
 
+app.get('/users/home', (req, res) => {
+  res.redirect('/users/home');
+});
+
 app.get('/admin', (req, res) => {
   res.render('/adminpage.hbs', {
     pageTitle: 'Admin Page',
@@ -225,8 +229,9 @@ app.get('/admin', (req, res) => {
   });
 });
 
-app.get('/datepick', (req, res) => {
+app.get('/datepick/:bookingID', (req, res) => {
   res.render('datepick.hbs', {
+    bookingID: req.params.bookingID,
     pageTitle: 'Admin Page',
     welcomeMessage: 'A page that in real life would require an admin password'
   });

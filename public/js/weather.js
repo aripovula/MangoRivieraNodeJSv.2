@@ -3,27 +3,21 @@
   var context;
   var apiReadTime;
 
-  function updateWeatherInfo() {
+  function updateWeatherInfo(apiTemp) {
     return new Promise((resolve, reject) => {
-      console.log("in promise =");
       var html = '<div class="boxed">... updating weather info ...</div> ';
       $("#weather_placeholder").html(html);
       var updated = false;
       
       // Since I did not learn how to pass data from server to front end (may be using webpacks)
       // as a TEMPORARY measure I am reading API from local file to protect it from saving in github.com
-      var apiTemp;
-      console.log("I WAS HERE");
-
-  jQuery.get('../api.txt', function(apiTemp) {
+      //var apiTemp;
 
       var apiKey       = apiTemp,
       url          = 'https://api.darksky.net/forecast/',
       locationData         = '39.3469952,-84.4013568',  //'25.8102247,-80.2101822',
       api_call = url + apiKey + "/" + locationData + "?extend=hourly&callback=?";
   
-      console.log("apiKey = "+apiKey);
-
         $.getJSON(api_call, function(forecast) {
         
           var open = "</span><i style='color:#FF69B4' class='wi ";
@@ -50,14 +44,13 @@
 
           apiReadTime = moment().format('h:mm a');
 
-          console.log("before S");
           updated = true;
           console.log("updatedS = "+ updated);
           resolve("Success!");
             
         });
 
-      });
+      
 
         setTimeout(function(){
           console.log("updatedF = "+ updated);
@@ -70,7 +63,6 @@
     myPromise.then((successMessage) => {
 
       if (successMessage==="Success!") {
-        console.log('Success !');
         var l1 = `<div class="boxed" data-toggle="tooltip" data-placement="bottom" title=`;
         var l2 = `"Miami Beach, Florida, USA\n\n ${context.detailed}`;
         var l3 = ` \nUpdated every 20 minutes. Last updated at ${apiReadTime} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ( for demo purposes updated every minute )"`;
