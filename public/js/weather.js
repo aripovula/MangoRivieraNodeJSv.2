@@ -3,7 +3,7 @@
   var context;
   var apiReadTime;
 
-  function updateWeatherInfo(apiTemp) {
+  function updateWeatherInfo(apiKey) {
     return new Promise((resolve, reject) => {
       var html = '<div class="boxed">... updating weather info ...</div> ';
       $("#weather_placeholder").html(html);
@@ -13,8 +13,7 @@
       // as a TEMPORARY measure I am reading API from local file to protect it from saving in github.com
       //var apiTemp;
 
-      var apiKey       = apiTemp,
-      url          = 'https://api.darksky.net/forecast/',
+      var url              = 'https://api.darksky.net/forecast/',
       locationData         = '39.3469952,-84.4013568',  //'25.8102247,-80.2101822',
       api_call = url + apiKey + "/" + locationData + "?extend=hourly&callback=?";
   

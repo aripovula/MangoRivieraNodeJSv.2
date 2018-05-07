@@ -46,7 +46,7 @@ p, ol{
             border-right:5px solid #000000;
           border-left:20px solid transparent;
       }
-      #right {
+#right {
           /* background: #fff; */
     float: left;
           top:0px;

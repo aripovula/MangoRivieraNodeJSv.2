@@ -92,7 +92,31 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 hbs.registerPartials(path.join(__dirname , '../views/partials'))
 app.set('view engine', 'hbs');
 
-hbs.registerHelper("printItems", function(items) {
+
+hbs.registerHelper("showSubname", function(items) {
+  let html = "";
+  let subtype = 0; 
+  items[1].forEach(function(entry) {
+    //html += "<p>Next sub-type:</p>"
+    subtype++;
+    //console.log("entry"+entry[0]);
+    entry.forEach(function(entry2) {
+      // console.log("");
+      // console.log("");
+      // console.log("entry2._id="+entry2._id+"'");
+      // console.log("items[2]="+items[2]+"'");
+      if (entry2._id == items[2]) {
+        // console.log("WE DID THIIIIIIIS");
+        
+        html += "<label>" + hbs.Utils.escapeExpression(entry2.subname) + " - " + hbs.Utils.escapeExpression(entry2.actionmsg) + "</label>";
+      }
+    });
+  });
+
+  return new hbs.SafeString(html);
+});
+
+hbs.registerHelper("showTables", function(items) {
     //safeItems = hbs.Utils.escapeExpression(items);  
     //console.log('headers='+items);
 
@@ -110,17 +134,19 @@ hbs.registerHelper("printItems", function(items) {
       subtype++;
       entry.forEach(function(entry2) {
 
-        console.log("entry2a="+entry2.parent.name);
-        console.log("entry2b="+headername);
+        //console.log("entry2a="+entry2.parent.name);
+        //console.log("entry2b="+headername);
         if (entry2.parent.name === headername) {
-          console.log("entry2="+entry2);
+          //console.log("entry2="+entry2);
           // escape all entries that will be made by users
           html += "<tr>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.parent.name) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.infotype) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.subname) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
-          if (subtype == 1) html += "<td><a href='/users/bookform/" + hbs.Utils.escapeExpression(entry2._id) + "'>book it</a></td>";
+          if (subtype == 1) html += "<td><a href='/users/bookform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
+          if (subtype == 2) html += "<td><a href='/users/bookform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
+          if (subtype == 3) html += "<td><a href='/users/bookform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
           //html += "<td><a href=`/booking/${hbs.Utils.escapeExpression(entry2)`>{{bookNow}}</a></td>";
           html += "</tr>";
         }

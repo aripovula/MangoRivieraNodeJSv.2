@@ -35,13 +35,24 @@
         {{!-- therefore checking if it is null before using it --}}
 
         {{#if for_partial }}
+            {{!-- THIS part send complex array of data and uses JS function to render subnmame --}}
             {{> leftpanel}}
         {{/if}}
       </div>
           
     <div id="right">
-        <p>bookingID = {{bookingID}}</p>
-        {{> pickform}}
+        <div class="boxedtransp">
+            <legend>Booking:</legend>
+            {{!-- <p style="margin-left:15px">Please make your booking for: </p> --}}
+            <span style="margin-left:15px">
+                {{!-- THIS part send complex array of data and uses JS function to render subnmame --}}
+                {{#if for_partial }}
+                    {{showSubname for_partial}}
+                {{/if}}
+            </span>
+            <br/><br/>
+            {{> pickform}}
+        </div>
     </div>
 </div>
     

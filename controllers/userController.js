@@ -75,7 +75,7 @@ exports.admins_list = function(req, res, next) {
         info_subtypes: results[3].length,
         bookingID:req.params.bookingID,
         //all_subtypes: [results[1], results[2], results[3]],
-        for_partial: [ results[0] , [results[1], results[2], results[3] ] ]
+        for_partial: [ results[0] , [results[1], results[2], results[3] ] , req.params.bookingID ]
     });
   });
 }
