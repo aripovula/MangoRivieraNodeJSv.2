@@ -49,7 +49,7 @@ exports.admins_list = function(req, res, next) {
         sell_subtypes: results[2].length,
         info_subtypes: results[3].length,
         //all_subtypes: [results[1], results[2], results[3]],
-        for_partial: [ results[0] , [results[1], results[2], results[3] ] ]
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] ]
     });
   });
 }

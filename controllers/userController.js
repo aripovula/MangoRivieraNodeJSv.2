@@ -33,7 +33,7 @@ exports.list_4home = function(req, res, next) {
         list_booking_subtypes: results[1],
         list_sell_subtypes: results[2],
         list_info_subtypes: results[3],
-        for_partial: [ results[0] , [results[1], results[2], results[3] ] ]
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] ]
     });
   });
 }
@@ -59,7 +59,7 @@ exports.list_4book = function(req, res, next) {
         list_sell_subtypes: results[2],
         list_info_subtypes: results[3],
         bookingID:req.params.buyID,
-        for_partial: [ results[0] , [results[1], results[2], results[3] ] , req.params.bookingID ]
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.bookingID ]
     });
   });
 }
@@ -85,8 +85,8 @@ exports.list_4buy = function(req, res, next) {
         list_sell_subtypes: results[2],
         list_info_subtypes: results[3],
         bookingID:req.params.bookingID,
-        for_partial: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ],
-        for_part2:  stringify(results[1])+stringify(results[2])+stringify(results[3]) 
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ],
+        for_buyform: '[{"sel_id":"'+req.params.buyID+'"},'+stringify(results[2])+"]" 
     });
   });
 }

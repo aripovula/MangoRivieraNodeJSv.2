@@ -31,10 +31,10 @@
 
       <div id="left">        
 
-        {{!-- for_partial should contain array of data. If it is null error will take place. --}}
+        {{!-- for_tables should contain array of data. If it is null error will take place. --}}
         {{!-- therefore checking if it is null before using it --}}
 
-        {{#if for_partial }}
+        {{#if for_tables }}
             {{!-- THIS part send complex array of data and uses JS function to render subnmame --}}
             {{> leftpanel}}
         {{/if}}
@@ -43,24 +43,71 @@
     <div id="right">
         <div class="boxedtransp">
             <legend>&nbsp; &nbsp;Sale:</legend>
-            {{!-- <p style="margin-left:15px">Please make your booking for: </p> --}}
             <span style="margin-left:15px">
-                {{!-- THIS part send complex array of data and uses JS function to render subnmame --}}
-                {{#if for_partial }}
-                    {{showSubname for_partial}}
+                {{> buypartial}}
+                {{!-- THIS part sends complex array of data and uses JS function to render subnmame --}}
+                {{#if for_tables }}
+                    {{!-- {{showSubname for_tables}} --}}
                     <script>
-                        var for_partial1 = '{{for_part2}}';
-                        for_partial1 = for_partial1.replace(/(\r\n\t|\n|\r\t)/gm,"");
-                        for_partial1 = for_partial1.replace(/&quot;/g, '"');
-                        for_partial1 = for_partial1.substring(1, for_partial1.length-1);
-                        console.log("Price1 = "+for_partial1);
-                        var for_partial2 = JSON.parse(for_partial1);
-                        console.log("Price2 = "+for_partial2);
+                        let for_buyform = '{{for_buyform}}';
+                        for_buyform = for_buyform.replace(/(\r\n\t|\n|\r\t)/gm,"");
+                        for_buyform = for_buyform.replace(/&quot;/g, '"');
+                        console.log("Price1 = "+for_buyform);
+                        let for_buyform2 = JSON.parse(for_buyform);
+                        
+                        /*console.log("Price parsed = "+for_buyform2);
+                        let a1 = for_buyform2[1];
+                        console.log("Price2 = "+a2);
+                        let a2 = a1[0];
+                        console.log("Price2 = "+a2);*/
+                        var sel_id = for_buyform2[0].sel_id;
+                        var loop_id;
+                        var qnty=1;
+                        var price;
+
+                        console.log("sel_id = " + sel_id);
+                        console.log("sel_id0 = " + for_buyform2[0]);
+                        console.log("sel_id1 = " + for_buyform2[1]);
+
+                        let html = "";
+                        let subtype = 0; 
+                        for_buyform2[1].forEach(function(entry) {
+                            //html += "<p>Next sub-type:</p>"
+                            subtype++;
+                            console.log("entry len "+entry.length);
+                            console.log("entry 0 "+entry[0]);
+                            console.log("entry null "+entry != null);
+                            //if (entry[0] != null) {
+                                //entry.forEach(function(entry2) {
+                                    console.log("");
+                                    console.log("");
+                                    console.log("entry._id="+entry._id+"'");
+                                    //console.log("items[2]="+sel_id+"'");
+                                    if (entry._id == sel_id) {
+                                        
+                                        loop_id = subtype-1;
+                                        price = entry.price;
+                                        console.log("entry price - "+price);
+
+                                        console.log("WE DID THIIIIIIIS loop_id = "+loop_id);
+                                        /*html += "<label>" + escape(entry.subname) + " - " + escape(entry.actionmsg) + "</label><br/><br/>";
+                                        if (entry.price != null) html += '<label for="dtp_input2" class="col-md-2 control-label">Price:</label>'
+                                        if (entry.price != null) html += '<div class="input-group spinner col-md-10"><p>'+escape(entry.price)+'$ per unit</p></div>';
+                                        console.log("html = "+html);*/
+                                        $("#title").html("<label>" + escape(entry.subname) + " - " + escape(entry.actionmsg) + "</label>"); 
+                                        $("#priceperunit").html(price); 
+                                        $("#pricetotal").html(qnty*price);
+                                        return;
+                                    }
+                                //});
+                            //}
+                        });
+
+
                     </script>
                 {{/if}}
             </span>
             <br/>
-            {{> buypartial}}
         </div>
     </div>
 </div>
@@ -76,6 +123,21 @@
 <script type="text/javascript" src="../../js/libs/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../js/libs/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../../js/datepickerCustom.js" charset="UTF-8"></script>
+<script>
+    function plusAndUpdateTotal(){
+        console.log("ABC = 123 sel_id="+sel_id);
+        qnty++;
+        $("#pricetotal").html(qnty*price); 
+    }
+
+    function minusAndUpdateTotal(){
+        qnty--;
+        if (qnty<0) {$('.spinner input').val(0);qnty=0;}
+        console.log("ABC = 123 sel_id="+sel_id);
+        $("#pricetotal").html(qnty*price); 
+    }
+
+</script>
 
        
 </body>
