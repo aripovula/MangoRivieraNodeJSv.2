@@ -1,0 +1,69 @@
+
+<div>
+    <form action=""  role="form">
+        <fieldset>
+			<div class="form-group">
+                <label for="dtp_input2" class="col-md-2 control-label">Date</label>
+                <div class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    <input class="form-control" size="10" type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+				<input type="hidden" id="dtp_input2" value="" /><br/>
+            <!-- </div>
+			<div class="form-group"> -->
+                {{!-- <label for="dtp_input3" class="col-md-2 control-label">Start Time</label>
+                <div class="input-group date form_time col-md-5" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
+                    <input class="form-control" size="10" type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                </div>
+				<input type="hidden" id="dtp_input3" value="" /><br/> --}}
+            <!-- </div>
+            <div class="form-group"> -->
+                    {{!-- <label for="dtp_input4" class="col-md-2 control-label">Till</label>
+                    <div class="input-group date form_time col-md-5" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
+                        <input class="form-control" size="10" type="text" value="" readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                    </div>
+                    <input type="hidden" id="dtp_input4" value="" /> --}}
+
+                <div>
+                    <label for="dtp_input2" class="col-md-2 control-label">Quantity</label>
+                    <div class="input-group spinner col-md-5">
+                        <input type="text" class="form-control" value="1">
+                        <div class="input-group-btn-vertical">
+                        <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                        <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label for="dtp_input2" class="col-md-2 control-label">Total:</label>
+                    <div class="input-group col-md-5">
+                        <p id="pricetotal"></p>
+                    </div>
+                </div>
+
+
+            </div>
+                <div class="col-md-3">
+                    <button class="col-md-9 button1">Save</button>
+                    <br/><br/>
+                </div>
+        </fieldset>
+    </form>
+</div>
+
+<script>
+    (function ($) {
+  $('.spinner .btn:first-of-type').on('click', function() {
+    $('.spinner input').val( parseInt($('.spinner input').val(), 10) + 1);
+  });
+  $('.spinner .btn:last-of-type').on('click', function() {
+    $('.spinner input').val( parseInt($('.spinner input').val(), 10) - 1);
+  });
+  
+})(jQuery);
+</script>

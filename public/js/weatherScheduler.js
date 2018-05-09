@@ -19,7 +19,7 @@ var getApiKey = function () {
     var html = '<div class="boxed">... updating weather info ...</div> ';
     $("#weather_placeholder").html(html);
 
-    Promise.all([getApiKey1, getApiKey2])
+    Promise.race([getApiKey1, getApiKey2])
         .then(function (fulfilled) {
             if (found1) {apiKey = apikey1; updateWeatherEvery20mins();}
             if (found2) {apiKey = apikey2; updateWeatherEvery20mins();}

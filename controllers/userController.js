@@ -1,9 +1,12 @@
+
+
 var HeaderType = require('../models/headertype');
 var Booking_SubType = require('../models/booking_subtype');
 var Sell_SubType = require('../models/sell_subtype');
 var Info_SubType = require('../models/info_subtype');
 // var Book = require('../models/book');
 var async = require('async');
+var stringify = require('json-stringify');
 
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
@@ -35,7 +38,7 @@ exports.list_4home = function(req, res, next) {
   });
 }
 
-exports.admins_list = function(req, res, next) {
+exports.list_4book = function(req, res, next) {
   async.series([
     function(callback){
       HeaderType.find({}).sort('-createdAt').exec(callback);
@@ -49,33 +52,41 @@ exports.admins_list = function(req, res, next) {
     function(callback){
       Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
     },
-    // function(callback){
-    //   Sell_SubType
-    //   .find({})
-    //   .populate(
-    //     {
-    //       path: 'parent',
-    //       match: { name: 'Activities'}
-    //     }
-    //   )
-    //   .sort([['subname', 'ascending']])
-    //   .exec(callback);
-    // },
-
   ], function(err, results){
-      res.render('datepick.hbs',{
-        //title:'custom',
+      res.render('bookform.hbs',{
         list_headertypes: results[0],
         list_booking_subtypes: results[1],
         list_sell_subtypes: results[2],
         list_info_subtypes: results[3],
-        headertypes: results[0].length,
-        booking_subtypes: results[1].length,
-        sell_subtypes: results[2].length,
-        info_subtypes: results[3].length,
-        bookingID:req.params.bookingID,
-        //all_subtypes: [results[1], results[2], results[3]],
+        bookingID:req.params.buyID,
         for_partial: [ results[0] , [results[1], results[2], results[3] ] , req.params.bookingID ]
+    });
+  });
+}
+
+exports.list_4buy = function(req, res, next) {
+  async.series([
+    function(callback){
+      HeaderType.find({}).sort('-createdAt').exec(callback);
+    },
+    function(callback){
+      Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Sell_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+  ], function(err, results){
+      res.render('buyform.hbs',{
+        list_headertypes: results[0],
+        list_booking_subtypes: results[1],
+        list_sell_subtypes: results[2],
+        list_info_subtypes: results[3],
+        bookingID:req.params.bookingID,
+        for_partial: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ],
+        for_part2:  stringify(results[1])+stringify(results[2])+stringify(results[3]) 
     });
   });
 }

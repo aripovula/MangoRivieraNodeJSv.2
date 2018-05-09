@@ -13,6 +13,7 @@ const favicon = require('serve-favicon');
 const flash = require('connect-flash');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const stringify = require('json-stringify');
 
 const {generateMessage} = require('./utils/message');
 
@@ -101,14 +102,16 @@ hbs.registerHelper("showSubname", function(items) {
     subtype++;
     //console.log("entry"+entry[0]);
     entry.forEach(function(entry2) {
-      // console.log("");
-      // console.log("");
-      // console.log("entry2._id="+entry2._id+"'");
-      // console.log("items[2]="+items[2]+"'");
+      console.log("");
+      console.log("");
+      console.log("entry2._id="+entry2._id+"'");
+      console.log("items[2]="+items[2]+"'");
       if (entry2._id == items[2]) {
-        // console.log("WE DID THIIIIIIIS");
+      console.log("WE DID THIIIIIIIS");
         
-        html += "<label>" + hbs.Utils.escapeExpression(entry2.subname) + " - " + hbs.Utils.escapeExpression(entry2.actionmsg) + "</label>";
+        html += "<label>" + hbs.Utils.escapeExpression(entry2.subname) + " - " + hbs.Utils.escapeExpression(entry2.actionmsg) + "</label><br/><br/>";
+        if (entry2.price != null) html += '<label for="dtp_input2" class="col-md-2 control-label">Price:</label>'
+        if (entry2.price != null) html += '<div class="input-group spinner col-md-10"><p>'+hbs.Utils.escapeExpression(entry2.price)+'$ per unit</p></div>';
       }
     });
   });
@@ -145,7 +148,7 @@ hbs.registerHelper("showTables", function(items) {
           html += "<td>" + hbs.Utils.escapeExpression(entry2.subname) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
           if (subtype == 1) html += "<td><a href='/users/bookform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
-          if (subtype == 2) html += "<td><a href='/users/bookform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
+          if (subtype == 2) html += "<td><a href='/users/buyform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
           if (subtype == 3) html += "<td><a href='/users/bookform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
           //html += "<td><a href=`/booking/${hbs.Utils.escapeExpression(entry2)`>{{bookNow}}</a></td>";
           html += "</tr>";
