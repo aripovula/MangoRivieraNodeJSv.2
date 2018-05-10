@@ -216,6 +216,24 @@ function formSubmit() {
       return false;
     };
 
+                        var entityMap = {
+                            '&': '&amp;',
+                            '<': '&lt;',
+                            '>': '&gt;',
+                            '"': '&quot;',
+                            "'": '&#39;',
+                            '/': '&#x2F;',
+                            '`': '&#x60;',
+                            '=': '&#x3D;'
+                        };
+
+                        function escapeHtml(string) {
+                            console.log("to escapte2 - "+string);
+                            return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+                                return entityMap[s];
+                            });
+                        }
+
     /*function resetForm($form) {
         $form.find('input:text, input:password, input:file, select, textarea').val('');
         $form.find('input:radio, input:checkbox')

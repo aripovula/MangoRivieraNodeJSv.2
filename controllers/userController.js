@@ -84,11 +84,41 @@ exports.list_4buy = function(req, res, next) {
         list_booking_subtypes: results[1],
         list_sell_subtypes: results[2],
         list_info_subtypes: results[3],
-        bookingID:req.params.bookingID,
         for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ],
         for_buyform: '[{"sel_id":"'+req.params.buyID+'"},'+stringify(results[2])+"]" 
     });
   });
+}
+
+
+exports.list_4info = function(req, res, next) {
+  async.series([
+    function(callback){
+      HeaderType.find({}).sort('-createdAt').exec(callback);
+    },
+    function(callback){
+      Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Sell_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Info_SubType.findOne({'_id': req.params.infoID}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+  ], function(err, results){
+      res.render('infoform.hbs',{
+        list_headertypes: results[0],
+        list_booking_subtypes: results[1],
+        list_sell_subtypes: results[2],
+        list_info_subtypes: results[3],
+        sel_info: results[4],
+        infoID:req.params.infoId,
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ]
+      });
+    });
 }
 
 // Display list of all HeaderTypes.

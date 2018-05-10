@@ -11,6 +11,7 @@ var user_controller = require('../controllers/userController');
 
 router.get('/bookform/:bookingID', user_controller. list_4book);
 router.get('/buyform/:buyID', user_controller. list_4buy);
+router.get('/infoform/:infoID', user_controller. list_4info);
 
 router.get('/home', user_controller. list_4home);
 
