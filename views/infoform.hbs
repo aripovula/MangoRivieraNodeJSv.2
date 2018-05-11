@@ -53,11 +53,12 @@
                     {{#if sel_info.infowebpage}}
                         <script> 
                             console.log('In page open');
-                            let url = "{{sel_info.infowebpage}}"; 
+                            let url = "https://{{sel_info.infowebpage}}"; 
                             window.open(url, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=200,left=500,width=400,height=400");
                         </script>
                         <div class="col-md-12">
-                            Following webpage should open now  ( check your pop-up blocker if not ) :<br/>
+                            Following webpage should open now  ( check your pop-up blocker if not ) :
+                            <br/><br/>
                             {{sel_info.infowebpage}}
                             <br/><br/>    
                         </div>
@@ -66,7 +67,7 @@
                     {{else}}
                         <div class="col-md-12">
                             Message: {{sel_info.message}}
-                            <br/>    
+                            <br/>       
                         </div>
                         <br/><br/>
                     {{/if}}
@@ -74,7 +75,7 @@
                         <button class="col-md-9 button1">Got it</button>
                         <br/><br/>
                     </div>
-                    <br/><br/>
+                    <br/><br/><br/>
                 {{/if}}
             </span>
             <br/>

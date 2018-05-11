@@ -146,7 +146,12 @@ hbs.registerHelper("showTables", function(items) {
           html += "<td>" + hbs.Utils.escapeExpression(entry2.parent.name) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.infotype) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.subname) + "</td>";
-          html += "<td>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
+          if (entry2.infotype == "occupancy") html += "<td>? updating... </td>";
+          if (entry2.infotype == "themessage") html += "<td>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
+          if (subtype == 3 && entry2.infotype == "webpage") html += "<td>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
+          if (subtype == 1 || subtype == 2) {
+            if (entry2.infotype == "webpage") html += "<td><a onclick=\"window.open('http://" + hbs.Utils.escapeExpression(entry2.infowebpage) + "', '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=200,left=300,width=600,height=400');\">" + hbs.Utils.escapeExpression(entry2.message) + "</a></td>";
+          }
           if (subtype == 1) html += "<td><a href='/users/bookform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
           if (subtype == 2) html += "<td><a href='/users/buyform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
           if (subtype == 3) html += "<td><a href='/users/infoform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
