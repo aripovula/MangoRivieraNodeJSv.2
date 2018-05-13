@@ -15,6 +15,8 @@ router.get('/infoform/:infoID', user_controller. list_4info);
 
 router.get('/home', user_controller. list_4home);
 
+router.post('/userbooking/save', user_controller. users_booking_create_post);
+
 
 // router.post('/headertype/save', admin_controller. headertype_create_post);
 

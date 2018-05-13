@@ -67,7 +67,30 @@
 <script type="text/javascript" src="../../js/libs/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../js/libs/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../../js/datepickerCustom.js" charset="UTF-8"></script>
+<script>
 
+    function formSubmit() {
+        nameel = document.getElementById('bname');
+        nameel.setAttribute('value','{{selected_booktype.subname}}');
+
+      console.log("namefromCont="+nameel.value);
+      /*var idn = fe.idn.value;
+      var parent_id = fe.parent_id.value;
+      //var name = fe.dname.value;
+      var type = fe.type.value;
+      //var subname = fe.dsubname.value;
+      var infotype = $("input:radio[name='displaytype']:checked").val();
+      console.log("infotype - "+infotype);*/
+      var act = "/users/userbooking/save";
+
+      //alert("type = "+type);
+      let formsubm = document.getElementById('userBookingForm');
+      formsubm.setAttribute('action',act).submit();
+      formsubm.reset();
+      //resetForm($('#universalForm'));
+      return false;
+    };
+</script>
        
 </body>
 

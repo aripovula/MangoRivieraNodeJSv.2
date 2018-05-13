@@ -4,6 +4,8 @@ var HeaderType = require('../models/headertype');
 var Booking_SubType = require('../models/booking_subtype');
 var Sell_SubType = require('../models/sell_subtype');
 var Info_SubType = require('../models/info_subtype');
+var Users_Booking = require('../models/users_booking');
+
 // var Book = require('../models/book');
 var async = require('async');
 var stringify = require('json-stringify');
@@ -52,13 +54,17 @@ exports.list_4book = function(req, res, next) {
     function(callback){
       Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
     },
+    function(callback){
+      Booking_SubType.findOne({'_id': req.params.bookingID}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
   ], function(err, results){
       res.render('bookform.hbs',{
         list_headertypes: results[0],
         list_booking_subtypes: results[1],
         list_sell_subtypes: results[2],
         list_info_subtypes: results[3],
-        bookingID:req.params.buyID,
+        selected_booktype: results[4],
+        //bookingID:req.params.buyID,
         for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.bookingID ]
     });
   });
@@ -188,7 +194,7 @@ exports.headertype_create_post = [
 
 
 // Handle bst create on POST.
-exports.booking_subtype_create_post = [
+exports.users_booking_create_post = [
 
   // Validate that the name field is not empty.
   // body('type', 'Type name required').isLength({ min: 1 }).trim(),
@@ -208,15 +214,16 @@ exports.booking_subtype_create_post = [
     //                  return found_bt;
     //              });
 
-    console.log("subname="+req.body.subname);
+    console.log("name="+req.body.bname);
+    console.log("stime="+req.body.bstarttime);
+    console.log("date="+req.body.bdate);
+    
     // console.log("name="+name.name);
-    var sbt = new Booking_SubType({ 
-      parent : req.params.parent_id,
-      subname : req.body.subname,
-      infotype : req.params.infotype,
-      message : req.body.msg,
-      infowebpage : req.body.url,
-      actionmsg : req.body.actionmsg
+    var sbt = new Users_Booking({ 
+      name : req.body.bname,
+      date : req.body.bdate,
+      starttime : req.body.bstarttime,
+      endtime : req.body.bendtime
     });
       
       sbt.save(function (err) {
@@ -225,7 +232,7 @@ exports.booking_subtype_create_post = [
         req.flash('success', 'Successfuly created event! 11');
         console.log("flash= Successfuly created event! 11");
         console.log("from system = " + req.flash('success'));
-        res.redirect('/admin/infoforadmin');
+        res.redirect('/users/home');
       });
 
 
