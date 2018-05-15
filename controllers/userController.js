@@ -216,7 +216,9 @@ exports.users_booking_create_post = [
 
     console.log("name="+req.body.bname);
     console.log("stime="+req.body.bstarttime);
+    console.log("stime2="+req.body.bstarttime2);
     console.log("date="+req.body.bdate);
+    console.log("date2="+req.body.bdate2);
     
     // console.log("name="+name.name);
     var sbt = new Users_Booking({ 

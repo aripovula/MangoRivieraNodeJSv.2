@@ -6,9 +6,9 @@ var Schema = mongoose.Schema;
 
 var Users_BookingSchema = new Schema({
     name: {type: String, required: true, unique: true, min: 3, max: 100},
-    date : {type: Number, required: true},
-    starttime: {type: Number, required: true},
-    endtime : {type: Number, required: true}
+    date : {type: Date, required: true},
+    starttime: {type: Date, required: true},
+    endtime : {type: Date, required: true}
 });
 
 // Virtual for this genre instance URL.

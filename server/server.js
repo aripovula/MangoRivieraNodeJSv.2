@@ -171,7 +171,7 @@ hbs.registerHelper("showTables", function(items) {
 });
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname , '../public')));
 
 // set sessions and cookie parser

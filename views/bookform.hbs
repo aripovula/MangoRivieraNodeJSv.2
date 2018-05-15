@@ -73,7 +73,22 @@
         nameel = document.getElementById('bname');
         nameel.setAttribute('value','{{selected_booktype.subname}}');
 
+        //dateel = document.getElementById('bdate');
+        //dateel.setAttribute('value', $('#bdate2').val());
+
       console.log("namefromCont="+nameel.value);
+      
+      var dt = $('#bdate').val();
+      var dt2 = $('#bdate2').val();
+
+      var st = $('#bstarttime').val();
+      var st2 = $('#bstarttime2').val();
+
+      console.log("date and time = "+dt);
+      console.log("date and time = "+dt2);
+      console.log("date and time = "+st);
+      console.log("date and time = "+st2);
+//debugger;
       /*var idn = fe.idn.value;
       var parent_id = fe.parent_id.value;
       //var name = fe.dname.value;
