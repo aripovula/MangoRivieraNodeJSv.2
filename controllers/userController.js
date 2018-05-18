@@ -1,4 +1,4 @@
-
+const moment = require('moment');
 
 var HeaderType = require('../models/headertype');
 var Booking_SubType = require('../models/booking_subtype');
@@ -219,13 +219,20 @@ exports.users_booking_create_post = [
     console.log("stime2="+req.body.bstarttime2);
     console.log("date="+req.body.bdate);
     console.log("date2="+req.body.bdate2);
-    
+    var datePlusTimeStart = req.body.bdate + " " + req.body.bstarttime;
+    var momentDate = moment(datePlusTimeStart, 'DD MMM YYYY HH:mm:ss');
+    var jsDateStart = momentDate.toDate();
+
+    var datePlusTimeEnd = req.body.bdate + " " + req.body.bendtime;
+    var momentDate = moment(datePlusTimeEnd, 'DD MMM YYYY HH:mm:ss');
+    var jsDateEnd = momentDate.toDate();
+
     // console.log("name="+name.name);
     var sbt = new Users_Booking({ 
-      name : req.body.bname,
-      date : req.body.bdate,
-      starttime : req.body.bstarttime,
-      endtime : req.body.bendtime
+      bookingname : req.body.bname,
+      //date : req.body.bdate,
+      starttime : jsDateStart,
+      endtime : jsDateEnd
     });
       
       sbt.save(function (err) {

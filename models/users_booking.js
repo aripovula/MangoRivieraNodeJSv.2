@@ -2,11 +2,13 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
+var resNo = getResValue();
 //var HeaderType = mongoose.model('HeaderType', HeaderType);
 
 var Users_BookingSchema = new Schema({
-    name: {type: String, required: true, unique: true, min: 3, max: 100},
-    date : {type: Date, required: true},
+    bookingname: {type: String, required: true, unique: true, min: 3, max: 100},
+    //date : {type: Date, required: true},
+    reservationNumber: {type: String, value:resNo},
     starttime: {type: Date, required: true},
     endtime : {type: Date, required: true}
 });
@@ -19,7 +21,9 @@ Users_BookingSchema
   return '/users_booking/'+this._id;
 });
 
-
+function getResValue(){
+    return 4236;
+}
 
 // Export model.
 module.exports = mongoose.model('Users_Booking', Users_BookingSchema);
