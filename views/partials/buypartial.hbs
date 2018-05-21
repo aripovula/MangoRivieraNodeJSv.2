@@ -1,5 +1,8 @@
 <div>
-    <form action=""  role="form">
+    <form id="userBuyForm"  role="form" method="POST">
+        <input id="bname" type="hidden" name="bname"/>
+        <input id="bprice" type="hidden" name="bprice"/>
+        <input id="bqnty" type="hidden" name="bqnty"/>
         <fieldset>
 			<div class="form-group">
                     <div class="col-md-10 control-label">
@@ -23,7 +26,7 @@
 
                 <label for="dtp_input2" class="col-md-4 control-label">Date of event</label>
                 <div class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                    <input class="form-control" size="10" type="text" value="" readonly>
+                    <input id="pdate" name="pdate" class="form-control" size="10" type="text" value="" readonly>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </div>
@@ -50,7 +53,7 @@
                 <div>
                     <label for="dtp_input2" class="col-md-4 control-label">Quantity</label>
                     <div class="input-group spinner col-md-5">
-                        <input type="text" class="form-control" value="1">
+                        <input id="bqnty" name="bqnty" type="text" class="form-control" value="1">
                         <div class="input-group-btn-vertical">
                         <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
                         <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
@@ -61,7 +64,7 @@
 
             </div>
                 <div class="col-md-8">
-                    <button class="col-md-6 button1">Confirm</button>
+                    <button onclick="formSubmit();" class="col-md-6 button1">Confirm</button>
                     &nbsp; &nbsp;
                     <a class="col-md-5" onclick="showNext();">show next</a>
                     <br/><br/>

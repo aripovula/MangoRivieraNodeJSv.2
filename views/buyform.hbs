@@ -57,6 +57,7 @@
                         let a2 = a1[0];
                         console.log("Price2 = "+a2);*/
                         var sel_id = for_buyform2[0].sel_id;
+                        var subname;
                         var loop_id;
                         var qnty=1;
                         var price;
@@ -106,7 +107,8 @@
 
                         function displayBuyData(entry){
                             price = entry.price;
-                            $("#title").html("<label>" + entry.subname + " - " +entry.actionmsg + "</label>"); 
+                            subname = entry.subname;
+                            $("#title").html("<label>" + subname + " - " +entry.actionmsg + "</label>"); 
                             $("#priceperunit").html(price); 
                             $("#pricetotal").html(qnty*price);
                         }
@@ -122,6 +124,28 @@
                             console.log("entry = "+entry);
                             displayBuyData(entry);
                         }
+
+                        function formSubmit() {
+                            nameel = document.getElementById('bname');
+                            nameel.setAttribute('value', subname);
+
+                            priceel = document.getElementById('bprice');
+                            priceel.setAttribute('value', price);
+
+                            qntyel = document.getElementById('bqnty');
+                            qntyel.setAttribute('value', qnty[0]);
+
+                            console.log("namefromCont="+nameel.value);
+                            
+                            var act = "/users/userbuy/save";
+
+                            alert("act = "+act);
+                            let formsubm = document.getElementById('userBuyForm');
+                            formsubm.setAttribute('action',act).submit();
+                            formsubm.reset();
+                            //resetForm($('#universalForm'));
+                            return false;
+                        };
                     </script>
                 {{/if}}
             </span>
@@ -156,7 +180,6 @@
     }
 
 </script>
-
        
 </body>
 

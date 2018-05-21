@@ -5,6 +5,7 @@ var Booking_SubType = require('../models/booking_subtype');
 var Sell_SubType = require('../models/sell_subtype');
 var Info_SubType = require('../models/info_subtype');
 var Users_Booking = require('../models/users_booking');
+var Users_Buy = require('../models/users_buy');
 
 // var Book = require('../models/book');
 var async = require('async');
@@ -228,9 +229,8 @@ exports.users_booking_create_post = [
     var jsDateEnd = momentDate.toDate();
 
     // console.log("name="+name.name);
-    var sbt = new Users_Booking({ 
+    var sbt = new Users_Booking({
       bookingname : req.body.bname,
-      //date : req.body.bdate,
       starttime : jsDateStart,
       endtime : jsDateEnd
     });
@@ -247,7 +247,58 @@ exports.users_booking_create_post = [
 
   }];
 
+// Handle bst create on POST.
+exports.users_buy_create_post = [
 
+  // Validate that the name field is not empty.
+  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
+
+  // Sanitize (trim and escape) the name field.
+  //sanitizeBody('name').trim().escape(),
+
+  // Process request after validation and sanitization.
+
+
+  (req, res, next) => {
+
+    // var name = HeaderType.findOne({ '_id': req.params.id })
+    //             .exec( function(err, found_bt) {
+    //                  if (err) { return next(err); }
+
+    //                  return found_bt;
+    //              });
+
+    console.log("name="+req.body.bname);
+    console.log("stime="+req.body.bstarttime);
+    console.log("stime2="+req.body.bstarttime2);
+    console.log("date="+req.body.bdate);
+    console.log("date2="+req.body.bdate2);
+    var date = req.body.pdate;
+    var momentDate = moment(date, 'DD MMM YYYY HH:mm:ss');
+    var jsDate = momentDate.toDate();
+
+    console.log("date="+date);
+    console.log("jsDate="+jsDate);
+
+    var sbt = new Users_Buy({ 
+      buyname : req.body.bname,
+      date : jsDate,
+      reservationNumber : "234568",
+      price : req.body.bprice,
+      qnty : req.body.bqnty[1]
+    });
+      
+      sbt.save(function (err) {
+        if (err) { return next(err); }
+        // Success
+        req.flash('success', 'Successfuly created event! 11');
+        console.log("flash= Successfuly created event! 11");
+        console.log("from system = " + req.flash('success'));
+        res.redirect('/users/home');
+      });
+
+
+  }];
 
   // Handle sst create on POST.
 exports.sell_subtype_create_post = [
