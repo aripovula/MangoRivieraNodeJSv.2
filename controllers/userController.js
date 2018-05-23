@@ -128,6 +128,31 @@ exports.list_4info = function(req, res, next) {
     });
 }
 
+exports.list_4guest = function(req, res, next) {
+  async.series([
+    function(callback){
+      HeaderType.find({}).sort('-createdAt').exec(callback);
+    },
+    function(callback){
+      Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Sell_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+  ], function(err, results){
+      res.render('home.hbs',{
+        list_headertypes: results[0],
+        list_booking_subtypes: results[1],
+        list_sell_subtypes: results[2],
+        list_info_subtypes: results[3],
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] ]
+    });
+  });
+}
+
 // Display list of all HeaderTypes.
 exports.headertype_list = function(req, res, next) {
 

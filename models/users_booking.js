@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 //var HeaderType = mongoose.model('HeaderType', HeaderType);
 
 var Users_BookingSchema = new Schema({
-    bookingname: {type: String, required: true, unique: true, min: 3, max: 100},
+    bookingname: {type: String, required: true, min: 3, max: 100},
     //date : {type: Date, required: true},
     reservationNumber: {type: String},
     starttime: {type: Date, required: true},

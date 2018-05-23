@@ -13,6 +13,8 @@ router.get('/bookform/:bookingID', user_controller. list_4book);
 router.get('/buyform/:buyID', user_controller. list_4buy);
 router.get('/infoform/:infoID', user_controller. list_4info);
 
+router.get('/guestsummary/:infoID', user_controller. list_4guest);
+
 router.get('/home', user_controller. list_4home);
 
 router.post('/userbooking/save', user_controller. users_booking_create_post);
