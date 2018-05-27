@@ -188,6 +188,42 @@ exports.booking_subtype_list = function(req, res, next) {
 
 };
 
+// Handle bst create on POST.
+exports.login_room = [
+
+  // Validate that the name field is not empty.
+  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
+
+  // Sanitize (trim and escape) the name field.
+  //sanitizeBody('name').trim().escape(),
+
+  // Process request after validation and sanitization.
+
+
+  (req, res, next) => {
+    // confirm that user typed same password twice
+  
+    if (req.body.room && req.body.code1) {
+
+      User.authenticate(req.body.room, req.body.code1, function (error, user) {
+        if (error || !user) {
+          var err = new Error('Wrong email or password.');
+          err.status = 401;
+          return next(err);
+        } else {
+          req.session.userId = user._id;
+          return res.redirect('/users/home');
+          
+        }
+      });
+    } else {
+      var err = new Error('All fields required.');
+      err.status = 400;
+      return next(err);
+    }
+
+  }];
+
 // Handle bt create on POST.
 exports.headertype_create_post = [
 

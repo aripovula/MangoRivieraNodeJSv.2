@@ -14,6 +14,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const stringify = require('json-stringify');
+const MongoStore = require('connect-mongo')(session);
 
 const {generateMessage} = require('./utils/message');
 
@@ -171,17 +172,21 @@ hbs.registerHelper("showTables", function(items) {
 });
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname , '../public')));
 
 // set sessions and cookie parser
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(session({
   secret: process.env.SECRET, 
-  cookie: { maxAge: 60000 },
+  cookie: { maxAge: 60 * 60 * 1000 },
   resave: true,    // forces the session to be saved back to the store
-  saveUninitialized: true  // dont save unmodified
+  saveUninitialized: false,  // dont save unmodified
+  store: new MongoStore({
+    mongooseConnection: db
+  })
 }));
+
 app.use(flash());
 
 //app.use('/lists', lists);

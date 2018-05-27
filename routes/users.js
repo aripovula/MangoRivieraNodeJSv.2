@@ -9,6 +9,7 @@ var user_controller = require('../controllers/userController');
 
 // router.get('/headertypes', admin_controller. headertype_list);
 
+router.get('/login', user_controller. login_room);
 router.get('/bookform/:bookingID', user_controller. list_4book);
 router.get('/buyform/:buyID', user_controller. list_4buy);
 router.get('/infoform/:infoID', user_controller. list_4info);

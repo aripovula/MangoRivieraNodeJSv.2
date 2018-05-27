@@ -63,24 +63,30 @@
     </div>
     <div class="modal-body">
           <p id="maintext"></p>
-          <form id="loginForm"  role="form" method="POST">
-            <label style="color:black">Room # &nbsp; &nbsp; &nbsp;</label>
-            <input id="btname" size="30" type="text" name="name" placeholder="room number" autofocus="autofocus" /><br/>
-            <label style="color:black">Pin code &nbsp; &nbsp;</label>
-            <input id="btsubname" size="30" type="text" name="subname" placeholder="pin-code" style="margin-top:10px;" /> 
-            <br/>
-
-            <span id="btradio" style="color:black">
-              <br/>
-              <p>Room options below are provided for development and testing purposes:</p>
-              <p>( open a new tab, login under a different room # and see how it works for different rooms )</p>
-              <input id="btrad3" type="radio" name="roomnumb" onclick=""  value="opt1" checked> &nbsp; room # B218<br/>
-              <input id="btrad2" type="radio" name="roomnumb" onclick=""  value="opt2"> &nbsp; room # C410<br/>
-              <input id="btrad1" type="radio" name="roomnumb" onclick="" value="opt3"> &nbsp; room # E315<br/>
+          <form id="loginForm" role="form" method="POST">
+            <label style="color:black">Room # &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+            <input id="btroom" size="30" type="text" name="room" placeholder="room number" autofocus="autofocus" /><br/>
+            <label style="color:black">Pin code &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+            <input id="btcode" size="30" type="password" name="code1" placeholder="pin-code" style="margin-top:10px;"/><br/>
+            <label id="btcomment" style="color:black;font-size:14px;">&nbsp; * pin-code is provided in your Welcome package</label>
+            <span id="btconfirmcode">
+              <label style="color:black">Re-type code &nbsp; </label>
+              <input id="btcode2" size="30" type="password" name="code2" placeholder="re-type pin-code" style="margin-top:10px;" /> 
             </span>
-
+          <div id="btroomchoice" class="boxedtransp" style="background: #dddddd !important;">
+            <label id="btcomment" style="color:black;font-size:14px;">&nbsp; ** pin-code would be input by user in real life</label>
+            <span id="btradio" style="color:black">  
+              <p>Room options below are provided for development and testing purposes only:</p>
+              <p>( each room is based on a separate session id.</p>
+              <p>Open a different browser, login under a different room # and see how it works for different rooms )</p>
+              <input id="btrad1" type="radio" name="roomnumb" onclick="setRoomValue(1);"  value="opt1" checked> &nbsp; room # B218<br/>
+              <input id="btrad2" type="radio" name="roomnumb" onclick="setRoomValue(2);"  value="opt2"> &nbsp; room # C410<br/>
+              <input id="btrad3" type="radio" name="roomnumb" onclick="setRoomValue(3);" value="opt3"> &nbsp; room # E315<br/>
+              <a onclick="showModal(2)" href="#">add a new room and pin-code and manually dial in above form to login (Admin only)</a>
+            </span>
+          </div>
             <br/>
-            <button id="Submit" class="button1" onclick="formSubmit()" style="margin-top:10px;">Login</button> &nbsp; &nbsp;
+            <button id="Submit" class="button1" onclick="formSubmitRoom()" style="margin-top:10px;">Login</button> &nbsp; &nbsp;
             <button type="button" class="button2" onclick="modal.style.display = 'none';" style="margin-top:10px;">Cancel</button>
 
           </form>
@@ -104,23 +110,39 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal 
 //( 11, '{{id}}', '{{name}}','sub-name','message',0, 'Edit the header type name:', '')
-function showModal() {
-
-    modal.style.display = "block";
+function showModal(type) {
 
     var fe = getElementVars();
+    if (type == 1) {
+      fe.dconfirmcode.style.display = 'none';
+      fe.dcomment.style.display = 'block';
+      fe.droomchoice.style.display = 'block';
+      fe.dsubmit.innerHTML = "Login";
+      fe.dradio1.checked = true;
+      setRoomValue(1);
+    } else {
+      fe.dconfirmcode.style.display = 'block';
+      fe.dcomment.style.display = 'none';
+      fe.droomchoice.style.display = 'none';
+      fe.dsubmit.innerHTML = "Register";
+      setRoomValue(0);
 
-    fe.dname.setAttribute('value',name);
-    fe.dsubname.setAttribute('value',subname);
-    fe.dtext.innerHTML = name;
+    }
+    modal.style.display = "block";    
 
 }
 
 
 function getElementVars(){
   var fe = new Object();
-    fe.dname = document.getElementById('btname');        
-    fe.dsubname = document.getElementById('btsubname');
+    fe.droom = document.getElementById('btroom');        
+    fe.dcode = document.getElementById('btcode');
+    fe.dcode2 = document.getElementById('btcode2');
+    fe.dconfirmcode = document.getElementById('btconfirmcode');
+    fe.dcomment = document.getElementById('btcomment');
+    fe.droomchoice = document.getElementById('btroomchoice');
+    fe.dradio1 = document.getElementById('btrad1');
+    fe.dsubmit = document.getElementById('Submit');
     return fe;
 }
 
@@ -136,13 +158,17 @@ window.onclick = function(event) {
     }
 }
 
-function formSubmit() {
+function formSubmitRoom() {
+        alert("type = "+type);
       var fe = getElementVars();
 
-      var subname = fe.dsubname.value;
-      var infotype = $("input:radio[name='displaytype']:checked").val();
+      var action;
 
-      var action = "/admin/info_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      
+      if (type == 1) action = "/users/login";
+      if (type == 2) action = "/admin/registerroom";
+      console.log('type='+type);
+      console.log('action='+action);
 
       let formLogin = document.getElementById('loginForm');
       formLogin.setAttribute('action',action).submit();
@@ -150,15 +176,23 @@ function formSubmit() {
       return false;
     };
 
+function setRoomValue(roomN) {
+  var fe = getElementVars();
+  if (roomN == 0) {fe.droom.setAttribute('value','');fe.dcode.setAttribute('value','');}
+  if (roomN == 1) {fe.droom.setAttribute('value',"B218");fe.dcode.setAttribute('value',1122);}
+  if (roomN == 2) {fe.droom.setAttribute('value',"C410");fe.dcode.setAttribute('value',2233);}
+  if (roomN == 3) {fe.droom.setAttribute('value',"E315");fe.dcode.setAttribute('value',3344);}
+}
 
 </script>
 
       <div class="boxedtransp">
         <label id="labl" style="margin-left:5px;">Admin functions: &nbsp; (change any &amp; see tables change, would require password in real life)</label>
         <ul>
-        <li><a onclick="showModal()" href="#"> add new header type </a>
-          <span style="display:inline-block; width: 80px;"></span>
-          <a data-toggle="tooltip" data-placement="bottom" title='Upon a click it deletes all changes made by you to Mongoose collections, restores all initial entries to collections as if you never had changed anything. Defaults are auto-restored every night at 4 a.m. EST !' onclick="" href="#">( Undo all changes, restore defaults )</a>
+        <li>
+          <a onclick="showModal(1)" href="#"> login </a>
+          <br/>
+          <a onclick="showModal(2)" href="#"> register </a>
         </li>
         
         </ul>
