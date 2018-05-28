@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- all CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css">
+    <!-- all JS -->
+    <script src="/js/libs/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../socket.io/socket.io.js"></script>
+    <script type='text/javascript' src='/js/libs/hbs.js'></script>
+    <script src="/js/libs/moment-with-locales.js"></script>
+
+    <!-- fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Assistant' rel='stylesheet'/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- included local html's -->
+    {{!-- <script> $(function(){$("#pickform").load("pickform.html"); });</script> 
+    <script> $(function(){$("#leftpanel").load("leftpanel.html"); });</script>  --}}
+    <script> $(function(){$("#rightpanel").load("../rightpanel.html"); });</script> 
+
+    <title>Mango Riviera</title>
+  
+  </head>
+
+<body style="background-size: 100%; background-attachment: fixed; " background="/static/images/sandbeach.jpeg">
+  
+    <div id="content">
+
+        {{> header firstlink = "About"}}
+      
+      <div id="left">        
+        {{!-- <div id="leftpanel"></div> --}}
+        {{> leftpanel}}
+      </div>
+          
+    <div id="right">
+      {{!-- <div class="boxedtransp"> --}}
+        <div id="rightpanel"></div>
+        {{> sendform}}
+      {{!-- </div> --}}
+    </div>
+  
+    </div>
+        {{> footer}}
+    </div>
+
+        {{> videopartial logout = ""}}
+
+
+
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+    </div>
+    <div class="modal-body">
+          <p id="maintext"></p>
+          <form id="loginForm" role="form" method="POST">
+            <input id="bttype" type="hidden" name="type"/>
+            <label style="color:black">Room # &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+            <input id="btroom" size="30" type="text" name="room" placeholder="room number" autofocus="autofocus" /><br/>
+            <label style="color:black">Pin code &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+            <input id="btcode" size="30" type="password" name="code1" placeholder="pin-code" style="margin-top:10px;"/><br/>
+            <label id="btcomment" style="color:black;font-size:14px;">&nbsp; * pin-code is provided in your Welcome package</label>
+            <span id="btconfirmcode">
+              <label style="color:black">Re-type code &nbsp; </label>
+              <input id="btcode2" size="30" type="password" name="code2" placeholder="re-type pin-code" style="margin-top:10px;" /> 
+            </span>
+          <div id="btroomchoice" class="boxedtransp" style="background: #dddddd !important;">
+            <span id="btradio" style="color:black">  
+              <p>Room options below are provided for development and testing purposes only:</p>
+              <p>pin-code is pre-added for development purposes - would be input by user in real life</p>
+              <p>( each room is based on a separate session id.</p>
+              <p>Open a different browser, login under a different room # and see how it works for different rooms )</p>
+              <input id="btrad1" type="radio" name="roomnumb" onclick="setRoomValue(1);"  value="opt1" checked> &nbsp; room # B218<br/>
+              <input id="btrad2" type="radio" name="roomnumb" onclick="setRoomValue(2);"  value="opt2"> &nbsp; room # C410<br/>
+              <input id="btrad3" type="radio" name="roomnumb" onclick="setRoomValue(3);" value="opt3"> &nbsp; room # E315<br/>
+              <a onclick="showModal(2)" href="#">add a new room and pin-code and manually dial in above form to login (Admin only)</a>
+            </span>
+          </div>
+          <br/>
+            <a id="gologin" onclick="showModal(1)" href="#">go to the login page</a>
+            <br/>
+            <button id="Submit" class="button1" onclick="formSubmitRoom()" style="margin-top:10px;">Login</button> &nbsp; &nbsp;
+
+          </form>
+          <br/>
+    </div>
+
+    <div class="modal-footer">
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+
+
+// When the user clicks the button, open the modal 
+//( 11, '{{id}}', '{{name}}','sub-name','message',0, 'Edit the header type name:', '')
+function showModal(type) {
+
+    var fe = getElementVars();
+    if (type == 1) {
+      fe.dconfirmcode.style.display = 'none';
+      fe.droomchoice.style.display = 'block';
+      fe.dgologin.style.display = 'none';
+      fe.dsubmit.innerHTML = "Login";
+      fe.dradio1.checked = true;
+      setRoomValue(1);
+    } else {
+      fe.dconfirmcode.style.display = 'block';
+      fe.droomchoice.style.display = 'none';
+      fe.dgologin.style.display = 'block';
+      fe.dsubmit.innerHTML = "Register";
+      setRoomValue(0);
+
+    }
+    modal.style.display = "block";    
+    fe.type.setAttribute('value',type);
+}
+
+
+function getElementVars(){
+  var fe = new Object();
+    fe.type = document.getElementById('bttype');
+    fe.droom = document.getElementById('btroom');        
+    fe.dcode = document.getElementById('btcode');
+    fe.dcode2 = document.getElementById('btcode2');
+    fe.dconfirmcode = document.getElementById('btconfirmcode');
+    fe.droomchoice = document.getElementById('btroomchoice');
+    fe.dradio1 = document.getElementById('btrad1');
+    fe.dsubmit = document.getElementById('Submit');
+    fe.dgologin = document.getElementById('gologin');
+    return fe;
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "block";
+    }
+}
+
+function formSubmitRoom() {
+      let fe = getElementVars();
+      let type = fe.type.value;
+
+      let action;
+      
+      if (type == 1) action = "/users/login";
+      if (type == 2) action = "/admin/registerroom";
+      console.log('type='+type);
+      console.log('action='+action);
+
+      let formLogin = document.getElementById('loginForm');
+      formLogin.setAttribute('action',action).submit();
+      formLogin.reset();
+      return false;
+    }
+
+function setRoomValue(roomN) {
+  let fe = getElementVars();
+  if (roomN == 0) {fe.droom.setAttribute('value','');fe.dcode.setAttribute('value','');}
+  if (roomN == 1) {fe.droom.setAttribute('value',"B218");fe.dcode.setAttribute('value',1122);}
+  if (roomN == 2) {fe.droom.setAttribute('value',"C410");fe.dcode.setAttribute('value',2233);}
+  if (roomN == 3) {fe.droom.setAttribute('value',"E315");fe.dcode.setAttribute('value',3344);}
+}
+
+  showModal(1);
+</script>
+    
+      <script src="../js/index2.js"></script>
+  </body>
+</html>

@@ -9,7 +9,7 @@ var user_controller = require('../controllers/userController');
 
 // router.get('/headertypes', admin_controller. headertype_list);
 
-router.get('/login', user_controller. login_room);
+router.post('/login', user_controller. login_room);
 router.get('/bookform/:bookingID', user_controller. list_4book);
 router.get('/buyform/:buyID', user_controller. list_4buy);
 router.get('/infoform/:infoID', user_controller. list_4info);
@@ -17,10 +17,12 @@ router.get('/infoform/:infoID', user_controller. list_4info);
 router.get('/guestsummary/:infoID', user_controller. list_4guest);
 
 router.get('/home', user_controller. list_4home);
+router.get('/homelocked', user_controller. list_4home_locked);
 
 router.post('/userbooking/save', user_controller. users_booking_create_post);
 router.post('/userbuy/save', user_controller. users_buy_create_post);
 
+router.get('/logout', user_controller.log_out);
 
 // router.post('/headertype/save', admin_controller. headertype_create_post);
 

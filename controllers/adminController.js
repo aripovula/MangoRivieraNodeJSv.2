@@ -2,6 +2,7 @@ var HeaderType = require('../models/headertype');
 var Booking_SubType = require('../models/booking_subtype');
 var Sell_SubType = require('../models/sell_subtype');
 var Info_SubType = require('../models/info_subtype');
+var User = require('../models/user');
 // var Book = require('../models/book');
 var async = require('async');
 
@@ -105,7 +106,7 @@ exports.register_room = [
   (req, res, next) => {
     // confirm that user typed same password twice
     console.log('in register_room req.body.room = '+req.body.room);
-    debugge;
+  
     if (req.body.room &&
       req.body.code1 &&
       req.body.code1 === req.body.code2) {
@@ -120,7 +121,7 @@ exports.register_room = [
           return next(error);
         } else {
           req.session.userId = user._id;
-          return res.redirect('/users2233/home');
+          return res.redirect('/users/home');
         }
       });
   

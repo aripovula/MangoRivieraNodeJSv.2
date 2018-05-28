@@ -27,6 +27,7 @@ var app = express();
 
 var server = http.createServer(app);
 var io = socketIO(server); 
+var User = require('../models/user');
 
 console.log("API = "+process.env.WEATHERAPIKEY); 
 
@@ -192,6 +193,25 @@ app.use(flash());
 //app.use('/lists', lists);
 app.use('/admin', admin);
 app.use('/users', users);
+
+app.use(function (req, res, next) {
+  console.log('SSSSS Time:', Date.now())
+  User.findById(req.session.userId)
+  .exec(function (error, user) {
+
+    if (error) {
+      res.redirect('/users/homelocked');
+    } else {
+      if (user === null) {
+        res.redirect('/users/homelocked');      
+      } else {
+        console.log('user2='+user.roomCode);
+        global.room_code = user.roomCode;
+        next();
+      }
+    }
+  });
+});
 
 io.on('connection',(socket) => {
   console.log('New user connected');

@@ -6,6 +6,7 @@ var Sell_SubType = require('../models/sell_subtype');
 var Info_SubType = require('../models/info_subtype');
 var Users_Booking = require('../models/users_booking');
 var Users_Buy = require('../models/users_buy');
+var User = require('../models/user');
 
 // var Book = require('../models/book');
 var async = require('async');
@@ -32,6 +33,31 @@ exports.list_4home = function(req, res, next) {
     },
   ], function(err, results){
       res.render('home.hbs',{
+        list_headertypes: results[0],
+        list_booking_subtypes: results[1],
+        list_sell_subtypes: results[2],
+        list_info_subtypes: results[3],
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] ]
+    });
+  });
+}
+
+exports.list_4home_locked = function(req, res, next) {
+  async.series([
+    function(callback){
+      HeaderType.find({}).sort('-createdAt').exec(callback);
+    },
+    function(callback){
+      Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Sell_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+  ], function(err, results){
+      res.render('homelocked.hbs',{
         list_headertypes: results[0],
         list_booking_subtypes: results[1],
         list_sell_subtypes: results[2],
@@ -699,3 +725,33 @@ exports.booking_subtype_delete_post = function(req, res, next) {
       }
   });
 };
+
+
+// LOG OUT
+exports.log_out = [
+
+  // Validate that the name field is not empty.
+  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
+
+  // Sanitize (trim and escape) the name field.
+  //sanitizeBody('name').trim().escape(),
+
+  // Process request after validation and sanitization.
+
+
+  (req, res, next) => {
+    
+    if (req.session) {
+      // delete session object
+      req.session.destroy(function (err) {
+        if (err) {
+          return next(err);
+        } else {
+          console.log('Logged out');
+          return res.redirect('/');
+        }
+      });
+    }
+  
+
+  }];
