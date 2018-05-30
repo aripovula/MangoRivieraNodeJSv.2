@@ -29,19 +29,19 @@
   
     <div id="content">
 
-        {{> header firstlink = "About"}}
+        {{> header room_n = room_n}}
       
       <div id="left">        
         {{!-- <div id="leftpanel"></div> --}}
         {{> leftpanel}}
       </div>
           
-    <div id="right">
-      {{!-- <div class="boxedtransp"> --}}
+      <div id="right">
+        {{!-- <div class="boxedtransp"> --}}
         <div id="rightpanel"></div>
         {{> sendform}}
-      {{!-- </div> --}}
-    </div>
+        {{!-- </div> --}}
+      </div>
   
     </div>
         {{> footer}}

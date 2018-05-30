@@ -195,23 +195,27 @@ app.use('/admin', admin);
 app.use('/users', users);
 
 app.use(function (req, res, next) {
-  console.log('SSSSS Time:', Date.now())
+  console.log('SSSSS Time:', Date.now());
   User.findById(req.session.userId)
   .exec(function (error, user) {
 
     if (error) {
+      console.log('ERROR 1');
       res.redirect('/users/homelocked');
     } else {
       if (user === null) {
+        console.log('USER NULL');
         res.redirect('/users/homelocked');      
       } else {
-        console.log('user2='+user.roomCode);
-        global.room_code = user.roomCode;
+        console.log('user2 = ' + user.roomCode);
+        req.session.room_code = user.roomCode;
+        console.log('user3 = ' + req.session.room_code); 
         next();
       }
     }
   });
 });
+
 
 io.on('connection',(socket) => {
   console.log('New user connected');

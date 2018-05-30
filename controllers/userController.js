@@ -8,6 +8,9 @@ var Users_Booking = require('../models/users_booking');
 var Users_Buy = require('../models/users_buy');
 var User = require('../models/user');
 
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
 // var Book = require('../models/book');
 var async = require('async');
 var stringify = require('json-stringify');
@@ -31,13 +34,17 @@ exports.list_4home = function(req, res, next) {
     function(callback){
       Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
     },
+    function(callback){
+      User.findById(req.session.userId).exec(callback);
+    },
   ], function(err, results){
       res.render('home.hbs',{
         list_headertypes: results[0],
         list_booking_subtypes: results[1],
         list_sell_subtypes: results[2],
         list_info_subtypes: results[3],
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] ]
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
+        room_n: results[4].roomCode
     });
   });
 }
@@ -62,7 +69,8 @@ exports.list_4home_locked = function(req, res, next) {
         list_booking_subtypes: results[1],
         list_sell_subtypes: results[2],
         list_info_subtypes: results[3],
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] ]
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
+        room_n: results[4].roomCode
     });
   });
 }
@@ -84,6 +92,9 @@ exports.list_4book = function(req, res, next) {
     function(callback){
       Booking_SubType.findOne({'_id': req.params.bookingID}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
     },
+    function(callback){
+      User.findById(req.session.userId).exec(callback);
+    },
   ], function(err, results){
       res.render('bookform.hbs',{
         list_headertypes: results[0],
@@ -92,7 +103,8 @@ exports.list_4book = function(req, res, next) {
         list_info_subtypes: results[3],
         selected_booktype: results[4],
         //bookingID:req.params.buyID,
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.bookingID ]
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.bookingID ],
+        room_n: results[5].roomCode
     });
   });
 }
@@ -111,6 +123,9 @@ exports.list_4buy = function(req, res, next) {
     function(callback){
       Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
     },
+    function(callback){
+      User.findById(req.session.userId).exec(callback);
+    },
   ], function(err, results){
       res.render('buyform.hbs',{
         list_headertypes: results[0],
@@ -118,7 +133,8 @@ exports.list_4buy = function(req, res, next) {
         list_sell_subtypes: results[2],
         list_info_subtypes: results[3],
         for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ],
-        for_buyform: '[{"sel_id":"'+req.params.buyID+'"},'+stringify(results[2])+"]" 
+        for_buyform: '[{"sel_id":"'+req.params.buyID+'"},'+stringify(results[2])+"]" ,
+        room_n: results[4].roomCode
     });
   });
 }
@@ -141,6 +157,9 @@ exports.list_4info = function(req, res, next) {
     function(callback){
       Info_SubType.findOne({'_id': req.params.infoID}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
     },
+    function(callback){
+      User.findById(req.session.userId).exec(callback);
+    },
   ], function(err, results){
       res.render('infoform.hbs',{
         list_headertypes: results[0],
@@ -149,7 +168,8 @@ exports.list_4info = function(req, res, next) {
         list_info_subtypes: results[3],
         sel_info: results[4],
         infoID:req.params.infoId,
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ]
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ],
+        room_n: results[5].roomCode
       });
     });
 }
@@ -168,13 +188,17 @@ exports.list_4guest = function(req, res, next) {
     function(callback){
       Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
     },
+    function(callback){
+      User.findById(req.session.userId).exec(callback);
+    },
   ], function(err, results){
       res.render('home.hbs',{
         list_headertypes: results[0],
         list_booking_subtypes: results[1],
         list_sell_subtypes: results[2],
         list_info_subtypes: results[3],
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] ]
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
+        room_n: results[4].roomCode
     });
   });
 }

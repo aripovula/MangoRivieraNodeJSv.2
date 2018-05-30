@@ -29,7 +29,7 @@
   
     <div id="content">
 
-        {{> header firstlink = "About"}}
+        {{> header room_n = "none"}}
       
       <div id="left">        
         {{!-- <div id="leftpanel"></div> --}}
@@ -69,16 +69,16 @@
             <input id="btroom" size="30" type="text" name="room" placeholder="room number" autofocus="autofocus" /><br/>
             <label style="color:black">Pin code &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
             <input id="btcode" size="30" type="password" name="code1" placeholder="pin-code" style="margin-top:10px;"/><br/>
-            <label id="btcomment" style="color:black;font-size:14px;">&nbsp; * pin-code is provided in your Welcome package</label>
+            <label id="btcomment" style="color:black;font-size:14px;margin:10px;">* pin-code is provided in your Welcome package</label>
             <span id="btconfirmcode">
               <label style="color:black">Re-type code &nbsp; </label>
               <input id="btcode2" size="30" type="password" name="code2" placeholder="re-type pin-code" style="margin-top:10px;" /> 
             </span>
           <div id="btroomchoice" class="boxedtransp" style="background: #dddddd !important;">
             <span id="btradio" style="color:black">  
-              <p>Room options below are provided for development and testing purposes only:</p>
-              <p>pin-code is pre-added for development purposes - would be input by user in real life</p>
-              <p>( each room is based on a separate session id.</p>
+              <p>Room options below are provided for development and testing purposes only.</p>
+              <p>Pin-code is pre-added for development purposes - would be input by user in real life.</p>
+              <p>Each room is based on a separate session id.</p>
               <p>Open a different browser, login under a different room # and see how it works for different rooms )</p>
               <input id="btrad1" type="radio" name="roomnumb" onclick="setRoomValue(1);"  value="opt1" checked> &nbsp; room # B218<br/>
               <input id="btrad2" type="radio" name="roomnumb" onclick="setRoomValue(2);"  value="opt2"> &nbsp; room # C410<br/>
@@ -86,10 +86,12 @@
               <a onclick="showModal(2)" href="#">add a new room and pin-code and manually dial in above form to login (Admin only)</a>
             </span>
           </div>
-          <br/>
-            <a id="gologin" onclick="showModal(1)" href="#">go to the login page</a>
+          <span id="gologin">
             <br/>
-            <button id="Submit" class="button1" onclick="formSubmitRoom()" style="margin-top:10px;">Login</button> &nbsp; &nbsp;
+            <a onclick="showModal(1)" href="#">go to the login page</a>
+            <br/>
+          </span>
+          <button id="Submit" class="button1" onclick="formSubmitRoom()" style="margin-top:10px;">Login</button> &nbsp; &nbsp;
 
           </form>
           <br/>
@@ -117,6 +119,7 @@ function showModal(type) {
     var fe = getElementVars();
     if (type == 1) {
       fe.dconfirmcode.style.display = 'none';
+      fe.dcomment.style.display = 'block';
       fe.droomchoice.style.display = 'block';
       fe.dgologin.style.display = 'none';
       fe.dsubmit.innerHTML = "Login";
@@ -124,6 +127,7 @@ function showModal(type) {
       setRoomValue(1);
     } else {
       fe.dconfirmcode.style.display = 'block';
+      fe.dcomment.style.display = 'none';
       fe.droomchoice.style.display = 'none';
       fe.dgologin.style.display = 'block';
       fe.dsubmit.innerHTML = "Register";
@@ -141,6 +145,7 @@ function getElementVars(){
     fe.droom = document.getElementById('btroom');        
     fe.dcode = document.getElementById('btcode');
     fe.dcode2 = document.getElementById('btcode2');
+    fe.dcomment = document.getElementById('btcomment');
     fe.dconfirmcode = document.getElementById('btconfirmcode');
     fe.droomchoice = document.getElementById('btroomchoice');
     fe.dradio1 = document.getElementById('btrad1');
