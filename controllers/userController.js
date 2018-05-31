@@ -1,19 +1,19 @@
 const moment = require('moment');
 
-var HeaderType = require('../models/headertype');
-var Booking_SubType = require('../models/booking_subtype');
-var Sell_SubType = require('../models/sell_subtype');
-var Info_SubType = require('../models/info_subtype');
-var Users_Booking = require('../models/users_booking');
-var Users_Buy = require('../models/users_buy');
-var User = require('../models/user');
+const HeaderType = require('../models/headertype');
+const Booking_SubType = require('../models/booking_subtype');
+const Sell_SubType = require('../models/sell_subtype');
+const Info_SubType = require('../models/info_subtype');
+const Users_Booking = require('../models/users_booking');
+const Users_Buy = require('../models/users_buy');
+const User = require('../models/user');
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 // var Book = require('../models/book');
-var async = require('async');
-var stringify = require('json-stringify');
+const async = require('async');
+const stringify = require('json-stringify');
 
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
@@ -38,14 +38,18 @@ exports.list_4home = function(req, res, next) {
       User.findById(req.session.userId).exec(callback);
     },
   ], function(err, results){
-      res.render('home.hbs',{
-        list_headertypes: results[0],
-        list_booking_subtypes: results[1],
-        list_sell_subtypes: results[2],
-        list_info_subtypes: results[3],
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
-        room_n: results[4].roomCode
-    });
+      if (results[4] == null) {
+        res.redirect('/users/homelocked'); 
+      } else {
+        res.render('home.hbs',{
+          list_headertypes: results[0],
+          list_booking_subtypes: results[1],
+          list_sell_subtypes: results[2],
+          list_info_subtypes: results[3],
+          for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
+          room_n: results[4].roomCode
+      });
+     }
   });
 }
 
@@ -69,8 +73,7 @@ exports.list_4home_locked = function(req, res, next) {
         list_booking_subtypes: results[1],
         list_sell_subtypes: results[2],
         list_info_subtypes: results[3],
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
-        room_n: results[4].roomCode
+        for_tables: [ results[0] , [results[1], results[2], results[3] ] ]
     });
   });
 }
@@ -96,16 +99,20 @@ exports.list_4book = function(req, res, next) {
       User.findById(req.session.userId).exec(callback);
     },
   ], function(err, results){
-      res.render('bookform.hbs',{
-        list_headertypes: results[0],
-        list_booking_subtypes: results[1],
-        list_sell_subtypes: results[2],
-        list_info_subtypes: results[3],
-        selected_booktype: results[4],
-        //bookingID:req.params.buyID,
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.bookingID ],
-        room_n: results[5].roomCode
-    });
+      if (results[4] == null) {
+        res.redirect('/users/homelocked'); 
+      } else {
+        res.render('bookform.hbs',{
+          list_headertypes: results[0],
+          list_booking_subtypes: results[1],
+          list_sell_subtypes: results[2],
+          list_info_subtypes: results[3],
+          selected_booktype: results[4],
+          //bookingID:req.params.buyID,
+          for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.bookingID ],
+          room_n: results[5].roomCode
+        });
+      }
   });
 }
 
@@ -127,15 +134,19 @@ exports.list_4buy = function(req, res, next) {
       User.findById(req.session.userId).exec(callback);
     },
   ], function(err, results){
-      res.render('buyform.hbs',{
-        list_headertypes: results[0],
-        list_booking_subtypes: results[1],
-        list_sell_subtypes: results[2],
-        list_info_subtypes: results[3],
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ],
-        for_buyform: '[{"sel_id":"'+req.params.buyID+'"},'+stringify(results[2])+"]" ,
-        room_n: results[4].roomCode
-    });
+      if (results[4] == null) {
+        res.redirect('/users/homelocked'); 
+      } else {
+        res.render('buyform.hbs',{
+          list_headertypes: results[0],
+          list_booking_subtypes: results[1],
+          list_sell_subtypes: results[2],
+          list_info_subtypes: results[3],
+          for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ],
+          for_buyform: '[{"sel_id":"'+req.params.buyID+'"},'+stringify(results[2])+"]" ,
+          room_n: results[4].roomCode
+      });
+    }
   });
 }
 
@@ -161,20 +172,25 @@ exports.list_4info = function(req, res, next) {
       User.findById(req.session.userId).exec(callback);
     },
   ], function(err, results){
-      res.render('infoform.hbs',{
-        list_headertypes: results[0],
-        list_booking_subtypes: results[1],
-        list_sell_subtypes: results[2],
-        list_info_subtypes: results[3],
-        sel_info: results[4],
-        infoID:req.params.infoId,
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ],
-        room_n: results[5].roomCode
-      });
+      if (results[4] == null) {
+        res.redirect('/users/homelocked'); 
+      } else {
+        res.render('infoform.hbs',{
+          list_headertypes: results[0],
+          list_booking_subtypes: results[1],
+          list_sell_subtypes: results[2],
+          list_info_subtypes: results[3],
+          sel_info: results[4],
+          infoID:req.params.infoId,
+          for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ],
+          room_n: results[5].roomCode
+        });
+      }
     });
 }
 
 exports.list_4guest = function(req, res, next) {
+
   async.series([
     function(callback){
       HeaderType.find({}).sort('-createdAt').exec(callback);
@@ -191,15 +207,27 @@ exports.list_4guest = function(req, res, next) {
     function(callback){
       User.findById(req.session.userId).exec(callback);
     },
+    function(callback){
+      Users_Booking.find({'userID': req.session.userId}).sort([['date', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Users_Buy.find({'userID': req.session.userId}).sort([['date', 'ascending']]).exec(callback);
+    },
   ], function(err, results){
-      res.render('home.hbs',{
-        list_headertypes: results[0],
-        list_booking_subtypes: results[1],
-        list_sell_subtypes: results[2],
-        list_info_subtypes: results[3],
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
-        room_n: results[4].roomCode
-    });
+      if (results[4] == null) {
+        res.redirect('/users/homelocked'); 
+      } else {
+        res.render('guestsummary.hbs',{
+          list_headertypes: results[0],
+          list_booking_subtypes: results[1],
+          list_sell_subtypes: results[2],
+          list_info_subtypes: results[3],
+          for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
+          room_n: results[4].roomCode,
+          list_bookings: results[5],
+          list_buys: results[6]
+      });
+    }
   });
 }
 
@@ -331,19 +359,24 @@ exports.users_booking_create_post = [
     console.log("stime2="+req.body.bstarttime2);
     console.log("date="+req.body.bdate);
     console.log("date2="+req.body.bdate2);
-    var datePlusTimeStart = req.body.bdate + " " + req.body.bstarttime;
+    var date = req.body.bdate;
+    var TimeStart = req.body.bstarttime;
+    let datePlusTimeStart = req.body.bdate+" "+req.body.bstarttime;
     var momentDate = moment(datePlusTimeStart, 'DD MMM YYYY HH:mm:ss');
     var jsDateStart = momentDate.toDate();
 
-    var datePlusTimeEnd = req.body.bdate + " " + req.body.bendtime;
-    var momentDate = moment(datePlusTimeEnd, 'DD MMM YYYY HH:mm:ss');
-    var jsDateEnd = momentDate.toDate();
+    var TimeEnd = req.body.bendtime;
+    //var momentDate = moment(datePlusTimeEnd, 'DD MMM YYYY HH:mm');
+    //var jsDateEnd = momentDate.toString();
 
     // console.log("name="+name.name);
     var sbt = new Users_Booking({
       bookingname : req.body.bname,
-      starttime : jsDateStart,
-      endtime : jsDateEnd
+      userID : req.session.userId,
+      date : jsDateStart,
+      dateStr : date,
+      starttime : TimeStart,
+      endtime   : TimeEnd
     });
       
       sbt.save(function (err) {
@@ -352,7 +385,7 @@ exports.users_booking_create_post = [
         req.flash('success', 'Successfuly created event! 11');
         console.log("flash= Successfuly created event! 11");
         console.log("from system = " + req.flash('success'));
-        res.redirect('/users/home');
+        res.redirect('/users/guestsummary');
       });
 
 
@@ -380,12 +413,10 @@ exports.users_buy_create_post = [
     //              });
 
     console.log("name="+req.body.bname);
-    console.log("stime="+req.body.bstarttime);
-    console.log("stime2="+req.body.bstarttime2);
-    console.log("date="+req.body.bdate);
-    console.log("date2="+req.body.bdate2);
+    console.log("date="+req.body.pdate);
+    
     var date = req.body.pdate;
-    var momentDate = moment(date, 'DD MMM YYYY HH:mm:ss');
+    var momentDate = moment(date, 'DD MMM YYYY');
     var jsDate = momentDate.toDate();
 
     console.log("date="+date);
@@ -394,9 +425,11 @@ exports.users_buy_create_post = [
     var sbt = new Users_Buy({ 
       buyname : req.body.bname,
       date : jsDate,
-      reservationNumber : "234568",
+      dateStr : date,
+      userID : req.session.userId,
       price : req.body.bprice,
-      qnty : req.body.bqnty[1]
+      qnty : req.body.bqnty[1],
+      total : req.body.bqnty[1] * req.body.bprice
     });
       
       sbt.save(function (err) {
@@ -405,7 +438,7 @@ exports.users_buy_create_post = [
         req.flash('success', 'Successfuly created event! 11');
         console.log("flash= Successfuly created event! 11");
         console.log("from system = " + req.flash('success'));
-        res.redirect('/users/home');
+        res.redirect('/users/guestsummary');
       });
 
 

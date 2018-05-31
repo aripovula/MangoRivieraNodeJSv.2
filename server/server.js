@@ -207,9 +207,9 @@ app.use(function (req, res, next) {
         console.log('USER NULL');
         res.redirect('/users/homelocked');      
       } else {
-        console.log('user2 = ' + user.roomCode);
-        req.session.room_code = user.roomCode;
-        console.log('user3 = ' + req.session.room_code); 
+        // console.log('user2 = ' + user.roomCode);
+        // req.session.room_code = user.roomCode;
+        // console.log('user3 = ' + req.session.room_code); 
         next();
       }
     }

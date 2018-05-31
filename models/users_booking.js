@@ -8,9 +8,11 @@ var Schema = mongoose.Schema;
 var Users_BookingSchema = new Schema({
     bookingname: {type: String, required: true, min: 3, max: 100},
     //date : {type: Date, required: true},
-    reservationNumber: {type: String},
-    starttime: {type: Date, required: true},
-    endtime : {type: Date, required: true}
+    userID: {type: String, required: true},
+    date: {type: Date, required: true},
+    dateStr: {type: String, required: true},
+    starttime: {type: String, required: true},
+    endtime : {type: String, required: true}
 });
 
 // Virtual for this genre instance URL.

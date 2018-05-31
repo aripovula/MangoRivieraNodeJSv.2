@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- all CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css">
+    <!-- all JS -->
+    <script src="/js/libs/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../socket.io/socket.io.js"></script>
+    <script type='text/javascript' src='/js/libs/hbs.js'></script>
+    <script src="/js/libs/moment-with-locales.js"></script>
+
+    <!-- fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Assistant' rel='stylesheet'/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- included local html's -->
+    {{!-- <script> $(function(){$("#pickform").load("pickform.html"); });</script> 
+    <script> $(function(){$("#leftpanel").load("leftpanel.html"); });</script>  --}}
+    <script> $(function(){$("#rightpanel").load("../rightpanel.html"); });</script> 
+
+    <title>Mango Riviera</title>
+  
+  </head>
+
+<body style="background-size: 100%; background-attachment: fixed; " background="/static/images/sandbeach.jpeg">
+  
+    <div id="content">
+
+        {{> header room_n = room_n}}
+      
+      <div id="left">        
+        {{!-- <div id="leftpanel"></div> --}}
+        {{> leftpanel}}
+      </div>
+          
+      <div id="right">
+          <br/>
+        <div class="boxedtransp">
+        {{!-- <div id="rightpanel"></div>
+        {{> sendform}} --}}
+
+
+          {{#if list_bookings}}
+            <label style="color:green;font-size:18px;">&nbsp; &nbsp; Your bookings: </label> ( sorted by start-time minutewise ) 
+            <ul>
+            {{#each list_bookings}}
+              {{#if bookingname}}
+              <li>
+                <label style="color:rgb(36, 115, 141);font-size:16px;">{{{bookingname}}}</label>
+                <p>booked from {{starttime}}  to {{endtime}} on {{dateStr}}</p>
+              </li>
+              {{/if}}
+            {{/each}}
+            </ul>
+          {{else}}
+            <label style="color:green;font-size:18px;">&nbsp; &nbsp; &nbsp; - no bookings made by you are found</label>
+          {{/if}}
+
+          {{#if list_buys}}
+            <label style="color:green;font-size:18px;">&nbsp; &nbsp; Your buys: </label> ( sorted by date )
+            <ul>
+            {{#each list_buys}}
+              {{#if buyname}}
+              <li>
+                <label style="color:rgb(36, 115, 141);font-size:16px;">{{{buyname}}}</label>
+                <p>scheduled for {{dateStr}} - total price is ${{total}} ({{qnty}} at ${{price}} each)</p>
+              </li>
+              {{/if}}
+            {{/each}}
+            </ul>
+          {{else}}
+            <label style="color:green;font-size:18px;">&nbsp; &nbsp; &nbsp; - no buys made by you are found</label>
+          {{/if}}
+        </div>
+      </div>
+  
+    </div>
+        {{> footer}}
+    </div>
+
+      {{> videopartial logout = "Logout"}}
+
+      <script src="../js/index2.js"></script>
+  </body>
+</html>

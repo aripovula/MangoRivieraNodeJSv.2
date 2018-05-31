@@ -8,10 +8,12 @@ var Schema = mongoose.Schema;
 var Users_BuySchema = new Schema({
     buyname: {type: String, required: true, min: 3, max: 100},
     //date : {type: Date, required: true},
-    reservationNumber: {type: String},
+    userID: {type: String, required: true},
     date: {type: Date, required: true},
+    dateStr: {type: String, required: true},
     price: {type: Number, required:true},
-    qnty: {type: Number, required:true}
+    qnty: {type: Number, required:true},
+    total: {type: Number, required:true}
 });
 
 // Virtual for this genre instance URL.

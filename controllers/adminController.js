@@ -43,20 +43,24 @@ exports.admins_list = function(req, res, next) {
     // },
 
   ], function(err, results){
-      res.render('adminpage.hbs',{
-        //title:'custom',
-        list_headertypes: results[0],
-        list_booking_subtypes: results[1],
-        list_sell_subtypes: results[2],
-        list_info_subtypes: results[3],
-        headertypes: results[0].length,
-        booking_subtypes: results[1].length,
-        sell_subtypes: results[2].length,
-        info_subtypes: results[3].length,
-        //all_subtypes: [results[1], results[2], results[3]],
-        for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
-        room_n: results[4].roomCode
-    });
+      if (results[4] == null) {
+        res.redirect('/users/homelocked'); 
+      } else {
+        res.render('adminpage.hbs',{
+          //title:'custom',
+          list_headertypes: results[0],
+          list_booking_subtypes: results[1],
+          list_sell_subtypes: results[2],
+          list_info_subtypes: results[3],
+          headertypes: results[0].length,
+          booking_subtypes: results[1].length,
+          sell_subtypes: results[2].length,
+          info_subtypes: results[3].length,
+          //all_subtypes: [results[1], results[2], results[3]],
+          for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
+          room_n: results[4].roomCode
+      });
+    }
   });
 }
 
