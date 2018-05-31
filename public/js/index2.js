@@ -37,7 +37,8 @@ socket.on('newMessage',function(message){
   // var html = `<p>${message.from} @ ${timePosted}: ${message.text}</p>`;
   // jQuery('#messages').append(html);
 
-  var chatData = [{from:message.from, timePosted:timePosted, text:message.text }];
+  var changedForPrivacy = "##"+message.from.substring(2);
+  var chatData = [{from:changedForPrivacy, timePosted:timePosted, text:message.text }];
   var theTemplateScript = $("#chat-template").html(); 
    if (theTemplateScript != null) {
       var theTemplate = Handlebars.compile(theTemplateScript); 
@@ -62,7 +63,7 @@ jQuery('#message-form').on('submit', function (e) {
   //console.log(createdAt);
   socket.emit('createMessage', 
   {
-    from:'Guest', 
+    from:jQuery('[name=usid]').val(),
     text:jQuery('[name=message]').val(),
     createdAt: createdAt
   }, 

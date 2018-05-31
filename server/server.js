@@ -222,10 +222,10 @@ io.on('connection',(socket) => {
   console.log(__dirname);
 
   // to emit to one user - MYSELF
-  socket.emit('newMessage', generateMessage('Guest services', 'Hey, we wish you a lot of fun! Enjoy it !'));
+  //socket.emit('newMessage', generateMessage('--Guest services', 'Hey, we wish you a lot of fun! Enjoy it !'));
 
   // to emit broadcast message TO ALL EXcluding MYSELF by sending default message
-  socket.broadcast.emit('newMessage', generateMessage('Admin','New user joined'));
+  //socket.broadcast.emit('newMessage', generateMessage('--Admin','New user joined'));
 
   // var x2;
   var x = 0;

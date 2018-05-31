@@ -14,7 +14,7 @@
       //var apiTemp;
 
       var url              = 'https://api.darksky.net/forecast/',
-      locationData         = '39.3469952,-84.4013568',  //'25.8102247,-80.2101822',
+      locationData         = '41.299968,69.2707328', //'39.3469952,-84.4013568',  //'25.8102247,-80.2101822',
       api_call = url + apiKey + "/" + locationData + "?extend=hourly&callback=?";
   
         $.getJSON(api_call, function(forecast) {

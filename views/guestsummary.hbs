@@ -44,7 +44,7 @@
 
 
           {{#if list_bookings}}
-            <label style="color:green;font-size:18px;">&nbsp; &nbsp; Your bookings: </label> ( sorted by start-time minutewise ) 
+            <label style="color:green;font-size:18px;">&nbsp; &nbsp; Your bookings: </label> ( sorted by start-time ) 
             <ul>
             {{#each list_bookings}}
               {{#if bookingname}}
@@ -59,6 +59,7 @@
             <label style="color:green;font-size:18px;">&nbsp; &nbsp; &nbsp; - no bookings made by you are found</label>
           {{/if}}
 
+        <br/><br/>
           {{#if list_buys}}
             <label style="color:green;font-size:18px;">&nbsp; &nbsp; Your buys: </label> ( sorted by date )
             <ul>
