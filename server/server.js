@@ -236,7 +236,7 @@ io.on('connection',(socket) => {
       // x2 = true;
       console.log('SENT IT x = '+x);
       // Your logic here
-      io.sockets.emit('newShoutMessage', generateMessage('Admin',`New BOY joined = ${x}`));
+      io.sockets.emit('newShoutMessage', generateMessage('Admin',`New BOY joined = ${x}`,1));
 
       if (++x === 8) {
           clearInterval(intervalID);
@@ -249,7 +249,7 @@ io.on('connection',(socket) => {
     console.log('createMessage',message);
 
     // to emit broadcast message TO ALL INcluding MYSELF
-    io.emit('newMessage',generateMessage(message.from, message.text));
+    io.emit('newMessage',generateMessage(message.from, message.text, message.intGr));
     callback('from SERVER');
 
     // to emit broadcast message TO ALL EXcluding MYSELF by capturing sent message
@@ -263,7 +263,7 @@ io.on('connection',(socket) => {
 
   socket.on('createShoutMessage', (message, callback) => {
 
-    io.emit('newShoutMessage',generateMessage("", message.text));
+    io.emit('newShoutMessage',generateMessage("", message.text, 1));
     callback(`from Shouter m = ${message.text} from: ${message.from}  @ ${message.createdAt}`);
   });  
 

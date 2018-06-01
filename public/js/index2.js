@@ -4,6 +4,9 @@
 
 var socket = io();
 var htmlPrev="";
+var intGrType=1;
+var intGrTypePrev=1;
+document.getElementById("bb1").style.color = "blue";
 
 socket.on('connect', function() {
   console.log('Connected to server at ');
@@ -37,10 +40,11 @@ socket.on('newMessage',function(message){
   // var html = `<p>${message.from} @ ${timePosted}: ${message.text}</p>`;
   // jQuery('#messages').append(html);
 
+  console.log("intGrType = " + message.intGr);
   var changedForPrivacy = "##"+message.from.substring(2);
   var chatData = [{from:changedForPrivacy, timePosted:timePosted, text:message.text }];
   var theTemplateScript = $("#chat-template").html(); 
-   if (theTemplateScript != null) {
+   if (theTemplateScript != null && message.intGr == intGrType) {
       var theTemplate = Handlebars.compile(theTemplateScript); 
       //  console.log("data = " + chatData[0].from);
       //  console.log("data = " + chatData[0].text);
@@ -65,12 +69,26 @@ jQuery('#message-form').on('submit', function (e) {
   {
     from:jQuery('[name=usid]').val(),
     text:jQuery('[name=message]').val(),
+    intGr: intGrType,
     createdAt: createdAt
   }, 
   function(data){
     //console.log('Got it', data);
+
   });
 });
+
+function setInterestGroup(groupType){
+
+  intGrTypePrev = intGrType;
+  intGrType = groupType;
+  let b1 = 'bb'+groupType;
+  let b2 = 'bb'+intGrTypePrev;
+
+  document.getElementById(b1).style.color = "blue";
+  document.getElementById(b2).style.color = "green";
+  console.log("InterestGroup = " + groupType );
+}
 
 var video = document.getElementById("myVideo");
 var btn = document.getElementById("videoBtn");
