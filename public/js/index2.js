@@ -6,7 +6,8 @@ var socket = io();
 var htmlPrev="";
 var intGrType=1;
 var intGrTypePrev=1;
-document.getElementById("bb1").style.color = "blue";
+var bbel = document.getElementById("bb1");
+if (bbel != null ) bbel.style.color = "blue";
 
 socket.on('connect', function() {
   console.log('Connected to server at ');
@@ -34,30 +35,53 @@ socket.on('newShoutMessage',function(message){
 
 socket.on('newMessage',function(message){
 
-  var timePosted = moment().format('h:mm a');
+  //var timePosted = moment().format('h:mm a');
   //console.log("it works: "+message.text + " timePosted = "+timePosted);
   // var html = `<p><span style="color:red">${message.from}}</span> - <span style="color:gray">@ ${timePosted}} </span> : <span style="color:green"> ${message.text}} </span></p>`;
   // var html = `<p>${message.from} @ ${timePosted}: ${message.text}</p>`;
   // jQuery('#messages').append(html);
 
-  console.log("intGrType = " + message.intGr);
+  //console.log("intGrType = " + message.intGr);
   var changedForPrivacy = "##"+message.from.substring(2);
-  var chatData = [{from:changedForPrivacy, timePosted:timePosted, text:message.text }];
+  var chatData = [{from:changedForPrivacy, timePosted:message.createdAt, text:message.text }];
   var theTemplateScript = $("#chat-template").html(); 
    if (theTemplateScript != null && message.intGr == intGrType) {
       var theTemplate = Handlebars.compile(theTemplateScript); 
       //  console.log("data = " + chatData[0].from);
       //  console.log("data = " + chatData[0].text);
       //  console.log("html = " + theTemplate(chatData));
-      $("#messages").append(theTemplate(chatData)); 
+      $("#messages").append(theTemplate(chatData));
 
       jQuery('[name=message]').val('');
   }
 });
 
+socket.on('topicMessages',function(topicChats){
+
+  $("#messages").html('');
+  console.log("topicChats == null - ", topicChats == null );
+  //console.log("topicChats = "+topicChats[0].text);
+  if (topicChats != null) {
+    
+    for (var i = 0, len = topicChats.length; i < len; i++) {
+      let message = topicChats[i];
+
+      if (message != null) {
+        var changedForPrivacy = "##"+message.room_n.substring(2);
+        var chatData = [{from:changedForPrivacy, timePosted:message.dateTimeStr, text:message.text }];
+        var theTemplateScript = $("#chat-template").html(); 
+        if (theTemplateScript != null && message.intGr == intGrType) {
+            var theTemplate = Handlebars.compile(theTemplateScript); 
+            $("#messages").append(theTemplate(chatData));
+        }
+      }
+    }
+  }
+});
+
 
 // window.addEventListener('submit', function(evt) {
-  //   evt.preventDefault();
+//   evt.preventDefault();
 jQuery('#message-form').on('submit', function (e) {
     e.preventDefault();
   
@@ -88,6 +112,14 @@ function setInterestGroup(groupType){
   document.getElementById(b1).style.color = "blue";
   document.getElementById(b2).style.color = "green";
   console.log("InterestGroup = " + groupType );
+  
+  socket.emit('readTopicMessages', 
+  {
+    intGr: intGrType
+  }, 
+  function(data){
+    console.log('Got it', data);
+  });
 }
 
 var video = document.getElementById("myVideo");

@@ -246,7 +246,6 @@ exports.headertype_list = function(req, res, next) {
       console.log('in controLLER 44');
       res.render('adminpage.hbs', { list_headertypes:  list_headertypes});
     });
-
 };
 
 // Display list of all Booking_SubTypes.

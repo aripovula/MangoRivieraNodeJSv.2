@@ -17,8 +17,10 @@ const stringify = require('json-stringify');
 const MongoStore = require('connect-mongo')(session);
 
 const {generateMessage} = require('./utils/message');
+const {generateMessage4admin} = require('./utils/message4admin');
+const All_Chats = require('../models/all_chats');
 
-var users = require('../routes/users'); 
+var users = require('../routes/users');
 var admin = require('../routes/admin');
 
 const port = process.env.PORT || 3001;
@@ -222,10 +224,10 @@ io.on('connection',(socket) => {
   console.log(__dirname);
 
   // to emit to one user - MYSELF
-  //socket.emit('newMessage', generateMessage('--Guest services', 'Hey, we wish you a lot of fun! Enjoy it !'));
+  //socket.emit('newMessage', generateMessage4admin('--Guest services', 'Hey, we wish you a lot of fun! Enjoy it !'));
 
   // to emit broadcast message TO ALL EXcluding MYSELF by sending default message
-  //socket.broadcast.emit('newMessage', generateMessage('--Admin','New user joined'));
+  //socket.broadcast.emit('newMessage', generateMessage4admin('--Admin','New user joined'));
 
   // var x2;
   var x = 0;
@@ -236,7 +238,7 @@ io.on('connection',(socket) => {
       // x2 = true;
       console.log('SENT IT x = '+x);
       // Your logic here
-      io.sockets.emit('newShoutMessage', generateMessage('Admin',`New BOY joined = ${x}`,1));
+      io.sockets.emit('newShoutMessage', generateMessage4admin('Admin',`New BOY joined = ${x}`,1));
 
       if (++x === 8) {
           clearInterval(intervalID);
@@ -260,6 +262,38 @@ io.on('connection',(socket) => {
     //   });
 
   });  
+
+  socket.on('readTopicMessages', (intGr, callback) => {
+    //console.log('createMessage',message);
+
+    readTopicChats(intGr, function (data){
+      console.log("ANDdata="+data);
+      io.emit('topicMessages', data);
+    });
+
+    // to emit broadcast message TO ALL INcluding MYSELF
+    // var topicMessages = generateTopicMessages(intGr);
+    // console.log("topicMessages in server ="+stringify(topicMessages));
+    // io.emit('topicMessages', topicMessages);
+    //callback('from DB_Reader = '+data  );
+
+    // to emit broadcast message TO ALL EXcluding MYSELF by capturing sent message
+    // socket.broadcast.emit('newMessage',{
+    //     from: message.from,
+    //     text: message.text,
+    //     createdAt: new Date().getTime()
+    //   });
+  });  
+
+  function readTopicChats (intGr, callback){
+    All_Chats
+    .find({ 'intGr': intGr.intGr })
+    //.find()
+    .sort([['dateTime', 'ascending']])
+    .exec(function (err, data){
+      return callback(data);
+    });
+   }
 
   socket.on('createShoutMessage', (message, callback) => {
 
@@ -320,4 +354,3 @@ server.listen(port, () => {
   var createdAt = moment().format('h:mm a');
   console.log(`Server is up on port ${port} - started at ${createdAt}`);
 });
-
