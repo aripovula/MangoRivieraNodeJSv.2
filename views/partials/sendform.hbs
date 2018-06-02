@@ -3,7 +3,9 @@
       <form id="message-form">
         <input id="usid" type="hidden" name="usid" value="{{room_n}}"/>
         <input id="messageinput" style="width: 80%" name="message" type="text" placeholder="message" autofocus autocomplete="off"/>
-        <button>Send</button><br/><label style="width:80%;text-align:center">Interest groups:</label>
+        <button>Send</button><br/>
+        <label style="text-align:left;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Interest groups: </label>
+        <label style="float:right;font-size:14px;">(messages for last 7 days are shown)  &nbsp; &nbsp; </label>
         <div style="margin:4px;">
           <button id="bb1" onclick="setInterestGroup(1);" type="button">General</button>
           <button id="bb2" onclick="setInterestGroup(2);" type="button">Surfing</button>

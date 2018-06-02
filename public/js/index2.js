@@ -4,8 +4,10 @@
 
 var socket = io();
 var htmlPrev="";
+
 var intGrType=1;
 var intGrTypePrev=1;
+if (document.getElementById('bb1') != null) setInterestGroup(1);
 var bbel = document.getElementById("bb1");
 if (bbel != null ) bbel.style.color = "blue";
 

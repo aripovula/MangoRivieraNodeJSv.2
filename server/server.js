@@ -18,10 +18,14 @@ const MongoStore = require('connect-mongo')(session);
 
 const {generateMessage} = require('./utils/message');
 const {generateMessage4admin} = require('./utils/message4admin');
-const All_Chats = require('../models/all_chats');
+const {deleteOldChatsEveryDay} = require('./utils/chatDeleteScheduler');
+deleteOldChatsEveryDay();
 
-var users = require('../routes/users');
-var admin = require('../routes/admin');
+const All_Chats = require('../models/all_chats');
+const User = require('../models/user');
+
+const users = require('../routes/users');
+const admin = require('../routes/admin');
 
 const port = process.env.PORT || 3001;
 
@@ -29,7 +33,7 @@ var app = express();
 
 var server = http.createServer(app);
 var io = socketIO(server); 
-var User = require('../models/user');
+
 
 console.log("API = "+process.env.WEATHERAPIKEY); 
 
@@ -286,6 +290,7 @@ io.on('connection',(socket) => {
   });  
 
   function readTopicChats (intGr, callback){
+
     All_Chats
     .find({ 'intGr': intGr.intGr })
     //.find()
