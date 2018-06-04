@@ -20,6 +20,10 @@ const {generateMessage} = require('./utils/message');
 const {generateMessage4admin} = require('./utils/message4admin');
 const {deleteOldChatsEveryDay} = require('./utils/chatDeleteScheduler');
 deleteOldChatsEveryDay();
+const {constructTable}  = require('./utils/constructTable');
+
+const {getSubname}  = require('./utils/getSubname');
+
 
 const All_Chats = require('../models/all_chats');
 const User = require('../models/user');
@@ -34,6 +38,12 @@ var app = express();
 var server = http.createServer(app);
 var io = socketIO(server); 
 
+var bookingIDs2simulate = [];
+var buyIDs2simulate = [];
+var evenTime = false;
+var thepercentage = [];
+var onlyleft = [];
+simulateTableInfo();
 
 console.log("API = "+process.env.WEATHERAPIKEY); 
 
@@ -103,79 +113,23 @@ app.set('view engine', 'hbs');
 
 
 hbs.registerHelper("showSubname", function(items) {
-  let html = "";
-  let subtype = 0; 
-  items[1].forEach(function(entry) {
-    //html += "<p>Next sub-type:</p>"
-    subtype++;
-    //console.log("entry"+entry[0]);
-    entry.forEach(function(entry2) {
-      console.log("");
-      console.log("");
-      console.log("entry2._id="+entry2._id+"'");
-      console.log("items[2]="+items[2]+"'");
-      if (entry2._id == items[2]) {
-      console.log("WE DID THIIIIIIIS");
-        
-        html += "<label>" + hbs.Utils.escapeExpression(entry2.subname) + " - " + hbs.Utils.escapeExpression(entry2.actionmsg) + "</label><br/><br/>";
-        if (entry2.price != null) html += '<label for="dtp_input2" class="col-md-2 control-label">Price:</label>'
-        if (entry2.price != null) html += '<div class="input-group spinner col-md-10"><p>'+hbs.Utils.escapeExpression(entry2.price)+'$ per unit</p></div>';
-      }
-    });
-  });
+  
+  let html = getSubname(items);
 
   return new hbs.SafeString(html);
 });
 
 hbs.registerHelper("showTables", function(items) {
-    //safeItems = hbs.Utils.escapeExpression(items);  
-    //console.log('headers='+items);
 
-    html = "<ul>";
-    headername = ''; 
-    items[0].forEach(function(entry) {
-      // escape all entries that will be made by users
-      html += "<li>" + hbs.Utils.escapeExpression(entry.name) + "</li>";
-      headername = entry.name;
-    html += "<table><tbody>";
-    //console.log('item 0 subname='+item1[0].subname);
-    let subtype = 0; 
-    items[1].forEach(function(entry) {
-      //html += "<p>Next sub-type:</p>"
-      subtype++;
-      entry.forEach(function(entry2) {
+  let package = constructTable(items);
+  let html = package.view;
+  bookingIDs2simulate = package.bookingIDs;
+  buyIDs2simulate = package.buyIDs;
 
-        //console.log("entry2a="+entry2.parent.name);
-        //console.log("entry2b="+headername);
-        if (entry2.parent.name === headername) {
-          //console.log("entry2="+entry2);
-          // escape all entries that will be made by users
-          html += "<tr>";
-          html += "<td>" + hbs.Utils.escapeExpression(entry2.parent.name) + "</td>";
-          html += "<td>" + hbs.Utils.escapeExpression(entry2.infotype) + "</td>";
-          html += "<td>" + hbs.Utils.escapeExpression(entry2.subname) + "</td>";
-          if (entry2.infotype == "occupancy") html += "<td>? updating... </td>";
-          if (entry2.infotype == "themessage") html += "<td>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
-          if (subtype == 3 && entry2.infotype == "webpage") html += "<td>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
-          if (subtype == 1 || subtype == 2) {
-            if (entry2.infotype == "webpage") html += "<td><a onclick=\"window.open('http://" + hbs.Utils.escapeExpression(entry2.infowebpage) + "', '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=200,left=300,width=600,height=400');\">" + hbs.Utils.escapeExpression(entry2.message) + "</a></td>";
-          }
-          if (subtype == 1) html += "<td><a href='/users/bookform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
-          if (subtype == 2) html += "<td><a href='/users/buyform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
-          if (subtype == 3) html += "<td><a href='/users/infoform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
-          //html += "<td><a href=`/booking/${hbs.Utils.escapeExpression(entry2)`>{{bookNow}}</a></td>";
-          html += "</tr>";
-        }
-        //html += "<li>" + hbs.Utils.escapeExpression(entry2) + "</li><br/>";
-      });
-    });
-    html += "</tbody></table>";
-     
-    
-    });
-    html += "</ul>";
+  console.log('bookingIDs2simulate = '+bookingIDs2simulate.length + '  buyIDs2simulate = '+buyIDs2simulate.length);
+  console.log('bookingIDs2simulate = '+bookingIDs2simulate + '  buyIDs2simulate = '+buyIDs2simulate);
 
-    return new hbs.SafeString(html);
+  return new hbs.SafeString(html);
 });
 
 app.use(bodyParser.json());
@@ -302,15 +256,49 @@ io.on('connection',(socket) => {
 
   socket.on('createShoutMessage', (message, callback) => {
 
-    io.emit('newShoutMessage',generateMessage("", message.text, 1));
+    io.emit('newShoutMessage',generateMessage4admin("", message.text, 1));
     callback(`from Shouter m = ${message.text} from: ${message.from}  @ ${message.createdAt}`);
-  });  
+  });
+
 
   socket.on('disconnect', () => {
     console.log('User is disconnected');
   });  
 
 });
+
+function simulateTableInfo() {
+  //console.log('Simulator = '+bookingIDs2simulate.length);
+
+  for (var i = 0, len = bookingIDs2simulate.length; i < len; i++) {
+    let bookingID = bookingIDs2simulate[i];
+    let percentageChange = Math.floor(Math.random()*(2-1+1)+1);
+    
+    if (thepercentage[i] == null) thepercentage[i] = Math.floor(Math.random()*(80-60+1)+60);
+    if (Math.floor(Math.random()*(2-1+1)+1) == 1) thepercentage[i] = thepercentage[i] - percentageChange; else thepercentage[i] = thepercentage[i] + percentageChange;
+    if (thepercentage[i] < 40) thepercentage[i] = 40;
+    if (thepercentage[i] > 90) thepercentage[i] = 90;
+    let msg = thepercentage[i]+"% occupied";
+  
+    io.emit('data4table',{id:bookingID, msg:msg, evenTime:evenTime});
+    //console.log('Simulator = '+bookingID+" x="+counter);
+  }
+
+  for (var i = 0, len = buyIDs2simulate.length; i < len; i++) {
+    let buyID = buyIDs2simulate[i];
+    let change = Math.floor(Math.random()*(2-1+1)+1);
+    if (onlyleft[i] == null) onlyleft[i] = Math.floor(Math.random()*(70-50+1)+50);
+    onlyleft[i] = onlyleft[i] - change;
+    if (onlyleft[i] < 1) onlyleft[i] = Math.floor(Math.random()*(70-50+1)+50);
+    let msg = "only "+onlyleft[i]+" tickets left";
+  
+    io.emit('data4table',{id:buyID, msg:msg, evenTime:evenTime});
+    //console.log('Simulator = '+bookingID+" x="+counter);
+  }
+  evenTime = !evenTime;
+  setTimeout(simulateTableInfo, 5*1000); // for demo purposes updates every minute
+}
+
 
 app.get('/', (req, res) => {
   res.redirect('/users/home');

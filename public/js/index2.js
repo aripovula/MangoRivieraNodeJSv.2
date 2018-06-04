@@ -11,6 +11,7 @@ if (document.getElementById('bb1') != null) setInterestGroup(1);
 var bbel = document.getElementById("bb1");
 if (bbel != null ) bbel.style.color = "blue";
 
+
 socket.on('connect', function() {
   console.log('Connected to server at ');
 });
@@ -81,6 +82,17 @@ socket.on('topicMessages',function(topicChats){
   }
 });
 
+socket.on('data4table', function(pack){
+  //console.log("book id - "+id);
+    let elem = document.getElementById(pack.id);
+    //elem.setAttribute('value',"40% occupied");
+    //elem.html = 'Occupancy: 40%';
+    
+    if (pack.evenTime) elem.style.color = "blue";
+    if (!pack.evenTime) elem.style.color = "green";
+    elem.innerHTML = pack.msg;
+
+});
 
 // window.addEventListener('submit', function(evt) {
 //   evt.preventDefault();

@@ -57,6 +57,7 @@
                         let a2 = a1[0];
                         console.log("Price2 = "+a2);*/
                         var sel_id = for_buyform2[0].sel_id;
+                        var sid;
                         var subname;
                         var loop_id;
                         var qnty=1;
@@ -106,6 +107,7 @@
                         }
 
                         function displayBuyData(entry){
+                            sid = entry._id;
                             price = entry.price;
                             subname = entry.subname;
                             $("#title").html("<label>" + subname + " - " +entry.actionmsg + "</label>"); 
@@ -126,6 +128,10 @@
                         }
 
                         function formSubmit() {
+
+                            idel = document.getElementById('bid');
+                            idel.setAttribute('value', sid);
+
                             nameel = document.getElementById('bname');
                             nameel.setAttribute('value', subname);
 

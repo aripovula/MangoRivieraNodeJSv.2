@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 //var HeaderType = mongoose.model('HeaderType', HeaderType);
 
 var Users_BuySchema = new Schema({
+    buyID: {type: String, required: true},
     buyname: {type: String, required: true, min: 3, max: 100},
     //date : {type: Date, required: true},
     userID: {type: String, required: true},

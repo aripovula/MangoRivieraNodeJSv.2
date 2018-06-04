@@ -370,6 +370,7 @@ exports.users_booking_create_post = [
 
     // console.log("name="+name.name);
     var sbt = new Users_Booking({
+      bookingID : req.body.bid,
       bookingname : req.body.bname,
       userID : req.session.userId,
       date : jsDateStart,
@@ -422,6 +423,7 @@ exports.users_buy_create_post = [
     console.log("jsDate="+jsDate);
 
     var sbt = new Users_Buy({ 
+      buyID : req.body.bid,
       buyname : req.body.bname,
       date : jsDate,
       dateStr : date,

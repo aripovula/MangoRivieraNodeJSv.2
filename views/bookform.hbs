@@ -70,6 +70,9 @@
 <script>
 
     function formSubmit() {
+        idel = document.getElementById('bid');
+        idel.setAttribute('value','{{selected_booktype._id}}');
+
         nameel = document.getElementById('bname');
         nameel.setAttribute('value','{{selected_booktype.subname}}');
 
