@@ -1,0 +1,46 @@
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+    </div>
+    <div class="modal-body">
+          <p id="maintext"></p>
+          <form id="universalForm"  role="form" method="POST">
+            <input id="btid" type="hidden" name="id"/>
+            <input id="btparent_id" type="hidden" name="parent_id"/>
+            <input id="bttype" type="hidden" name="type"/>
+            <p id="bttext" style="color:red"></p>
+            <input id="btname" size="60" type="text" name="name" placeholder="name" autofocus="autofocus" /> 
+            <input id="btsubname" size="60" type="text" name="subname" placeholder="sub-type name (for first column)" style="margin-top:10px;" autofocus="autofocus" /> 
+            
+            <span id="btradio" style="color:black">
+              <br/>
+              <p>info type (for second column) :</p>
+              <input id="btrad3" type="radio" name="displaytype" onclick="btmsg.style.display = 'block'; bturl.style.display = 'block';"  value="webpage" checked> &nbsp; link to a web page<br/>
+              <input id="btrad2" type="radio" name="displaytype" onclick="btmsg.style.display = 'block'; bturl.style.display = 'none';"  value="themessage"> &nbsp; display message<br/>
+              <span id="btradl1"><input id="btrad1" type="radio" name="displaytype" onclick="btmsg.style.display = 'none'; bturl.style.display = 'none';" value="occupancy"> &nbsp; display current occupancy<br/></span>
+              <span id="btradl4"><input id="btrad4" type="radio" name="displaytype" onclick="btmsg.style.display = 'none'; bturl.style.display = 'none';" value="availability"> &nbsp; display current availability<br/></span>
+            </span>
+            <input id="btmsg" size="60" type="text" name="msg" placeholder="message (for 2nd column)" style="margin-top:10px;"/>
+            <input id="bturl" size="60" type="text" name="url" placeholder="webpage address (message above is displayed as a link)" style="margin-top:10px;"/>
+            
+            <label id="btplab" style="color:black;margin-top:10px;display: none">Price, USD: </label>
+            <input id="btprice" size="10" type="text" name="price" style="display: none"/>
+            <input id="btactionmsg" size="60" type="text" name="actionmsg" placeholder="action message (3rd column-book now, buy ticket, more info, etc.)" style="margin-top:10px;display: none"/>
+            <br/>
+            <button id="Submit" class="button1" onclick="formSubmit()" style="margin-top:10px;">Submit</button>
+            <button type="button" class="button2" onclick="modal.style.display = 'none';" style="margin-top:10px;">Cancel</button>
+
+          </form>
+          <br/>
+    </div>
+
+    <div class="modal-footer">
+    </div>
+  </div>
+
+</div>
+

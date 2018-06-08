@@ -27,6 +27,8 @@ const {getSubname}  = require('./utils/getSubname');
 
 const All_Chats = require('../models/all_chats');
 const User = require('../models/user');
+const Users_Booking = require('../models/users_booking');
+const Users_Buy = require('../models/users_buy');
 
 const users = require('../routes/users');
 const admin = require('../routes/admin');
@@ -45,7 +47,7 @@ var thepercentage = [];
 var onlyleft = [];
 simulateTableInfo();
 
-console.log("API = "+process.env.WEATHERAPIKEY); 
+//console.log("API = "+process.env.WEATHERAPIKEY); 
 
 //Set up default mongoose connection
 var mongoDB = 'mongodb://localhost:27017/MangoRivDB';
@@ -126,8 +128,8 @@ hbs.registerHelper("showTables", function(items) {
   bookingIDs2simulate = package.bookingIDs;
   buyIDs2simulate = package.buyIDs;
 
-  console.log('bookingIDs2simulate = '+bookingIDs2simulate.length + '  buyIDs2simulate = '+buyIDs2simulate.length);
-  console.log('bookingIDs2simulate = '+bookingIDs2simulate + '  buyIDs2simulate = '+buyIDs2simulate);
+  //console.log('bookingIDs2simulate = '+bookingIDs2simulate.length + '  buyIDs2simulate = '+buyIDs2simulate.length);
+  //console.log('bookingIDs2simulate = '+bookingIDs2simulate + '  buyIDs2simulate = '+buyIDs2simulate);
 
   return new hbs.SafeString(html);
 });
@@ -169,7 +171,7 @@ app.use(function (req, res, next) {
       } else {
         // console.log('user2 = ' + user.roomCode);
         // req.session.room_code = user.roomCode;
-        // console.log('user3 = ' + req.session.room_code); 
+        console.log('SESSION ID = ' + req.sessionID); 
         next();
       }
     }
@@ -189,12 +191,12 @@ io.on('connection',(socket) => {
 
   // var x2;
   var x = 0;
-  console.log('new x = '+x);
+  //console.log('new x = '+x);
   // if ( x2 == null || x2 != "true" ) {
   var intervalID = setInterval(function () {
 
       // x2 = true;
-      console.log('SENT IT x = '+x);
+      //console.log('SENT IT x = '+x);
       // Your logic here
       io.sockets.emit('newShoutMessage', generateMessage4admin('Admin',`New BOY joined = ${x}`,1));
 
@@ -206,7 +208,7 @@ io.on('connection',(socket) => {
   // }
 
   socket.on('createMessage', (message, callback) => {
-    console.log('createMessage',message);
+    //console.log('createMessage',message);
 
     // to emit broadcast message TO ALL INcluding MYSELF
     io.emit('newMessage',generateMessage(message.from, message.text, message.intGr));
@@ -225,7 +227,7 @@ io.on('connection',(socket) => {
     //console.log('createMessage',message);
 
     readTopicChats(intGr, function (data){
-      console.log("ANDdata="+data);
+      //console.log("ANDdata="+data);
       io.emit('topicMessages', data);
     });
 
@@ -254,6 +256,29 @@ io.on('connection',(socket) => {
     });
    }
 
+   socket.on('checkSessionStatus', (callback) => {
+
+    checkIfSessionIsActive(function (data){
+      io.emit('SessionStatusBack', data);
+    });
+  });  
+
+   function checkIfSessionIsActive(callback){
+    User.findById(req.session.userId)
+    .exec(function (error, user) {
+  
+      if (error) {
+        callback(false);
+      } else {
+        if (user === null) {
+          callback(false);
+        } else {
+          callback(true);
+        }
+      }
+    });
+   }
+
   socket.on('createShoutMessage', (message, callback) => {
 
     io.emit('newShoutMessage',generateMessage4admin("", message.text, 1));
@@ -271,7 +296,20 @@ function simulateTableInfo() {
   //console.log('Simulator = '+bookingIDs2simulate.length);
 
   for (var i = 0, len = bookingIDs2simulate.length; i < len; i++) {
+    
+    // IF LIVE REAL DATA EXISTED I WOULD GET PERCENTAGE DATA AS FOLLOWS
+    
     let bookingID = bookingIDs2simulate[i];
+    let d = new Date();
+    let anHourAgo = d - 1000 * 60 * 60;
+    let anHourLater = d + 1000 * 60 * 60;
+
+    let capacity = 80; 
+    let currentUsers = Users_Booking.find({ bookingID: bookingID, dateTime: {$gt: anHourAgo}, dateTime: {$lt: anHourLater}}, function(err) {});
+    let currentUsage = currentUsers.length;
+    let percentOccupied = currentUsage / capacity;
+
+    // TO SIMULATE DATA FOLLOWING IS USED
     let percentageChange = Math.floor(Math.random()*(2-1+1)+1);
     
     if (thepercentage[i] == null) thepercentage[i] = Math.floor(Math.random()*(80-60+1)+60);
@@ -290,7 +328,7 @@ function simulateTableInfo() {
     if (onlyleft[i] == null) onlyleft[i] = Math.floor(Math.random()*(70-50+1)+50);
     onlyleft[i] = onlyleft[i] - change;
     if (onlyleft[i] < 1) onlyleft[i] = Math.floor(Math.random()*(70-50+1)+50);
-    let msg = "only "+onlyleft[i]+" tickets left";
+    let msg = onlyleft[i]+" tickets left";
   
     io.emit('data4table',{id:buyID, msg:msg, evenTime:evenTime});
     //console.log('Simulator = '+bookingID+" x="+counter);

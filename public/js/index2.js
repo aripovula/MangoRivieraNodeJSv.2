@@ -91,7 +91,6 @@ socket.on('data4table', function(pack){
     if (pack.evenTime) elem.style.color = "blue";
     if (!pack.evenTime) elem.style.color = "green";
     elem.innerHTML = pack.msg;
-
 });
 
 // window.addEventListener('submit', function(evt) {
@@ -168,3 +167,39 @@ function videoPause() {
 }
 
 setTimeout(function(){ videoPause() }, 4600);
+
+function getJSessionId(){
+  var sid;
+  var strCookies = document.cookie;
+  console.log("strCookies="+strCookies);
+  var cookiearray = strCookies.split(';')
+  for(var i=0; i<cookiearray.length; i++){
+    name = cookiearray[i].split('=')[0];
+    value = cookiearray[i].split('=')[1];
+    if(name == 'sid')
+      sid = value;
+  }
+  return sid;
+}
+
+function checkIfSessionIsActiveEvery20mins() {
+
+  let sessionID = getJSessionId();
+  console.log("sessionID="+sessionID);
+  
+  socket.emit('readTopicMessages', 
+  {
+    sessionID: sessionID
+  }, 
+  function(data){
+    console.log('Got it', data);
+  });
+
+  setTimeout(checkIfSessionIsActiveEvery20mins, 10*60*1000); // for demo purposes updates every minute
+}
+
+checkIfSessionIsActiveEvery20mins();
+
+socket.on('SessionStatusBack',function(status){
+   console.log("session status = " + status);
+});

@@ -1,0 +1,165 @@
+      <div class="boxedtransp">
+        <label id="labl" style="margin-left:5px;">Admin functions: &nbsp; (change any &amp; see tables change, would require password in real life)</label>
+        <ul>
+        <li><a onclick="showModal( 10, '', '', '','sub-name','',0, 'Add a new header type:', '','', '', 0)" href="#"> add new header type </a>
+          <span style="display:inline-block; width: 80px;"></span>
+          <a data-toggle="tooltip" data-placement="bottom" title='Upon a click it deletes all changes made by you to Mongoose collections, restores all initial entries to collections as if you never had changed anything. Defaults are auto-restored every night at 4 a.m. EST !' onclick="" href="#">( Undo all changes, restore defaults )</a>
+        </li>
+        <li><a  href="#"  onclick="myFunction('myDIV')">edit / delete existing header type</a><span style="color:dimgrey;font-size:12px;"> &nbsp; ( {{headertypes}} added )</span><br/></li>
+        <div id="myDIV" style="display:none">
+          
+          {{#if list_headertypes }}
+            <a  href="#"  onclick="myFunction('myDIV')">&nbsp; &nbsp; &nbsp; - list of existing header types - please use relevant buttons:</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no header types are found</label>
+          {{/if}}
+          <ul>
+          {{#each list_headertypes}}
+            <li><span>{{name}}</span> &nbsp; 
+            <a class="addn" onclick="showModal( 11, '{{id}}', '', '{{name}}','sub-name','',0, 'Edit the header type name:', '','', '', 0)" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 12, '{{id}}', '', '{{name}}','sub-name','',0, 'Delete the header type ?', '','', '', 0)" href="#"> delete </a> &nbsp;
+            {{!-- <a class="addn" onclick="showModal( 20, '', '{{id}}', '{{name}}','','',0, 'Add a new booking SUB-type:', '', '', '')" href="#"> add new SUB-type </a> --}}
+            <br/>
+          {{/each}}
+          </ul>
+        </div>
+
+        <li><a  href="#"  onclick='showModalByTypes(JSON.stringify("{{list_headertypes}}"));' >booking SUB-types of existing header types</a><br/></li>
+
+
+
+        <li><a  href="#"  onclick="myFunction('myDIV1')">add new Booking SUB-type</a><br/></li>
+        <div id="myDIV1" style="display:none">
+          
+          {{#if list_headertypes }}
+            <a  href="#"  onclick="myFunction('myDIV1')">&nbsp; &nbsp; &nbsp; - select an existing header type &amp; click add button</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no header types are found</label>
+          {{/if}}
+          <ul>
+          {{#each list_headertypes}}
+            <li><span>{{name}}</span> &nbsp; 
+            <a class="addn" onclick="showModal( 20, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{name}}','','',0, 'Add a new booking SUB-type:', '','', '', 0)" href="#"> add new SUB-type </a>
+            <br/>
+          {{/each}}
+          </ul>
+        </div>
+
+
+
+        <li><a  href="#"  onclick="myFunction('myDIV2')">edit / delete existing Booking SUB-type</a><span style="color:dimgrey;font-size:12px;"> &nbsp; ( {{booking_subtypes}} added )</span><br/></li>
+        <div id="myDIV2" style="display:none">
+
+          {{#if list_booking_subtypes }}
+            <a  href="#"  onclick="myFunction('myDIV2')">&nbsp; &nbsp; &nbsp; - list of existing Booking SUB-types - please use relevant buttons:</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no Booking SUB-types are found</label>
+          {{/if}}
+
+          <ul>
+          {{#each list_booking_subtypes}}
+            <li><span>{{subname}} &nbsp; &nbsp; ( {{parent.name}} )</span> &nbsp; 
+            <a class="addn" onclick="showModal( 21, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the booking SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}', 0)" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 22, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','',0, 'Delete the booking SUB-type ?', '','', '', 0)" href="#"> delete </a> &nbsp; 
+            <br/>
+          {{/each}}
+          </ul>
+        </div>
+
+
+
+        <li><a  href="#"  onclick="myFunction('myDIV3')">add new Sell SUB-type</a><br/></li>
+        <div id="myDIV3" style="display:none">
+          
+          {{#if list_headertypes }}
+            <a  href="#"  onclick="myFunction('myDIV3')">&nbsp; &nbsp; &nbsp; - select an existing header type &amp; click add button</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no header types are found</label>
+          {{/if}}
+          <ul>
+          {{#each list_headertypes}}
+            <li><span>{{name}}</span> &nbsp; 
+            <a class="addn" onclick="showModal( 30, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{name}}','','',0, 'Add a new sell SUB-type:', '','', '', 0)" href="#"> add new SUB-type </a>
+            <br/>
+          {{/each}}
+          </ul>
+        </div>
+
+        
+        
+        
+        <li><a  href="#"  onclick="myFunction('myDIV4')">edit / delete existing Sell SUB-type</a><span style="color:dimgrey;font-size:12px;"> &nbsp; ( {{sell_subtypes}} added )</span><br/></li>
+        <div id="myDIV4" style="display:none">
+
+          {{#if list_sell_subtypes }}
+            <a  href="#"  onclick="myFunction('myDIV4')">&nbsp; &nbsp; &nbsp; - list of existing Sell SUB-types - please use relevant buttons:</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no Sell SUB-types are found</label>
+          {{/if}}
+
+          <ul>
+          {{#each list_sell_subtypes}}
+            <li><span>{{subname}} &nbsp; &nbsp; ( {{parent.name}} )</span> &nbsp; 
+            <a class="addn" onclick="showModal( 31, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the sell SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}', '{{price}}')" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 32, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','',0, 'Delete the sell SUB-type ?', '','', '', 0)" href="#"> delete </a> &nbsp; 
+            <br/>
+          {{/each}}
+          </ul>
+      </div>
+
+
+
+        <li><a  href="#"  onclick="myFunction('myDIV5')">add new Info SUB-type</a><br/></li>
+        <div id="myDIV5" style="display:none">
+          
+          {{#if list_headertypes }}
+            <a  href="#"  onclick="myFunction('myDIV5')">&nbsp; &nbsp; &nbsp; - select an existing header type &amp; click add button</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no header types are found</label>
+          {{/if}}
+          <ul>
+          {{#each list_headertypes}}
+            <li><span>{{name}}</span> &nbsp; 
+            <a class="addn" onclick="showModal( 40, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{name}}','','',0, 'Add a new info SUB-type:', '','', '',0)" href="#"> add new SUB-type </a>
+            <br/>
+          {{/each}}
+          </ul>
+        </div>
+
+
+
+
+        <li><a  href="#"  onclick="myFunction('myDIV6')">edit / delete existing Info SUB-type</a><span style="color:dimgrey;font-size:12px;"> &nbsp; ( {{info_subtypes}} added )</span><br/></li>
+        <div id="myDIV6" style="display:none">
+
+          {{#if list_info_subtypes }}
+            <a  href="#"  onclick="myFunction('myDIV6')">&nbsp; &nbsp; &nbsp; - list of existing Info SUB-types - please use relevant buttons:</a>
+          {{else}}
+            <label style="color:green;font-size:14px;">&nbsp; &nbsp; &nbsp; - no Info SUB-types are found</label>
+          {{/if}}
+
+          <ul>
+          {{#each list_info_subtypes}}
+            <li><span>{{subname}} &nbsp; &nbsp; ( {{parent.name}} )</span> &nbsp; 
+            <a class="addn" onclick="showModal( 41, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the booking SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}', 0)" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 42, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','',0, 'Delete the booking SUB-type ?', '','', '',0)" href="#"> delete </a> &nbsp; 
+            <br/>
+          {{/each}}
+          </ul>
+      </div>
+
+        </ul>
+      </div>
+
+      <div class="boxedtransp">
+        <label>Send Broadcast ( Shoutboard ) message - ( Admin only ) :</label>
+        <div style="height:100px;overflow: scroll;">
+          <ol id="messages"></ol>
+        </div>
+      <form id="message-form">
+        <textarea id="messageinput" rows="3" cols="50" style="width: 80%" name="message" type="text" placeholder="message" autofocus autocomplete="off"></textarea>
+        <br/>
+        <button class="button1">Send</button>
+      </form>
+
+    </div>

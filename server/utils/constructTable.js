@@ -36,13 +36,13 @@ var constructTable = (items) => {
           if (entry2.infotype == "occupancy") {
               html += "<td id='"+entry2._id+"'>? updating... </td>";
               bookingIDs2simulate[nextbooking] = entry2._id;
-              console.log("book"+nextbooking+' = '+bookingIDs2simulate[nextbooking]);
+              //console.log("book"+nextbooking+' = '+bookingIDs2simulate[nextbooking]);
               nextbooking++;
             }
         if (entry2.infotype == "availability") {
             html += "<td id='"+entry2._id+"'>? updating... </td>";
             buyIDs2simulate[nextbuy] = entry2._id;
-            console.log("buy"+nextbuy+' = '+buyIDs2simulate[nextbuy]);
+            //console.log("buy"+nextbuy+' = '+buyIDs2simulate[nextbuy]);
             nextbuy++;
         }
   
