@@ -5,6 +5,7 @@
 		autoclose: 1,
 		todayHighlight: 1,
 		startView: 2,
+		startDate: new Date(),
 		forceParse: 0,
         showMeridian: 1
     });
@@ -15,6 +16,7 @@
 		autoclose: 1,
 		todayHighlight: 1,
 		startView: 2,
+		startDate: new Date(),
 		minView: 2,
 		forceParse: 0
     });
@@ -25,6 +27,7 @@
 		autoclose: 1,
 		todayHighlight: 1,
 		startView: 1,
+		//startDate: new Date(),
 		minView: 0,
 		maxView: 1,
 		forceParse: 0
