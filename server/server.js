@@ -18,6 +18,7 @@ const MongoStore = require('connect-mongo')(session);
 
 const {generateMessage} = require('./utils/message');
 const {generateMessage4admin} = require('./utils/message4admin');
+const {generateShoutMessage} = require('./utils/shoutMessage');
 const {deleteOldChatsEveryDay} = require('./utils/chatDeleteScheduler');
 deleteOldChatsEveryDay();
 const {constructTable}  = require('./utils/constructTable');
@@ -30,32 +31,35 @@ const User = require('../models/user');
 const Users_Booking = require('../models/users_booking');
 const Users_Buy = require('../models/users_buy');
 
+const auth = require('../routes/auth');
 const users = require('../routes/users');
 const admin = require('../routes/admin');
 
 const port = process.env.PORT || 3001;
 
-var app = express();
+const app = express();
 
-var server = http.createServer(app);
-var io = socketIO(server); 
+const server = http.createServer(app);
+const io = socketIO(server); 
 
-var bookingIDs2simulate = [];
-var buyIDs2simulate = [];
-var evenTime = false;
-var thepercentage = [];
-var onlyleft = [];
+let bookingIDs2simulate = [];
+let buyIDs2simulate = [];
+let evenTime = false;
+let thepercentage = [];
+let onlyleft = [];
+let xco = 0;
 simulateTableInfo();
+sendBroadcastMessageEvery10secs();
 
 //console.log("API = "+process.env.WEATHERAPIKEY); 
 
 //Set up default mongoose connection
-var mongoDB = 'mongodb://localhost:27017/MangoRivDB';
+const mongoDB = 'mongodb://localhost:27017/MangoRivDB';
 mongoose.connect(mongoDB);
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
 //Get the default connection
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -153,14 +157,17 @@ app.use(session({
 app.use(flash());
 
 //app.use('/lists', lists);
+
 app.use('/admin', admin);
 app.use('/users', users);
 
 app.use(function (req, res, next) {
   console.log('SSSSS Time:', Date.now());
+  console.log('req.session.userId:', req.session.userId);
   User.findById(req.session.userId)
   .exec(function (error, user) {
 
+    console.log('USER:', user );
     if (error) {
       console.log('ERROR 1');
       res.redirect('/users/homelocked');
@@ -178,7 +185,6 @@ app.use(function (req, res, next) {
   });
 });
 
-
 io.on('connection',(socket) => {
   console.log('New user connected');
   console.log(__dirname);
@@ -190,22 +196,23 @@ io.on('connection',(socket) => {
   //socket.broadcast.emit('newMessage', generateMessage4admin('--Admin','New user joined'));
 
   // var x2;
-  var x = 0;
+  //xco = 0;
   //console.log('new x = '+x);
   // if ( x2 == null || x2 != "true" ) {
-  var intervalID = setInterval(function () {
+  //var intervalID = setInterval(function () {
 
       // x2 = true;
       //console.log('SENT IT x = '+x);
       // Your logic here
-      io.sockets.emit('newShoutMessage', generateMessage4admin('Admin',`New BOY joined = ${x}`,1));
+      //io.sockets.emit('newShoutMessage', generateMessage4admin('Admin',`New BOY joined = ${xco}`,1));
 
-      if (++x === 8) {
-          clearInterval(intervalID);
-          // x2 = false;
-      }
-    }, 4000);
+      // if (++xco >= 8) {
+      //     clearInterval(intervalID);
+      //     // x2 = false;
+      // }
+    //}, 10000);
   // }
+
 
   socket.on('createMessage', (message, callback) => {
     //console.log('createMessage',message);
@@ -291,6 +298,15 @@ io.on('connection',(socket) => {
   });  
 
 });
+
+function sendBroadcastMessageEvery10secs() {
+  //var myPromise = updateWeatherInfo(apiKey);
+  xco++;
+  if (xco >= 10) xco = 0;
+  let message = generateShoutMessage(xco);
+  io.sockets.emit('newShoutMessage', message);
+  setTimeout(sendBroadcastMessageEvery10secs, 10*1000);
+}
 
 function simulateTableInfo() {
   //console.log('Simulator = '+bookingIDs2simulate.length);

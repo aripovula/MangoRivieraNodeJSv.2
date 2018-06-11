@@ -17,8 +17,12 @@
       locationData         = '41.299968,69.2707328', //'39.3469952,-84.4013568',  //'25.8102247,-80.2101822',
       api_call = url + apiKey + "/" + locationData + "?extend=hourly&callback=?";
   
+      console.log("api_call="+api_call);
+
         $.getJSON(api_call, function(forecast) {
         
+          console.log("IN FORECAST REQUEST");
+
           var open = "</span><i style='color:#FF69B4' class='wi ";
           var close = "'></i><span>";
         
@@ -73,7 +77,7 @@
         $('[data-toggle="tooltip"]').tooltip();
       }
     }).catch((e) => {
-      //console.log("Error = "+ e.message);
+      console.log("Error = "+ e.message);
       var html = '<div class="boxed">... could not update the weather info ...</div> ';
       $("#weather_placeholder").html(html);
       

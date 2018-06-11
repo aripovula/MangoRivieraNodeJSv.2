@@ -24,10 +24,6 @@
           </ul>
         </div>
 
-        <li><a  href="#"  onclick='showModalByTypes(JSON.stringify("{{list_headertypes}}"));' >booking SUB-types of existing header types</a><br/></li>
-
-
-
         <li><a  href="#"  onclick="myFunction('myDIV1')">add new Booking SUB-type</a><br/></li>
         <div id="myDIV1" style="display:none">
           
@@ -152,13 +148,11 @@
       </div>
 
       <div class="boxedtransp">
+        <div id="shoutpanel"></div>
         <label>Send Broadcast ( Shoutboard ) message - ( Admin only ) :</label>
-        <div style="height:100px;overflow: scroll;">
-          <ol id="messages"></ol>
-        </div>
-      <form id="message-form">
-        <textarea id="messageinput" rows="3" cols="50" style="width: 80%" name="message" type="text" placeholder="message" autofocus autocomplete="off"></textarea>
-        <br/>
+
+      <form id="shoutMessage-form">
+        <input id="messageinput" style="width: 80%" name="message" type="text" placeholder="message" autofocus autocomplete="off"/>
         <button class="button1">Send</button>
       </form>
 

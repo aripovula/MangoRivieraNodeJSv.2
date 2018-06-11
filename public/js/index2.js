@@ -69,7 +69,7 @@ socket.on('topicMessages',function(topicChats){
     for (var i = 0, len = topicChats.length; i < len; i++) {
       let message = topicChats[i];
 
-      if (message != null) {
+      if (message != null && message.room_n != null) {
         var changedForPrivacy = "##"+message.room_n.substring(2);
         var chatData = [{from:changedForPrivacy, timePosted:message.dateTimeStr, text:message.text }];
         var theTemplateScript = $("#chat-template").html(); 
@@ -113,6 +113,27 @@ jQuery('#message-form').on('submit', function (e) {
     //console.log('Got it', data);
 
   });
+});
+
+jQuery('#shoutMessage-form').on('submit', function (e) {
+  e.preventDefault();
+
+// Do somethin g else
+var createdAt = moment().format('h:mm a');
+var messageTextbox = jQuery('[name=message]');
+//console.log(createdAt);
+socket.emit('createShoutMessage', 
+{
+  from:jQuery('[name=usid]').val(),
+  text:jQuery('[name=message]').val(),
+  intGr: intGrType,
+  createdAt: createdAt
+}, 
+function(data){
+  //console.log('Got it', data);
+
+});
+jQuery('[name=message]').val('');
 });
 
 function setInterestGroup(groupType){
@@ -168,38 +189,38 @@ function videoPause() {
 
 setTimeout(function(){ videoPause() }, 4600);
 
-function getJSessionId(){
-  var sid;
-  var strCookies = document.cookie;
-  console.log("strCookies="+strCookies);
-  var cookiearray = strCookies.split(';')
-  for(var i=0; i<cookiearray.length; i++){
-    name = cookiearray[i].split('=')[0];
-    value = cookiearray[i].split('=')[1];
-    if(name == 'sid')
-      sid = value;
-  }
-  return sid;
-}
+// function getJSessionId(){
+//   var sid;
+//   var strCookies = document.cookie;
+//   console.log("strCookies="+strCookies);
+//   var cookiearray = strCookies.split(';')
+//   for(var i=0; i<cookiearray.length; i++){
+//     name = cookiearray[i].split('=')[0];
+//     value = cookiearray[i].split('=')[1];
+//     if(name == 'sid')
+//       sid = value;
+//   }
+//   return sid;
+// }
 
-function checkIfSessionIsActiveEvery20mins() {
+// function checkIfSessionIsActiveEvery20mins() {
 
-  let sessionID = getJSessionId();
-  console.log("sessionID="+sessionID);
+//   let sessionID = getJSessionId();
+//   console.log("sessionID="+sessionID);
   
-  socket.emit('readTopicMessages', 
-  {
-    sessionID: sessionID
-  }, 
-  function(data){
-    console.log('Got it', data);
-  });
+//   socket.emit('readTopicMessages', 
+//   {
+//     sessionID: sessionID
+//   }, 
+//   function(data){
+//     console.log('Got it', data);
+//   });
 
-  setTimeout(checkIfSessionIsActiveEvery20mins, 10*60*1000); // for demo purposes updates every minute
-}
+//   setTimeout(checkIfSessionIsActiveEvery20mins, 10*60*1000); // for demo purposes updates every minute
+// }
 
-checkIfSessionIsActiveEvery20mins();
+// checkIfSessionIsActiveEvery20mins();
 
-socket.on('SessionStatusBack',function(status){
-   console.log("session status = " + status);
-});
+// socket.on('SessionStatusBack',function(status){
+//    console.log("session status = " + status);
+// });
