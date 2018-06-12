@@ -50,6 +50,7 @@
 
     function getBuyJson(){
         let for_buyform = '{{for_buyform}}';
+        console.log("for_buyform = "+for_buyform);
         for_buyform = for_buyform.replace(/(\r\n\t|\n|\r\t)/gm,"");
         for_buyform = for_buyform.replace(/&quot;/g, '"');
         console.log("Price1 = "+for_buyform);

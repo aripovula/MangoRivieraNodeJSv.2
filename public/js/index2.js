@@ -1,9 +1,6 @@
-// $(document).ready(function () {
-//   pausein5sec();
-// });
-
 var socket = io();
 var htmlPrev="";
+//var html="";
 
 var intGrType=1;
 var intGrTypePrev=1;
@@ -20,10 +17,12 @@ socket.on('disconnect', function() {
   console.log('Disconnected to server');
 });
 
-socket.on('newShoutMessage',function(message){
+socket.emit('readShoutMessages', 
+  function(data){
+    console.log('Got it', data);
+});
 
-  //var timePosted = moment().format('h:mm a');
-  //console.log("it works SHOUT: "+message.text + " timePosted = "+message.createdAt);
+socket.on('newShoutMessage',function(message){
 
   var chatData = [{from:message.from, createdAt:message.createdAt, text:message.text }];
    var theTemplateScript = $("#shout-template").html(); 
@@ -31,7 +30,6 @@ socket.on('newShoutMessage',function(message){
       var theTemplate = Handlebars.compile(theTemplateScript);
       var html = theTemplate(chatData);
       $("#shoutboard").html(html+htmlPrev); 
-      //  $("#shoutboard2").html(html+htmlPrev); 
       htmlPrev = html + htmlPrev;
    }
 });
@@ -81,6 +79,36 @@ socket.on('topicMessages',function(topicChats){
     }
   }
 });
+
+socket.on('shoutMessages',function(topicChats){
+
+  $("#shoutboard").html('');
+  // console.log("topicChats == null - ", topicChats == null );
+  // console.log("topicChats = "+topicChats.length);
+  // console.log("topicChats = "+topicChats[0].text);
+  // console.log("topicChats = "+topicChats[0].createdAt);
+  if (topicChats != null) {
+    
+    for (var i = 0, len = topicChats.length; i < len; i++) {
+      let message = topicChats[i];
+
+      if (message != null ) {
+        var chatData = [{from:message.from, createdAt:message.createdAt, text:message.text }];
+        var theTemplateScript = $("#shout-template").html(); 
+        if (theTemplateScript != null) {
+          var theTemplate = Handlebars.compile(theTemplateScript);
+          
+          // console.log("i="+i);
+          // console.log("htmlPrev = " + htmlPrev);
+          var html = theTemplate(chatData);
+          $("#shoutboard").html(html+htmlPrev); 
+          htmlPrev = html + htmlPrev;
+        }
+      }
+    }
+  }
+});
+
 
 socket.on('data4table', function(pack){
   //console.log("book id - "+id);

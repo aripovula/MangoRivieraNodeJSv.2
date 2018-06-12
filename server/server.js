@@ -21,12 +21,15 @@ const {generateMessage4admin} = require('./utils/message4admin');
 const {generateShoutMessage} = require('./utils/shoutMessage');
 const {deleteOldChatsEveryDay} = require('./utils/chatDeleteScheduler');
 deleteOldChatsEveryDay();
+const {deleteOldShoutsEveryMinute} = require('./utils/shoutDeleteScheduler');
+deleteOldShoutsEveryMinute();
 const {constructTable}  = require('./utils/constructTable');
 
 const {getSubname}  = require('./utils/getSubname');
 
 
 const All_Chats = require('../models/all_chats');
+const All_Shouts = require('../models/all_shouts');
 const User = require('../models/user');
 const Users_Booking = require('../models/users_booking');
 const Users_Buy = require('../models/users_buy');
@@ -263,6 +266,27 @@ io.on('connection',(socket) => {
     });
    }
 
+/////////
+
+socket.on('readShoutMessages', (callback) => {
+
+  readShouts(function (data){
+    io.emit('shoutMessages', data);
+  });
+});  
+
+function readShouts (callback){
+
+  All_Shouts
+  .find({})
+  .sort([['dateTime', 'ascending']])
+  .exec(function (err, data){
+    return callback(data);
+  });
+ }
+
+////////
+   
    socket.on('checkSessionStatus', (callback) => {
 
     checkIfSessionIsActive(function (data){
@@ -302,7 +326,7 @@ io.on('connection',(socket) => {
 function sendBroadcastMessageEvery10secs() {
   //var myPromise = updateWeatherInfo(apiKey);
   xco++;
-  if (xco >= 10) xco = 0;
+  if (xco >= 8) xco = 0;
   let message = generateShoutMessage(xco);
   io.sockets.emit('newShoutMessage', message);
   setTimeout(sendBroadcastMessageEvery10secs, 10*1000);
