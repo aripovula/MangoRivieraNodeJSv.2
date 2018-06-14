@@ -2,11 +2,17 @@ var HeaderType = require('../models/headertype');
 var Booking_SubType = require('../models/booking_subtype');
 var Sell_SubType = require('../models/sell_subtype');
 var Info_SubType = require('../models/info_subtype');
+const Users_Booking = require('../models/users_booking');
+const Users_Buy = require('../models/users_buy');
 var User = require('../models/user');
 // var Book = require('../models/book');
 
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
 var async = require('async');
 const flash = require('express-flash');
+const stringify = require('json-stringify');
 
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
@@ -50,7 +56,8 @@ exports.admins_list = function(req, res, next) {
       if (results[4] == null) {
         res.redirect('/users/homelocked'); 
       } else {
-        //console.log("req.flash('success') 33="+req.flash('success'));
+        //console.log("res.locals.sessionFlash="+res.locals.sessionFlash);
+        //console.log("res.session.cookie.sessionFlash="+req.session.sessionFlash.message);
         res.render('adminpage.hbs',{
           //title:'custom',
           list_headertypes: results[0],
@@ -66,7 +73,8 @@ exports.admins_list = function(req, res, next) {
           room_n: results[4].roomCode,
 
           expressFlash: req.flash('success'), 
-          sessionFlash: res.locals.sessionFlash
+          expressFailureFlash: req.flash('error')
+          //sessionFlash: req.session.sessionFlash
     
       });
     }
@@ -170,10 +178,21 @@ exports.headertype_create_post = [
       );
       
       bt.save(function (err) {
-        if (err) { return next(err); }
+        if (err) {
+
+          return next(err); 
+        }
         // Success 
         // req.flash('success', 'Successfuly created event!');
-        req.flash('success', 'Successfuly created a new Header type');
+        req.flash('success', 'Successfully created a new Header type: ' + req.body.name.toUpperCase());
+
+        // req.session.room_code = "520";
+
+        // req.session.sessionFlash = {
+        //   type: 'success',
+        //   message: 'This is a flash message using custom middleware and express-session.'
+        // }
+
         //console.log("flash= Successfuly created event! 11");
         //console.log("from system = " + req.flash('success'));
         res.redirect('/admin/infoforadmin');
@@ -218,9 +237,7 @@ exports.booking_subtype_create_post = [
       sbt.save(function (err) {
         if (err) { return next(err); }
         // Success
-        req.flash('success', 'Successfuly created event! 11');
-        console.log("flash= Successfuly created event! 11");
-        console.log("from system = " + req.flash('success'));
+        req.flash('success', 'Successfully created a new Booking sub-type: ' + req.body.subname.toUpperCase());
         res.redirect('/admin/infoforadmin');
       });
 
@@ -265,9 +282,7 @@ exports.sell_subtype_create_post = [
       sbt.save(function (err) {
         if (err) { return next(err); }
         // Success
-        req.flash('success', 'Successfuly created event! 11');
-        console.log("flash= Successfuly created event! 11");
-        console.log("from system = " + req.flash('success'));
+        req.flash('success', 'Successfully created a new Sell sub-type: ' + req.body.subname.toUpperCase());
         res.redirect('/admin/infoforadmin');
       });
 
@@ -311,9 +326,7 @@ exports.info_subtype_create_post = [
       sbt.save(function (err) {
         if (err) { return next(err); }
         // Success
-        req.flash('success', 'Successfuly created event! 11');
-        console.log("flash= Successfuly created event! 11");
-        console.log("from system = " + req.flash('success'));
+        req.flash('success', 'Successfully created a new Info sub-type: ' + req.body.subname.toUpperCase());
         res.redirect('/admin/infoforadmin');
       });
 
@@ -358,6 +371,7 @@ exports.headertype_update_post = [
           HeaderType.findByIdAndUpdate(req.params.id, bt, {}, function (err,cback) {
               if (err) { return next(err); }
                  // Successful - redirect to genre detail page.
+                 req.flash('success', 'Successfully updated Header type: ' + req.body.name.toUpperCase());
                  res.redirect('/admin/infoforadmin');
               });
       //}
@@ -404,9 +418,9 @@ exports.headertype_update_post = [
             // Data from form is valid. Update the record.
             Booking_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
                 if (err) { return next(err); }
-                   // Successful - redirect to genre detail page.
-                   res.redirect('/admin/infoforadmin');
-                });
+                req.flash('success', 'Successfully updated Booking sub-type: ' + req.body.subname.toUpperCase());
+                res.redirect('/admin/infoforadmin');
+              });
         //}
     }
   ];
@@ -453,9 +467,10 @@ exports.headertype_update_post = [
             // Data from form is valid. Update the record.
             Sell_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
                 if (err) { return next(err); }
-                   // Successful - redirect to genre detail page.
-                   res.redirect('/admin/infoforadmin');
-                });
+                // Successful - redirect to genre detail page.
+                req.flash('success', 'Successfully updated Sell sub-type: ' + req.body.subname.toUpperCase());
+                res.redirect('/admin/infoforadmin');
+              });
         //}
     }
   ];
@@ -501,9 +516,10 @@ exports.headertype_update_post = [
             // Data from form is valid. Update the record.
             Info_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
                 if (err) { return next(err); }
-                   // Successful - redirect to genre detail page.
-                   res.redirect('/admin/infoforadmin');
-                });
+                // Successful - redirect to genre detail page.
+               req.flash('success', 'Successfully updated Info sub-type: ' + req.body.subname.toUpperCase());
+               res.redirect('/admin/infoforadmin');
+            });
         //}
     }
   ];
@@ -514,25 +530,35 @@ exports.headertype_update_post = [
 exports.headertype_delete_post = function(req, res, next) {
 
   async.parallel({
-      bt: function(callback) {
-        HeaderType.findById(req.params.id).exec(callback);
+      headertype: function(callback) {
+          HeaderType.find({ '_id': req.params.id }).exec(callback);
       },
-      genre_books: function(callback) {
-          Book.find({ 'genre': req.params.id }).exec(callback);
+      booking_subtypes: function(callback) {
+          Booking_SubType.find({ 'parent': req.params.id }).exec(callback);
       },
-  }, function(err, results) {
+      sell_subtypes: function(callback) {
+          Sell_SubType.find({ 'parent': req.params.id }).exec(callback);
+      },
+      info_subtypes: function(callback) {
+          Info_SubType.find({ 'parent': req.params.id }).exec(callback);
+      },
+
+}, function(err, results) {
+      console.log("headertype = "+stringify(results.headertype));
+      console.log("headertype[0].name = "+results.headertype[0].name);
       if (err) { return next(err); }
       // Success
-      if (results.genre_books.length > 0) {
+      if (results.booking_subtypes.length > 0 || results.sell_subtypes.length > 0 || results.info_subtypes.length > 0) {
           // Genre has books. Render in same way as for GET route.
-          res.render('genre_delete', { title: 'Delete Genre', genre: results.genre, genre_books: results.genre_books } );
-          return;
-      }
+          req.flash('error', 'Can not delete the Header type of ' + results.headertype[0].name.toUpperCase()+' - it has existing sub-type(s)');
+          res.redirect('/admin/infoforadmin');
+ }
       else {
           // Genre has no books. Delete object and redirect to the list of genres.
-          Genre.findByIdAndRemove(req.body.id, function deleteGenre(err) {
+          HeaderType.findByIdAndRemove(req.body.id, function deleteHeader(err) {
               if (err) { return next(err); }
               // Success - go to genres list.
+              req.flash('success', 'Header type of ' + results.headertype[0].name.toUpperCase()+' has been deleted !');
               res.redirect('/admin/infoforadmin');
           });
       }
@@ -543,25 +569,30 @@ exports.headertype_delete_post = function(req, res, next) {
 exports.booking_subtype_delete_post = function(req, res, next) {
 
   async.parallel({
-      bt: function(callback) {
-        HeaderType.findById(req.params.id).exec(callback);
+      booking_subtype: function(callback) {
+          Booking_SubType.find({ '_id': req.params.id }).exec(callback);
       },
-      genre_books: function(callback) {
-          Book.find({ 'genre': req.params.id }).exec(callback);
+      users_bookings: function(callback) {
+          Users_Booking.find({ 'bookingID': req.params.id }).exec(callback);
       },
+      users_buys: function(callback) {
+          Users_Buy.find({ 'buyID': req.params.id }).exec(callback);
+      },
+
   }, function(err, results) {
+      console.log("headertype = "+stringify(results.booking_subtype));
+      console.log("headertype[0].name = "+results.booking_subtype[0].subname);
       if (err) { return next(err); }
       // Success
-      if (results.genre_books.length > 0) {
-          // Genre has books. Render in same way as for GET route.
-          res.render('genre_delete', { title: 'Delete Genre', genre: results.genre, genre_books: results.genre_books } );
-          return;
-      }
+      if (results.users_bookings.length > 0 || results.users_buys.length > 0 ) {
+          req.flash('error', 'Can not delete the Booking sub-type of ' + results.booking_subtype[0].subname.toUpperCase()+' - it has existing users bookings');
+          res.redirect('/admin/infoforadmin');
+  }
       else {
-          // Genre has no books. Delete object and redirect to the list of genres.
-          Genre.findByIdAndRemove(req.body.id, function deleteGenre(err) {
+        Booking_SubType.findByIdAndRemove(req.body.id, function deleteBookingSubType(err) {
               if (err) { return next(err); }
               // Success - go to genres list.
+              req.flash('success', 'Booking sub-type of ' + results.booking_subtype[0].subname.toUpperCase()+' has been deleted !');
               res.redirect('/admin/infoforadmin');
           });
       }

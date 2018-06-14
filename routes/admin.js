@@ -17,10 +17,14 @@ router.post('/headertype/save', admin_controller. headertype_create_post);
 
 router.post('/headertype/:id/update', admin_controller.headertype_update_post);
 
+router.post('/headertype/:id/delete', admin_controller.headertype_delete_post);
+
 
 router.post('/booking_subtype/:parent_id/:infotype/save', admin_controller.booking_subtype_create_post);
 
 router.post('/booking_subtype/:id/:parent_id/:infotype/update', admin_controller.booking_subtype_update_post);
+
+router.post('/booking_subtype/:id/delete', admin_controller.booking_subtype_delete_post);
 
 
 router.post('/sell_subtype/:parent_id/:infotype/save', admin_controller.sell_subtype_create_post);

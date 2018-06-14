@@ -435,27 +435,7 @@ app.get('/bad', (req, res) => {
 });
 
 
-// Route that creates a flash message using the express-flash module
-app.all('/express-flash', function( req, res ) {
-  console.log("in /express-flash");
-  req.flash('success', 'This is a flash message using the express-flash module.');
-  res.redirect(301, '/');
-});
 
-// Route that creates a flash message using custom middleware
-app.all('/session-flash', function( req, res ) {
-  console.log("in /session-flash");
-  req.session.sessionFlash = {
-      type: 'success',
-      message: 'This is a flash message using custom middleware and express-session.'
-  }
-  res.redirect(301, '/');
-});
-
-// Route that incorporates flash messages from either req.flash(type) or res.locals.flash
-app.get('/', function( req, res ) {
-  res.render('index', { expressFlash: req.flash('success'), sessionFlash: res.locals.sessionFlash });
-});
 
 // var Forecast = require('forecast.io-bluebird');
 

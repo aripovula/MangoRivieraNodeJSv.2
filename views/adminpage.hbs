@@ -40,9 +40,18 @@
           {{/if}}
 
           {{#if expressFlash}}
-              <div class="alert alert-success"><strong>FLASH URAA!</strong> {{ expressFlash }}</div>
+              <div class="alert alert-success">{{ expressFlash }}</div>
           {{/if}}
 
+          {{#if expressFailureFlash}}
+              <div class="alert alert-warning">{{ expressFailureFlash }}</div>
+          {{/if}}
+
+          {{#if sessionFlash.message}}
+              <div class="{{ sessionFlash.type }}">
+                  <strong>FLASH!</strong> {{ sessionFlash.message }}
+              </div>
+          {{/if}}
 
           {{> modalpartial}}
           {{> adminpanel}}

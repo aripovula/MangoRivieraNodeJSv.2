@@ -42,12 +42,12 @@ function showModal(type, idn, parent_id, name, subname, msg, price, maintext, in
     fe.dtext.style.display = 'block'; if ( type == 10 || type == 11 ) fe.dtext.style.display = 'none';    
     fe.dname.style.display = 'none'; if ( type == 10 || type == 11 ) fe.dname.style.display = 'block';
 
-    if ( type < 14 ) fe.dradio.style.display = 'none'; else fe.dradio.style.display = 'block';
-    if ( type < 14 ) fe.dactionmsg.style.display = 'none';  else fe.dactionmsg.style.display = 'block';
-    if ( type < 14 ) fe.dmsg.style.display = 'none';  else fe.dmsg.style.display = 'block';
-    if ( type < 14 ) fe.durl.style.display = 'none';  else fe.durl.style.display = 'block';
+    if ( type < 14 || type == 22 || type == 32 || type == 42 ) fe.dradio.style.display = 'none'; else fe.dradio.style.display = 'block';
+    if ( type < 14 || type == 22 || type == 32 || type == 42 ) fe.dactionmsg.style.display = 'none';  else fe.dactionmsg.style.display = 'block';
+    if ( type < 14 || type == 22 || type == 32 || type == 42 ) fe.dmsg.style.display = 'none';  else fe.dmsg.style.display = 'block';
+    if ( type < 14 || type == 22 || type == 32 || type == 42 ) fe.durl.style.display = 'none';  else fe.durl.style.display = 'block';
 
-    if ( type < 14 || type == 22 || type == 32 || type == 42 ) fe.dsubname.style.display = 'none'; 
+    if ( type < 14 ) fe.dsubname.style.display = 'none'; 
       else fe.dsubname.style.display = 'block'; 
     fe.dprice.style.display = 'none'; if ( type == 30 || type == 31 ) fe.dprice.style.display = 'block';
     fe.dplab.style.display = 'none'; if ( type == 30 || type == 31 ) fe.dplab.style.display = 'block';
@@ -102,6 +102,8 @@ function formSubmit() {
       console.log("message22="+fe.dmsg.value);
       var idn = fe.idn.value;
       var parent_id = fe.parent_id.value;
+      //fe.name.value = fe.name.value.replace("'", "`");
+      //fe.subname.value = fe.subname.value.replace("'", "`");
       //var name = fe.dname.value;
       var type = fe.type.value;
       //var subname = fe.dsubname.value;
@@ -109,12 +111,16 @@ function formSubmit() {
       console.log("infotype - "+infotype);
       if ( type == 10 ) var act = "/admin/headertype/save";
       if ( type == 11 ) var act = "/admin/headertype/"+idn+"/update";
+      if ( type == 12 ) var act = "/admin/headertype/"+idn+"/delete";
       if ( type == 20 ) var act = "/admin/booking_subtype/"+parent_id+"/"+infotype+"/save";
       if ( type == 21 ) var act = "/admin/booking_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 22 ) var act = "/admin/booking_subtype/"+idn+"/delete";
       if ( type == 30 ) var act = "/admin/sell_subtype/"+parent_id+"/"+infotype+"/save";
       if ( type == 31 ) var act = "/admin/sell_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 32 ) var act = "/admin/sell_subtype/"+idn+"/delete";
       if ( type == 40 ) var act = "/admin/info_subtype/"+parent_id+"/"+infotype+"/save";
       if ( type == 41 ) var act = "/admin/info_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 42 ) var act = "/admin/info_subtype/"+idn+"/delete";
 
       //alert("type = "+type);
       let formuniv = document.getElementById('universalForm');
