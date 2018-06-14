@@ -10,6 +10,7 @@ const User = require('../models/user');
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const flash = require('express-flash');
 
 // var Book = require('../models/book');
 const async = require('async');
@@ -323,9 +324,16 @@ exports.headertype_create_post = [
         // Success 
         // req.flash('success', 'Successfuly created event!');
         req.flash('success', 'Successfuly created event! 11');
-        console.log("flash= Successfuly created event! 11");
-        console.log("from system = " + req.flash('success'));
-        res.redirect('/admin/infoforadmin');
+        //console.log("flash= Successfuly created event! 11");
+        //console.log("from system = " + req.flash('success'));
+        req.session.room_code = "520";
+        
+        req.session.sessionFlash = {
+          type: 'success',
+          message: 'This is a flash message using custom middleware and express-session.'
+        }
+  
+        res.redirect('/session-flash');
       });
   }];
 
@@ -482,8 +490,8 @@ exports.sell_subtype_create_post = [
         if (err) { return next(err); }
         // Success
         req.flash('success', 'Successfuly created event! 11');
-        console.log("flash= Successfuly created event! 11");
-        console.log("from system = " + req.flash('success'));
+        //console.log("flash= Successfuly created event! 11");
+        //console.log("from system = " + req.flash('success'));
         res.redirect('/admin/infoforadmin');
       });
 

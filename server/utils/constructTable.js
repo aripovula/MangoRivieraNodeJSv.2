@@ -14,8 +14,8 @@ var constructTable = (items) => {
     headername = ''; 
     items[0].forEach(function(entry) {
       // escape all entries that will be made by users
-      html += "<li>" + hbs.Utils.escapeExpression(entry.name) + "</li>";
-      headername = entry.name;
+    html += "<li>" + hbs.Utils.escapeExpression(entry.name) + "</li>";
+    headername = entry.name;
     html += "<table><tbody>";
     //console.log('item 0 subname='+item1[0].subname);
     let subtype = 0; 
@@ -30,8 +30,8 @@ var constructTable = (items) => {
           //console.log("entry2="+entry2);
           // escape all entries that will be made by users
           html += "<tr>";
-          html += "<td>" + hbs.Utils.escapeExpression(entry2.parent.name) + "</td>";
-          html += "<td>" + hbs.Utils.escapeExpression(entry2.infotype) + "</td>";
+          // html += "<td>" + hbs.Utils.escapeExpression(entry2.parent.name) + "</td>";
+          // html += "<td>" + hbs.Utils.escapeExpression(entry2.infotype) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.subname) + "</td>";
           if (entry2.infotype == "occupancy") {
               html += "<td id='"+entry2._id+"'>? updating... </td>";

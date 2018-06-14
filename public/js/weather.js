@@ -58,7 +58,7 @@
         setTimeout(function(){
           console.log("updatedF = "+ updated);
           if (!updated) reject("Failed!");     
-        }, 10000); // 10 second timeout is added for possible slow connections
+        }, 10 * 1000); // 10 second timeout is added for possible slow connections
     });
   }
 

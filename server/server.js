@@ -10,8 +10,8 @@ const http = require('http');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
-const flash = require('connect-flash');
 const session = require('express-session');
+const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
 const stringify = require('json-stringify');
 const MongoStore = require('connect-mongo')(session);
@@ -146,7 +146,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname , '../public')));
 
 // set sessions and cookie parser
-//app.use(cookieParser());
+app.use(cookieParser(process.env.SECRET));
 app.use(session({
   secret: process.env.SECRET, 
   cookie: { maxAge: 60 * 60 * 1000 },
@@ -158,6 +158,19 @@ app.use(session({
 }));
 
 app.use(flash());
+
+////
+// app.use(cookieParser('secret'));
+// app.use(session({
+//     cookie: { maxAge: 60000 },
+//     store: sessionStore,
+//     saveUninitialized: true,
+//     resave: 'true',
+//     secret: 'secret'
+// }));
+// app.use(flash());
+
+////
 
 //app.use('/lists', lists);
 
@@ -420,6 +433,45 @@ app.get('/bad', (req, res) => {
     errorMessage: 'Unable to handle request'
   });
 });
+
+
+// Route that creates a flash message using the express-flash module
+app.all('/express-flash', function( req, res ) {
+  console.log("in /express-flash");
+  req.flash('success', 'This is a flash message using the express-flash module.');
+  res.redirect(301, '/');
+});
+
+// Route that creates a flash message using custom middleware
+app.all('/session-flash', function( req, res ) {
+  console.log("in /session-flash");
+  req.session.sessionFlash = {
+      type: 'success',
+      message: 'This is a flash message using custom middleware and express-session.'
+  }
+  res.redirect(301, '/');
+});
+
+// Route that incorporates flash messages from either req.flash(type) or res.locals.flash
+app.get('/', function( req, res ) {
+  res.render('index', { expressFlash: req.flash('success'), sessionFlash: res.locals.sessionFlash });
+});
+
+// var Forecast = require('forecast.io-bluebird');
+
+// var forecast = new Forecast({
+//   key: process.env.WEATHERAPIKEY,
+//   timeout: 9500
+// });
+
+// forecast.fetch(41.299968, 69.2707328)
+// .then(function(result) {
+//     console.dir("WEATHER="+result);
+// })
+// .catch(function(error) {
+//     console.error("ERRRROR "+error);
+// });
+
 
 server.listen(port, () => {
   var createdAt = moment().format('h:mm a');

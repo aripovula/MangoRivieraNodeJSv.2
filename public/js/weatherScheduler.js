@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 function updateWeatherEvery20mins() {
     //var myPromise = updateWeatherInfo(apiKey);
-    applyWeatherInfo(myPromise);
+    //applyWeatherInfo(myPromise);
     setTimeout(updateWeatherEvery20mins, 10*60*1000); // for demo purposes updates every minute
 }
 

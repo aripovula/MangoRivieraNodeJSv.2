@@ -4,7 +4,9 @@ var Sell_SubType = require('../models/sell_subtype');
 var Info_SubType = require('../models/info_subtype');
 var User = require('../models/user');
 // var Book = require('../models/book');
+
 var async = require('async');
+const flash = require('express-flash');
 
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
@@ -12,6 +14,7 @@ const { sanitizeBody } = require('express-validator/filter');
 // Display list of all HeaderTypes.
 
 exports.admins_list = function(req, res, next) {
+  //console.log("req.flash('success') 11="+req.flash('success'));
   async.series([
     function(callback){
       HeaderType.find({}).sort('-createdAt').exec(callback);
@@ -43,9 +46,11 @@ exports.admins_list = function(req, res, next) {
     // },
 
   ], function(err, results){
+      //console.log("req.flash('success') 22="+req.flash('success'));
       if (results[4] == null) {
         res.redirect('/users/homelocked'); 
       } else {
+        //console.log("req.flash('success') 33="+req.flash('success'));
         res.render('adminpage.hbs',{
           //title:'custom',
           list_headertypes: results[0],
@@ -58,7 +63,11 @@ exports.admins_list = function(req, res, next) {
           info_subtypes: results[3].length,
           //all_subtypes: [results[1], results[2], results[3]],
           for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
-          room_n: results[4].roomCode
+          room_n: results[4].roomCode,
+
+          expressFlash: req.flash('success'), 
+          sessionFlash: res.locals.sessionFlash
+    
       });
     }
   });
@@ -94,7 +103,8 @@ exports.booking_subtype_list = function(req, res, next) {
         
       if (err) { return next(err); }
       // Successful, so render.
-      res.render('booking.hbs', { list_headertypes:  list_headertypes});
+      console.log("req.flash('success')="+req.flash('success'));
+      res.render('booking.hbs', { list_headertypes:  list_headertypes, expressFlash: req.flash('success'), sessionFlash: res.locals.sessionFlash });
     });
 
 };
@@ -163,9 +173,9 @@ exports.headertype_create_post = [
         if (err) { return next(err); }
         // Success 
         // req.flash('success', 'Successfuly created event!');
-        req.flash('success', 'Successfuly created event! 11');
-        console.log("flash= Successfuly created event! 11");
-        console.log("from system = " + req.flash('success'));
+        req.flash('success', 'Successfuly created a new Header type');
+        //console.log("flash= Successfuly created event! 11");
+        //console.log("from system = " + req.flash('success'));
         res.redirect('/admin/infoforadmin');
       });
   }];

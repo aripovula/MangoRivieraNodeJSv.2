@@ -39,6 +39,11 @@
               <div class="alert alert-success">SUCCESS: {{success}}</div>
           {{/if}}
 
+          {{#if expressFlash}}
+              <div class="alert alert-success"><strong>FLASH URAA!</strong> {{ expressFlash }}</div>
+          {{/if}}
+
+
           {{> modalpartial}}
           {{> adminpanel}}
       </div>

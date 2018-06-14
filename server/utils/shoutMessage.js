@@ -11,7 +11,7 @@ var messages = [
     "Finally the day of sports contests has come - are you ready to have a lot of fun in the beach area today? Don't forget - contests start at 11:00 in the beach area",
     "Get special discount to the Dolphine Show today - almost two hours of unforgettable show",
     "FREE ice-cream at the 'gelato' spot at the poolside bar from 11 a.m. to 5 p.m. - enjoy the best ice-cream with amazing flavours for free",
-    "NEW: Please visit our 'Rent a cinema' spot in the main lobby to rent your favourite movies in DVDs"
+    "NEW: Please visit our 'Rent a film' spot in the main lobby to rent your favourite movies in DVDs"
 ];
 
 var generateShoutMessage = (intGr) => {
