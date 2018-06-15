@@ -102,8 +102,6 @@ function formSubmit() {
       console.log("message22="+fe.dmsg.value);
       var idn = fe.idn.value;
       var parent_id = fe.parent_id.value;
-      //fe.name.value = fe.name.value.replace("'", "`");
-      //fe.subname.value = fe.subname.value.replace("'", "`");
       //var name = fe.dname.value;
       var type = fe.type.value;
       //var subname = fe.dsubname.value;

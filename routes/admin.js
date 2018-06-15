@@ -31,10 +31,13 @@ router.post('/sell_subtype/:parent_id/:infotype/save', admin_controller.sell_sub
 
 router.post('/sell_subtype/:id/:parent_id/:infotype/update', admin_controller.sell_subtype_update_post);
 
+router.post('/sell_subtype/:id/delete', admin_controller.sell_subtype_delete_post);
+
 
 router.post('/info_subtype/:parent_id/:infotype/save', admin_controller.info_subtype_create_post);
 
 router.post('/info_subtype/:id/:parent_id/:infotype/update', admin_controller.info_subtype_update_post);
 
+router.post('/info_subtype/:id/delete', admin_controller.info_subtype_delete_post);
 
 module.exports = router;

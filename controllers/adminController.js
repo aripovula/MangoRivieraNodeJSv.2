@@ -160,6 +160,65 @@ exports.register_room = [
 
   }];
 
+adminPageWithErrors = (errors, res, req) => {
+  async.series([
+    function(callback){
+      HeaderType.find({}).sort('-createdAt').exec(callback);
+    },
+    function(callback){
+      Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Sell_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
+    },
+    function(callback){
+      User.findById(req.session.userId).exec(callback);
+    },
+
+    // function(callback){
+    //   Sell_SubType
+    //   .find({})
+    //   .populate(
+    //     {
+    //       path: 'parent',
+    //       match: { name: 'Activities'}
+    //     }
+    //   )
+    //   .sort([['subname', 'ascending']])
+    //   .exec(callback);
+    // },
+
+  ], function(err, results){
+      //console.log("req.flash('success') 22="+req.flash('success'));
+      if (results[4] == null) {
+        res.redirect('/users/homelocked'); 
+      } else {
+        //console.log("res.locals.sessionFlash="+res.locals.sessionFlash);
+        //console.log("res.session.cookie.sessionFlash="+req.session.sessionFlash.message);
+        res.render('adminpage.hbs',{
+          //title:'custom',
+          list_headertypes: results[0],
+          list_booking_subtypes: results[1],
+          list_sell_subtypes: results[2],
+          list_info_subtypes: results[3],
+          headertypes: results[0].length,
+          booking_subtypes: results[1].length,
+          sell_subtypes: results[2].length,
+          info_subtypes: results[3].length,
+          //all_subtypes: [results[1], results[2], results[3]],
+          for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
+          room_n: results[4].roomCode,
+          expressFlash: "", 
+          expressFailureFlash: "Error occurred: "+errors
+    
+      });
+    }
+  });
+}
+
 // Handle bt create on POST.
 exports.headertype_create_post = [
 
@@ -179,7 +238,9 @@ exports.headertype_create_post = [
       
       bt.save(function (err) {
         if (err) {
-
+          // console.log("ERRRROR="+err+"/ERROR");
+          // console.log("from system = " + req.flash('success'));
+          // adminPageWithErrors(err, res, req);
           return next(err); 
         }
         // Success 
@@ -580,8 +641,6 @@ exports.booking_subtype_delete_post = function(req, res, next) {
       },
 
   }, function(err, results) {
-      console.log("headertype = "+stringify(results.booking_subtype));
-      console.log("headertype[0].name = "+results.booking_subtype[0].subname);
       if (err) { return next(err); }
       // Success
       if (results.users_bookings.length > 0 || results.users_buys.length > 0 ) {
@@ -596,5 +655,58 @@ exports.booking_subtype_delete_post = function(req, res, next) {
               res.redirect('/admin/infoforadmin');
           });
       }
+  });
+};
+
+// Handle SBT delete on POST.
+exports.sell_subtype_delete_post = function(req, res, next) {
+
+  async.parallel({
+      sell_subtype: function(callback) {
+          Sell_SubType.find({ '_id': req.params.id }).exec(callback);
+      },
+      users_bookings: function(callback) {
+          Users_Booking.find({ 'bookingID': req.params.id }).exec(callback);
+      },
+      users_buys: function(callback) {
+          Users_Buy.find({ 'buyID': req.params.id }).exec(callback);
+      },
+
+  }, function(err, results) {
+      if (err) { return next(err); }
+      // Success
+      if (results.users_bookings.length > 0 || results.users_buys.length > 0 ) {
+          req.flash('error', 'Can not delete the Sell sub-type of ' + results.sell_subtype[0].subname.toUpperCase()+' - it has existing users buys');
+          res.redirect('/admin/infoforadmin');
+  }
+      else {
+        Sell_SubType.findByIdAndRemove(req.body.id, function deleteSellSubType(err) {
+              if (err) { return next(err); }
+              // Success - go to genres list.
+              req.flash('success', 'Sell sub-type of ' + results.sell_subtype[0].subname.toUpperCase()+' has been deleted !');
+              res.redirect('/admin/infoforadmin');
+          });
+      }
+  });
+};
+
+// Handle SBT delete on POST.
+exports.info_subtype_delete_post = function(req, res, next) {
+
+  async.series({
+      info_subtype: function(callback) {
+          Info_SubType.find({ '_id': req.params.id }).exec(callback);
+      },
+
+  }, function(err, results) {
+      if (err) { return next(err); }
+      // Success
+
+        Info_SubType.findByIdAndRemove(req.body.id, function deleteInfoSubType(err) {
+              if (err) { return next(err); }
+              // Success - go to genres list.
+              req.flash('success', 'Info sub-type of ' + results.info_subtype[0].subname.toUpperCase()+' has been deleted !');
+              res.redirect('/admin/infoforadmin');
+        });
   });
 };
