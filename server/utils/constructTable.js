@@ -30,8 +30,8 @@ var constructTable = (items) => {
           //console.log("entry2="+entry2);
           // escape all entries that will be made by users
           html += "<tr>";
-          // html += "<td>" + hbs.Utils.escapeExpression(entry2.parent.name) + "</td>";
-          // html += "<td>" + hbs.Utils.escapeExpression(entry2.infotype) + "</td>";
+           html += "<td>" + hbs.Utils.escapeExpression(entry2.parent.name) + "</td>";
+           html += "<td>" + hbs.Utils.escapeExpression(entry2.infotype) + "</td>";
           html += "<td>" + hbs.Utils.escapeExpression(entry2.subname) + "</td>";
           if (entry2.infotype == "occupancy") {
               html += "<td id='"+entry2._id+"'>? updating... </td>";

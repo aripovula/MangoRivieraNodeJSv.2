@@ -14,7 +14,7 @@ var async = require('async');
 const flash = require('express-flash');
 const stringify = require('json-stringify');
 
-const { body,validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all HeaderTypes.
@@ -161,103 +161,80 @@ exports.register_room = [
   }];
 
 adminPageWithErrors = (errors, res, req) => {
-  async.series([
-    function(callback){
-      HeaderType.find({}).sort('-createdAt').exec(callback);
-    },
-    function(callback){
-      Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
-    },
-    function(callback){
-      Sell_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
-    },
-    function(callback){
-      Info_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
-    },
-    function(callback){
-      User.findById(req.session.userId).exec(callback);
-    },
+  const errors2 = errors.array();
+  let errorsText="";
+  console.log('ABCABC1  err='+stringify(errors2));
+  console.log('ABCABC2  err='+errors2[0].msg);
 
-    // function(callback){
-    //   Sell_SubType
-    //   .find({})
-    //   .populate(
-    //     {
-    //       path: 'parent',
-    //       match: { name: 'Activities'}
-    //     }
-    //   )
-    //   .sort([['subname', 'ascending']])
-    //   .exec(callback);
-    // },
+  for (var i = 0, len = errors2.length; i < len; i++) {
+    errorsText = errorsText + errors2[i].msg+". ";
+  }    
+  req.flash('error', 'Ooops, ' + errorsText);
+  res.redirect('/admin/infoforadmin');
+}
 
-  ], function(err, results){
-      //console.log("req.flash('success') 22="+req.flash('success'));
-      if (results[4] == null) {
-        res.redirect('/users/homelocked'); 
-      } else {
-        //console.log("res.locals.sessionFlash="+res.locals.sessionFlash);
-        //console.log("res.session.cookie.sessionFlash="+req.session.sessionFlash.message);
-        res.render('adminpage.hbs',{
-          //title:'custom',
-          list_headertypes: results[0],
-          list_booking_subtypes: results[1],
-          list_sell_subtypes: results[2],
-          list_info_subtypes: results[3],
-          headertypes: results[0].length,
-          booking_subtypes: results[1].length,
-          sell_subtypes: results[2].length,
-          info_subtypes: results[3].length,
-          //all_subtypes: [results[1], results[2], results[3]],
-          for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
-          room_n: results[4].roomCode,
-          expressFlash: "", 
-          expressFailureFlash: "Error occurred: "+errors
-    
-      });
-    }
-  });
+function isURL(str) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+  '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+  '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+  '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return pattern.test(str);
 }
 
 // Handle bt create on POST.
 exports.headertype_create_post = [
 
   // Validate that the name field is not empty.
-  body('type', 'Type name is required').isLength({ min: 3 }).trim(),
+  check('name', 'Name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-  // Sanitize (trim and escape) the name field.
-  sanitizeBody('name').trim().escape(),
+  // check('username').isEmail(),
+  // // password must be at least 5 chars long
+  // check('password').isLength({ min: 5 }),
+
+  // // Sanitize (trim and escape) the name field.
+  // sanitizeBody('name').trim().escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
-
-    console.log("type="+req.body.name);
-    var bt = new HeaderType(
-        { name: req.body.name }
-      );
       
-      bt.save(function (err) {
-        if (err) {
-          // console.log("ERRRROR="+err+"/ERROR");
-          // console.log("from system = " + req.flash('success'));
-          // adminPageWithErrors(err, res, req);
-          return next(err); 
-        }
-        // Success 
-        // req.flash('success', 'Successfuly created event!');
-        req.flash('success', 'Successfully created a new Header type: ' + req.body.name.toUpperCase());
+      const errors = validationResult(req);
 
-        // req.session.room_code = "520";
+      if (!errors.isEmpty()) {
 
-        // req.session.sessionFlash = {
-        //   type: 'success',
-        //   message: 'This is a flash message using custom middleware and express-session.'
-        // }
+        adminPageWithErrors(errors, res, req);
 
-        //console.log("flash= Successfuly created event! 11");
-        //console.log("from system = " + req.flash('success'));
-        res.redirect('/admin/infoforadmin');
-      });
+      } else {
+
+        console.log("type="+req.body.name);
+        var bt = new HeaderType(
+          { name: req.body.name }
+        );
+  
+        bt.save(function (err) {
+          if (err) {
+            // console.log("ERRRROR="+err+"/ERROR");
+            // console.log("from system = " + req.flash('success'));
+            // adminPageWithErrors(err, res, req);
+            return next(err); 
+          }
+          // Success 
+          // req.flash('success', 'Successfuly created event!');
+          req.flash('success', 'Successfully created a new Header type: ' + req.body.name.toUpperCase());
+
+          // req.session.room_code = "520";
+
+          // req.session.sessionFlash = {
+          //   type: 'success',
+          //   message: 'This is a flash message using custom middleware and express-session.'
+          // }
+
+          //console.log("flash= Successfuly created event! 11");
+          //console.log("from system = " + req.flash('success'));
+          res.redirect('/admin/infoforadmin');
+        });
+      }
   }];
 
 
@@ -267,33 +244,45 @@ exports.headertype_create_post = [
 exports.booking_subtype_create_post = [
 
   // Validate that the name field is not empty.
-  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
+  check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-  // Sanitize (trim and escape) the name field.
-  //sanitizeBody('name').trim().escape(),
+  check('infotype').custom((infotype, { req }) => {
+    if (infotype == "themessage" || infotype == "webpage") {
+      if (req.body.msg.length<3) return Promise.reject('Message is required. Min. length = 3');
+    }
+    return Promise.resolve('valid');
+  }),
 
-  // Process request after validation and sanitization.
-
+  check('infotype').custom((infotype, { req }) => {
+    if ( infotype == "webpage" ) {
+      if (req.body.url.length>0 && !isURL(req.body.url)) return Promise.reject('Webpage is not valid');
+      if (req.body.url.length==0) return Promise.reject('Webpage is required');
+    }
+    return Promise.resolve('valid');
+  }),
+  
+  check('actionmsg', 'Action message is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
   (req, res, next) => {
 
-    // var name = HeaderType.findOne({ '_id': req.params.id })
-    //             .exec( function(err, found_bt) {
-    //                  if (err) { return next(err); }
+    const errors = validationResult(req);
 
-    //                  return found_bt;
-    //              });
+    if (!errors.isEmpty()) {
 
-    console.log("subname="+req.body.subname);
-    // console.log("name="+name.name);
-    var sbt = new Booking_SubType({ 
-      parent : req.params.parent_id,
-      subname : req.body.subname,
-      infotype : req.params.infotype,
-      message : req.body.msg,
-      infowebpage : req.body.url,
-      actionmsg : req.body.actionmsg
-    });
+      adminPageWithErrors(errors, res, req);
+
+    } else {
+
+      console.log("subname="+req.body.subname);
+      // console.log("name="+name.name);
+      var sbt = new Booking_SubType({ 
+        parent : req.params.parent_id,
+        subname : req.body.subname,
+        infotype : req.params.infotype,
+        message : req.body.msg,
+        infowebpage : req.body.url,
+        actionmsg : req.body.actionmsg
+      });
       
       sbt.save(function (err) {
         if (err) { return next(err); }
@@ -301,8 +290,7 @@ exports.booking_subtype_create_post = [
         req.flash('success', 'Successfully created a new Booking sub-type: ' + req.body.subname.toUpperCase());
         res.redirect('/admin/infoforadmin');
       });
-
-
+    }
   }];
 
 
@@ -311,14 +299,26 @@ exports.booking_subtype_create_post = [
 exports.sell_subtype_create_post = [
 
   // Validate that the name field is not empty.
-  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
+    // Validate that the name field is not empty.
+    check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-  // Sanitize (trim and escape) the name field.
-  //sanitizeBody('name').trim().escape(),
-
-  // Process request after validation and sanitization.
-
-
+    check('infotype').custom((infotype, { req }) => {
+      if (infotype == "themessage" || infotype == "webpage") {
+        if (req.body.msg.length<3) return Promise.reject('Message is required. Min. length = 3');
+      }
+      return Promise.resolve('valid');
+    }),
+  
+    check('infotype').custom((infotype, { req }) => {
+      if ( infotype == "webpage" ) {
+        if (req.body.url.length>0 && !isURL(req.body.url)) return Promise.reject('Webpage is not valid');
+        if (req.body.url.length==0) return Promise.reject('Webpage is required');
+      }
+      return Promise.resolve('valid');
+    }),
+    
+    check('actionmsg', 'Action message is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+  
   (req, res, next) => {
 
     // var name = HeaderType.findOne({ '_id': req.params.id })
@@ -328,17 +328,25 @@ exports.sell_subtype_create_post = [
     //                  return found_bt;
     //              });
 
-    console.log("subname="+req.body.subname);
-    // console.log("name="+name.name);
-    var sbt = new Sell_SubType({ 
-      parent : req.params.parent_id,
-      subname : req.body.subname,
-      infotype : req.params.infotype,
-      message : req.body.msg,
-      infowebpage : req.body.url,
-      actionmsg : req.body.actionmsg,
-      price : req.body.price
-    });
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+
+      adminPageWithErrors(errors, res, req);
+
+    } else {
+
+      console.log("subname="+req.body.subname);
+      // console.log("name="+name.name);
+      var sbt = new Sell_SubType({ 
+        parent : req.params.parent_id,
+        subname : req.body.subname,
+        infotype : req.params.infotype,
+        message : req.body.msg,
+        infowebpage : req.body.url,
+        actionmsg : req.body.actionmsg,
+        price : req.body.price
+      });
       
       sbt.save(function (err) {
         if (err) { return next(err); }
@@ -346,7 +354,7 @@ exports.sell_subtype_create_post = [
         req.flash('success', 'Successfully created a new Sell sub-type: ' + req.body.subname.toUpperCase());
         res.redirect('/admin/infoforadmin');
       });
-
+    }
 
   }];
 
@@ -356,41 +364,53 @@ exports.sell_subtype_create_post = [
 exports.info_subtype_create_post = [
 
   // Validate that the name field is not empty.
-  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
+  check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-  // Sanitize (trim and escape) the name field.
-  //sanitizeBody('name').trim().escape(),
+  check('infotype').custom((infotype, { req }) => {
+    if (infotype == "themessage" || infotype == "webpage") {
+      if (req.body.msg.length<3) return Promise.reject('Message is required. Min. length = 3');
+    }
+    return Promise.resolve('valid');
+  }),
 
-  // Process request after validation and sanitization.
-
+  check('infotype').custom((infotype, { req }) => {
+    if ( infotype == "webpage" ) {
+      if (req.body.url.length>0 && !isURL(req.body.url)) return Promise.reject('Webpage is not valid');
+      if (req.body.url.length==0) return Promise.reject('Webpage is required');
+    }
+    return Promise.resolve('valid');
+  }),
+  
+  check('actionmsg', 'Action message is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
   (req, res, next) => {
 
-    // var name = HeaderType.findOne({ '_id': req.params.id })
-    //             .exec( function(err, found_bt) {
-    //                  if (err) { return next(err); }
+    const errors = validationResult(req);
 
-    //                  return found_bt;
-    //              });
+    if (!errors.isEmpty()) {
 
-    console.log("subname="+req.body.subname);
-    // console.log("name="+name.name);
-    var sbt = new Info_SubType({ 
-      parent : req.params.parent_id,
-      subname : req.body.subname,
-      infotype : req.params.infotype,
-      message : req.body.msg,
-      infowebpage : req.body.url,
-      actionmsg : req.body.actionmsg
-    });
-      
+      adminPageWithErrors(errors, res, req);
+
+    } else {
+
+      console.log("subname="+req.body.subname);
+      // console.log("name="+name.name);
+      var sbt = new Info_SubType({ 
+        parent : req.params.parent_id,
+        subname : req.body.subname,
+        infotype : req.params.infotype,
+        message : req.body.msg,
+        infowebpage : req.body.url,
+        actionmsg : req.body.actionmsg
+      });
+        
       sbt.save(function (err) {
         if (err) { return next(err); }
         // Success
         req.flash('success', 'Successfully created a new Info sub-type: ' + req.body.subname.toUpperCase());
         res.redirect('/admin/infoforadmin');
       });
-
+    }
 
   }];
 
@@ -399,19 +419,18 @@ exports.info_subtype_create_post = [
 exports.headertype_update_post = [
    
   // Validate that the name field is not empty.
-  // body('name', 'Genre name required').isLength({ min: 1 }).trim(),
-  
-  // Sanitize (trim and escape) the name field.
-  // sanitizeBody('name').trim().escape(),
+  check('name', 'Name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
 
-      
-      // Extract the validation errors from a request .
-      // const errors = validationResult(req);
+    const errors = validationResult(req);
 
-  // Create a genre object with escaped and trimmed data (and the old id!)
+    if (!errors.isEmpty()) {
+
+      adminPageWithErrors(errors, res, req);
+
+    } else {
       var bt = new HeaderType(
         {
         name: req.body.name,
@@ -422,20 +441,13 @@ exports.headertype_update_post = [
       console.log("IIIDD="+req.params.id);
       console.log("NNNAme="+req.body.name);
 
-      // if (!errors.isEmpty()) {
-      //     // There are errors. Render the form again with sanitized values and error messages.
-      //     res.render('genre_form', { title: 'Update Genre', genre: genre, errors: errors.array()});
-      // return;
-      // }
-      // else {
-          // Data from form is valid. Update the record.
           HeaderType.findByIdAndUpdate(req.params.id, bt, {}, function (err,cback) {
               if (err) { return next(err); }
                  // Successful - redirect to genre detail page.
                  req.flash('success', 'Successfully updated Header type: ' + req.body.name.toUpperCase());
                  res.redirect('/admin/infoforadmin');
               });
-      //}
+    }
   }
 ];
   
@@ -445,44 +457,53 @@ exports.headertype_update_post = [
 // Handle SBT update on POST.
   exports.booking_subtype_update_post = [
    
-    // Validate that the name field is not empty.
-    // body('name', 'Genre name required').isLength({ min: 1 }).trim(),
-    
-    // Sanitize (trim and escape) the name field.
-    // sanitizeBody('name').trim().escape(),
+  // Validate that the name field is not empty.
+  check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+
+  check('infotype').custom((infotype, { req }) => {
+    if (infotype == "themessage" || infotype == "webpage") {
+      if (req.body.msg.length<3) return Promise.reject('Message is required. Min. length = 3');
+    }
+    return Promise.resolve('valid');
+  }),
+
+  check('infotype').custom((infotype, { req }) => {
+    if ( infotype == "webpage" ) {
+      if (req.body.url.length>0 && !isURL(req.body.url)) return Promise.reject('Webpage is not valid');
+      if (req.body.url.length==0) return Promise.reject('Webpage is required');
+    }
+    return Promise.resolve('valid');
+  }),
+  
+  check('actionmsg', 'Action message is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
   
     // Process request after validation and sanitization.
     (req, res, next) => {
   
-        
-        // Extract the validation errors from a request .
-        // const errors = validationResult(req);
-  
-    // Create a genre object with escaped and trimmed data (and the old id!)
-    var sbt = new Booking_SubType({ 
-      _id: req.params.id,
-      parent:req.params.parent_id,
-      subname: req.body.subname,
-      infotype : req.params.infotype,
-      message : req.body.msg,
-      infowebpage : req.body.url,
-      actionmsg : req.body.actionmsg
+      const errors = validationResult(req);
 
-    });
+      if (!errors.isEmpty()) {
   
-        // if (!errors.isEmpty()) {
-        //     // There are errors. Render the form again with sanitized values and error messages.
-        //     res.render('genre_form', { title: 'Update Genre', genre: genre, errors: errors.array()});
-        // return;
-        // }
-        // else {
-            // Data from form is valid. Update the record.
+        adminPageWithErrors(errors, res, req);
+  
+      } else {
+        var sbt = new Booking_SubType({ 
+          _id: req.params.id,
+          parent:req.params.parent_id,
+          subname: req.body.subname,
+          infotype : req.params.infotype,
+          message : req.body.msg,
+          infowebpage : req.body.url,
+          actionmsg : req.body.actionmsg
+
+        });
+  
             Booking_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
                 if (err) { return next(err); }
                 req.flash('success', 'Successfully updated Booking sub-type: ' + req.body.subname.toUpperCase());
                 res.redirect('/admin/infoforadmin');
               });
-        //}
+      }
     }
   ];
 
@@ -493,46 +514,53 @@ exports.headertype_update_post = [
   // Handle SST update on POST.
   exports.sell_subtype_update_post = [
    
-    // Validate that the name field is not empty.
-    // body('name', 'Genre name required').isLength({ min: 1 }).trim(),
-    
-    // Sanitize (trim and escape) the name field.
-    // sanitizeBody('name').trim().escape(),
+  // Validate that the name field is not empty.
+  check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+
+  check('infotype').custom((infotype, { req }) => {
+    if (infotype == "themessage" || infotype == "webpage") {
+      if (req.body.msg.length<3) return Promise.reject('Message is required. Min. length = 3');
+    }
+    return Promise.resolve('valid');
+  }),
+
+  check('infotype').custom((infotype, { req }) => {
+    if ( infotype == "webpage" ) {
+      if (req.body.url.length>0 && !isURL(req.body.url)) return Promise.reject('Webpage is not valid');
+      if (req.body.url.length==0) return Promise.reject('Webpage is required');
+    }
+    return Promise.resolve('valid');
+  }),
   
-    // Process request after validation and sanitization.
+  check('actionmsg', 'Action message is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+
     (req, res, next) => {
   
-        
-        // Extract the validation errors from a request .
-        // const errors = validationResult(req);
-  
-    // Create a genre object with escaped and trimmed data (and the old id!)
-    var sbt = new Sell_SubType({ 
-      _id: req.params.id,
-      parent:req.params.parent_id,
-      subname: req.body.subname,
-      infotype : req.params.infotype,
-      message : req.body.msg,
-      infowebpage : req.body.url,
-      actionmsg : req.body.actionmsg,
-      price : req.body.price
+      const errors = validationResult(req);
 
-    });
+      if (!errors.isEmpty()) {
   
-        // if (!errors.isEmpty()) {
-        //     // There are errors. Render the form again with sanitized values and error messages.
-        //     res.render('genre_form', { title: 'Update Genre', genre: genre, errors: errors.array()});
-        // return;
-        // }
-        // else {
-            // Data from form is valid. Update the record.
+        adminPageWithErrors(errors, res, req);
+  
+      } else {
+        var sbt = new Sell_SubType({ 
+          _id: req.params.id,
+          parent:req.params.parent_id,
+          subname: req.body.subname,
+          infotype : req.params.infotype,
+          message : req.body.msg,
+          infowebpage : req.body.url,
+          actionmsg : req.body.actionmsg,
+          price : req.body.price
+        });
+  
             Sell_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
                 if (err) { return next(err); }
                 // Successful - redirect to genre detail page.
                 req.flash('success', 'Successfully updated Sell sub-type: ' + req.body.subname.toUpperCase());
                 res.redirect('/admin/infoforadmin');
               });
-        //}
+      }
     }
   ];
 
@@ -543,45 +571,53 @@ exports.headertype_update_post = [
   // Handle SBT update on POST.
   exports.info_subtype_update_post = [
    
-    // Validate that the name field is not empty.
-    // body('name', 'Genre name required').isLength({ min: 1 }).trim(),
-    
-    // Sanitize (trim and escape) the name field.
-    // sanitizeBody('name').trim().escape(),
+  // Validate that the name field is not empty.
+  check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+
+  check('infotype').custom((infotype, { req }) => {
+    if (infotype == "themessage" || infotype == "webpage") {
+      if (req.body.msg.length<3) return Promise.reject('Message is required. Min. length = 3');
+    }
+    return Promise.resolve('valid');
+  }),
+
+  check('infotype').custom((infotype, { req }) => {
+    if ( infotype == "webpage" ) {
+      if (req.body.url.length>0 && !isURL(req.body.url)) return Promise.reject('Webpage is not valid');
+      if (req.body.url.length==0) return Promise.reject('Webpage is required');
+    }
+    return Promise.resolve('valid');
+  }),
+  
+  check('actionmsg', 'Action message is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
   
     // Process request after validation and sanitization.
     (req, res, next) => {
   
-        
-        // Extract the validation errors from a request .
-        // const errors = validationResult(req);
-  
-    // Create a genre object with escaped and trimmed data (and the old id!)
-    var sbt = new Info_SubType({ 
-      _id: req.params.id,
-      parent:req.params.parent_id,
-      subname: req.body.subname,
-      infotype : req.params.infotype,
-      message : req.body.msg,
-      infowebpage : req.body.url,
-      actionmsg : req.body.actionmsg
+      const errors = validationResult(req);
 
-    });
+      if (!errors.isEmpty()) {
   
-        // if (!errors.isEmpty()) {
-        //     // There are errors. Render the form again with sanitized values and error messages.
-        //     res.render('genre_form', { title: 'Update Genre', genre: genre, errors: errors.array()});
-        // return;
-        // }
-        // else {
-            // Data from form is valid. Update the record.
+        adminPageWithErrors(errors, res, req);
+  
+      } else {
+        var sbt = new Info_SubType({ 
+          _id: req.params.id,
+          parent:req.params.parent_id,
+          subname: req.body.subname,
+          infotype : req.params.infotype,
+          message : req.body.msg,
+          infowebpage : req.body.url,
+          actionmsg : req.body.actionmsg
+        });
+  
             Info_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
                 if (err) { return next(err); }
                 // Successful - redirect to genre detail page.
                req.flash('success', 'Successfully updated Info sub-type: ' + req.body.subname.toUpperCase());
                res.redirect('/admin/infoforadmin');
             });
-        //}
+      }
     }
   ];
 

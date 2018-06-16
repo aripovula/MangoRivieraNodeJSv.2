@@ -51,6 +51,7 @@ let evenTime = false;
 let thepercentage = [];
 let onlyleft = [];
 let xco = 0;
+let errorOnly = "";
 simulateTableInfo();
 sendBroadcastMessageEvery10secs();
 
@@ -418,6 +419,11 @@ app.get('/datepick/:bookingID', (req, res) => {
   });
 });
 
+app.get('/error', (req, res) => {
+  res.render('error.hbs',{
+    error: errorOnly
+  });
+});
 
 // app.get('/bookform/:userID', (req, res) => {
 //   res.render('bookform.hbs', {
@@ -436,7 +442,9 @@ app.get('/bad', (req, res) => {
 
 app.use(function (err, req, res, next) {
   console.error(err.stack);
-  res.status(500).send('Something broke!'+err);
+  errorOnly = err;
+  //res.status(500).send('Something went wrong!'+err);
+  res.redirect('/error');
 })
 
 

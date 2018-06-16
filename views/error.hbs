@@ -8,7 +8,6 @@
     <!-- all JS -->
     <script src="/js/libs/jquery-3.3.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="../socket.io/socket.io.js"></script>
     <script type='text/javascript' src='/js/libs/hbs.js'></script>
     <script src="/js/libs/moment-with-locales.js"></script>
 
@@ -26,27 +25,16 @@
   </head>
 
 <body style="background-size: 100%; background-attachment: fixed; " background="/static/images/sandbeach.jpeg">
-  
-      {{> header room_n = room_n}}
-      
-      <div id="left">        
-        {{!-- <div id="leftpanel"></div> --}}
-        {{> leftpanel}}
-      </div>
-          
-      <div id="right">
-        {{!-- <div class="boxedtransp"> --}}
-        <div id="rightpanel"></div>
-        {{> sendform room_n = room_n}}
-        {{!-- </div> --}}
-      </div>
-  
-    <div>
-        {{> footer}}
+
+    {{> header room_n = ""}}  
+    <div id="container">
+        <div class="boxedtransp">
+            <h3 style="margin:20px;">{{error}}</h3>
+        </div>
     </div>
 
-      {{> videopartial logout = "Logout"}}
+      {{!-- {{> videopartial logout = "Logout"}} --}}
 
-      <script src="../js/index2.js"></script>
+      <script src="./js/index2.js"></script>
   </body>
 </html>
