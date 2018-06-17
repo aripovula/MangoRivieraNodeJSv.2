@@ -10,11 +10,13 @@ if (bbel != null ) bbel.style.color = "blue";
 
 
 socket.on('connect', function() {
-  console.log('Connected to server at ');
+  let time = new Date();
+  console.log('Connected to server at '+time);
 });
 
 socket.on('disconnect', function() {
-  console.log('Disconnected to server');
+  let time = new Date();
+  console.log('Disconnected to server at '+time);
 });
 
 socket.emit('readShoutMessages', 
@@ -83,10 +85,10 @@ socket.on('topicMessages',function(topicChats){
 socket.on('shoutMessages',function(topicChats){
 
   $("#shoutboard").html('');
-  // console.log("topicChats == null - ", topicChats == null );
-  // console.log("topicChats = "+topicChats.length);
-  // console.log("topicChats = "+topicChats[0].text);
-  // console.log("topicChats = "+topicChats[0].createdAt);
+  //console.log("topicChats == null - ", topicChats == null );
+  console.log("topicChats = "+topicChats.length);
+  //console.log("topicChats = "+topicChats[0].text);
+  //console.log("topicChats = "+topicChats[0].createdAt);
   if (topicChats != null) {
     
     for (var i = 0, len = topicChats.length; i < len; i++) {
@@ -98,7 +100,7 @@ socket.on('shoutMessages',function(topicChats){
         if (theTemplateScript != null) {
           var theTemplate = Handlebars.compile(theTemplateScript);
           
-          // console.log("i="+i);
+          console.log("i="+i);
           // console.log("htmlPrev = " + htmlPrev);
           var html = theTemplate(chatData);
           $("#shoutboard").html(html+htmlPrev); 

@@ -20,7 +20,10 @@ router.get('/home', user_controller. list_4home);
 router.get('/homelocked', user_controller. list_4home_locked);
 
 router.post('/userbooking/save', user_controller. users_booking_create_post);
+router.post('/cancelbooking/:bookingID', user_controller. users_booking_cancel_post);
+
 router.post('/userbuy/save', user_controller. users_buy_create_post);
+router.post('/cancelbuy/:buyID', user_controller. users_buy_cancel_post);
 
 router.get('/logout', user_controller.log_out);
 

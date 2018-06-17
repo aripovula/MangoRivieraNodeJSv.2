@@ -35,10 +35,6 @@
           
       <div id="right">
 
-          {{#if success }}
-              <div class="alert alert-success">SUCCESS: {{success}}</div>
-          {{/if}}
-
           {{#if expressFlash}}
               <div class="alert alert-success">{{ expressFlash }}</div>
           {{/if}}
@@ -47,11 +43,11 @@
               <div class="alert alert-warning">{{ expressFailureFlash }}</div>
           {{/if}}
 
-          {{#if sessionFlash.message}}
+          {{!-- {{#if sessionFlash.message}}
               <div class="{{ sessionFlash.type }}">
                   <strong>FLASH!</strong> {{ sessionFlash.message }}
               </div>
-          {{/if}}
+          {{/if}} --}}
 
           {{> modalpartial}}
           {{> adminpanel}}

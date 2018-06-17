@@ -284,10 +284,11 @@ io.on('connection',(socket) => {
 
 socket.on('readShoutMessages', (callback) => {
 
+  console.log('IN READ SHOUT METHOD');
   readShouts(function (data){
     io.emit('shoutMessages', data);
   });
-});  
+});
 
 function readShouts (callback){
 
@@ -445,7 +446,7 @@ app.use(function (err, req, res, next) {
   errorOnly = err;
   //res.status(500).send('Something went wrong!'+err);
   res.redirect('/error');
-})
+});
 
 
 // var Forecast = require('forecast.io-bluebird');

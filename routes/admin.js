@@ -8,7 +8,7 @@ var admin_controller = require('../controllers/adminController');
 
 router.post('/registerroom', admin_controller. register_room);
 
-router.get('/headertypes', admin_controller. headertype_list);
+// router.get('/headertypes', admin_controller. headertype_list);
 
 router.get('/infoforadmin', admin_controller. admins_list);
 

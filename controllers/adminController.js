@@ -81,41 +81,41 @@ exports.admins_list = function(req, res, next) {
   });
 }
 
-// Display list of all HeaderTypes.
-exports.headertype_list = function(req, res, next) {
+// // Display list of all HeaderTypes.
+// exports.headertype_list = function(req, res, next) {
 
-  console.log('in controLLER');
+//   console.log('in controLLER');
   
-  HeaderType.find()
-    .sort([['name', 'ascending']])
-    .exec(function (err, list_headertypes) {
-      var theheadertypes = list_headertypes;
+//   HeaderType.find()
+//     .sort([['name', 'ascending']])
+//     .exec(function (err, list_headertypes) {
+//       var theheadertypes = list_headertypes;
         
-      if (err) { return next(err); }
-      // Successful, so render.
-      console.log('in controLLER 44');
-      res.render('adminpage.hbs', { list_headertypes:  list_headertypes});
-    });
+//       if (err) { return next(err); }
+//       // Successful, so render.
+//       console.log('in controLLER 44');
+//       res.render('adminpage.hbs', { list_headertypes:  list_headertypes});
+//     });
 
-};
+// };
 
-// Display list of all Booking_SubTypes.
-exports.booking_subtype_list = function(req, res, next) {
+// // Display list of all Booking_SubTypes.
+// exports.booking_subtype_list = function(req, res, next) {
 
-  console.log('in controLLER');
+//   console.log('in controLLER');
   
-  Booking_SubType.find()
-    .sort([['name', 'ascending']])
-    .exec(function (err, list_booking_subtypes) {
-      var thebooking_subtypes = list_booking_subtypes;
+//   Booking_SubType.find()
+//     .sort([['name', 'ascending']])
+//     .exec(function (err, list_booking_subtypes) {
+//       var thebooking_subtypes = list_booking_subtypes;
         
-      if (err) { return next(err); }
-      // Successful, so render.
-      console.log("req.flash('success')="+req.flash('success'));
-      res.render('booking.hbs', { list_headertypes:  list_headertypes, expressFlash: req.flash('success'), sessionFlash: res.locals.sessionFlash });
-    });
+//       if (err) { return next(err); }
+//       // Successful, so render.
+//       console.log("req.flash('success')="+req.flash('success'));
+//       res.render('booking.hbs', { list_headertypes:  list_headertypes, expressFlash: req.flash('success'), sessionFlash: res.locals.sessionFlash });
+//     });
 
-};
+// };
 
 
 // Handle bst create on POST.
@@ -163,8 +163,8 @@ exports.register_room = [
 adminPageWithErrors = (errors, res, req) => {
   const errors2 = errors.array();
   let errorsText="";
-  console.log('ABCABC1  err='+stringify(errors2));
-  console.log('ABCABC2  err='+errors2[0].msg);
+  // console.log('ABCABC1  err='+stringify(errors2));
+  // console.log('ABCABC2  err='+errors2[0].msg);
 
   for (var i = 0, len = errors2.length; i < len; i++) {
     errorsText = errorsText + errors2[i].msg+". ";
@@ -189,13 +189,6 @@ exports.headertype_create_post = [
   // Validate that the name field is not empty.
   check('name', 'Name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-  // check('username').isEmail(),
-  // // password must be at least 5 chars long
-  // check('password').isLength({ min: 5 }),
-
-  // // Sanitize (trim and escape) the name field.
-  // sanitizeBody('name').trim().escape(),
-
   // Process request after validation and sanitization.
   (req, res, next) => {
       
@@ -214,13 +207,9 @@ exports.headertype_create_post = [
   
         bt.save(function (err) {
           if (err) {
-            // console.log("ERRRROR="+err+"/ERROR");
-            // console.log("from system = " + req.flash('success'));
-            // adminPageWithErrors(err, res, req);
             return next(err); 
           }
           // Success 
-          // req.flash('success', 'Successfuly created event!');
           req.flash('success', 'Successfully created a new Header type: ' + req.body.name.toUpperCase());
 
           // req.session.room_code = "520";

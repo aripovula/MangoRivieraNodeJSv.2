@@ -13,7 +13,8 @@ var Users_BookingSchema = new Schema({
     date: {type: Date, required: true},
     dateStr: {type: String, required: true},
     starttime: {type: String, required: true},
-    endtime : {type: String, required: true}
+    endtime : {type: String, required: true},
+    isActive: {type: Boolean, default: true}
 });
 
 // Virtual for this genre instance URL.

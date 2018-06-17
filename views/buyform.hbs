@@ -40,6 +40,15 @@
         </div>
           
         <div id="right">
+
+            {{#if expressFlash}}
+              <div class="alert alert-success">{{ expressFlash }}</div>
+          {{/if}}
+
+          {{#if expressFailureFlash}}
+              <div class="alert alert-warning">{{ expressFailureFlash }}</div>
+          {{/if}}
+
             <div class="boxedtransp">
                 <legend>&nbsp; &nbsp;Sale:</legend>
                 <span style="margin-left:15px">

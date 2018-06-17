@@ -14,7 +14,8 @@ var Users_BuySchema = new Schema({
     dateStr: {type: String, required: true},
     price: {type: Number, required:true},
     qnty: {type: Number, required:true},
-    total: {type: Number, required:true}
+    total: {type: Number, required:true},
+    isActive: {type: Boolean, default: true}
 });
 
 // Virtual for this genre instance URL.

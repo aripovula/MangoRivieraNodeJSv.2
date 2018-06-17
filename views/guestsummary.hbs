@@ -36,6 +36,12 @@
         {{> leftpanel}}
       </div>
           
+
+      
+
+
+
+
       <div id="right">
           <br/>
         <div class="boxedtransp">
@@ -50,7 +56,19 @@
               {{#if bookingname}}
               <li>
                 <label style="color:rgb(36, 115, 141);font-size:16px;">{{{bookingname}}}</label>
-                <p>booked from {{starttime}}  to {{endtime}} on {{dateStr}}</p>
+                &nbsp; &nbsp; 
+                {{#if isActive}}
+                  <a class="addn" href="#" onclick="showModal(1, '{{_id}}')">Cancel</a>
+                {{else}}
+                  <span style="color:red; font-size:14px;">Cancelled by guest</span>
+                {{/if}}
+                <p>
+                  {{#if isActive}}
+                  {{else}}
+                    Was 
+                  {{/if}}
+                  booked from {{starttime}}  to {{endtime}} on {{dateStr}}
+                </p>
               </li>
               {{/if}}
             {{/each}}
@@ -67,7 +85,20 @@
               {{#if buyname}}
               <li>
                 <label style="color:rgb(36, 115, 141);font-size:16px;">{{{buyname}}}</label>
-                <p>scheduled for {{dateStr}} - total price is ${{total}} ({{qnty}} at ${{price}} each)</p>
+                &nbsp; &nbsp; 
+                {{#if isActive}}
+                  <a class="addn" href="#" onclick="showModal(2, '{{_id}}')">return &amp; request reimbursement</a>
+                {{else}}
+                  <span style="color:red; font-size:14px;">Cancelled by guest. Reimbursement pending</span>
+                {{/if}}
+                <p>
+                  {{#if isActive}}
+                  {{else}}
+                    Was 
+                  {{/if}}
+                  scheduled for {{dateStr}} - total price is ${{total}} ({{qnty}} at ${{price}} each)
+                </p>
+
               </li>
               {{/if}}
             {{/each}}
@@ -83,6 +114,100 @@
     </div>
 
       {{> videopartial logout = "Logout"}}
+
+            
+
+
+
+
+            <!-- The Modal -->
+      <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close">&times;</span>
+          </div>
+          <div class="modal-body">
+                <p id="maintext"></p>
+                <form id="loginForm" role="form" method="POST">
+                  <input id="bttype" type="hidden" name="type"/>
+                  <input id="btid" type="hidden" name="btid"/>
+                  <p id="textid">Are you sure ?</p>
+                  <br/>
+                  <button id="Submit" class="button1" onclick="formSubmitRoom()" style="margin-top:10px;">Confirm</button> &nbsp; &nbsp;
+                  <button type="button" class="button2" onclick="modal.style.display = 'none';" style="margin-top:10px;">Cancel</button>
+                </form>
+                <br/>
+          </div>
+
+          <div class="modal-footer">
+          </div>
+        </div>
+
+      </div>
+
+      <script>
+      // Get the modal
+      var modal = document.getElementById('myModal');
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+
+
+      // When the user clicks the button, open the modal 
+      //( 11, '{{id}}', '{{name}}','sub-name','message',0, 'Edit the header type name:', '')
+      function showModal(type, btid) {
+
+          var fe = getElementVars();
+
+          modal.style.display = "block";    
+          fe.type.setAttribute('value',type);
+          fe.btid.setAttribute('value',btid);
+      }
+
+
+      function getElementVars(){
+        var fe = new Object();
+          fe.type = document.getElementById('bttype');
+          fe.btid = document.getElementById('btid');
+          fe.textid = document.getElementById('textid');
+          return fe;
+      }
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function() {
+          modal.style.display = "none";
+      }
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+          if (event.target == modal) {
+              modal.style.display = "none";
+          }
+      }
+
+      function formSubmitRoom() {
+            let fe = getElementVars();
+            let type = fe.type.value;
+            let btid = fe.btid.value;
+
+            let action;
+            
+            if (type == 1) action = "/users/cancelbooking/"+btid;
+            if (type == 2) action = "/users/cancelbuy/"+btid;
+            console.log('type='+type);
+            console.log('action='+action);
+
+            let formLogin = document.getElementById('loginForm');
+            formLogin.setAttribute('action',action).submit();
+            formLogin.reset();
+            return false;
+          }
+
+      </script>
+      
 
       <script src="../js/index2.js"></script>
   </body>
