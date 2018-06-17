@@ -16,7 +16,7 @@ const flash = require('express-flash');
 const async = require('async');
 const stringify = require('json-stringify');
 
-const { body,validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all HeaderTypes.
@@ -111,7 +111,10 @@ exports.list_4book = function(req, res, next) {
           selected_booktype: results[4],
           //bookingID:req.params.buyID,
           for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.bookingID ],
-          room_n: results[5].roomCode
+          room_n: results[5].roomCode,
+          expressFlash: req.flash('success'), 
+          expressFailureFlash: req.flash('error')
+
         });
       }
   });
@@ -145,7 +148,10 @@ exports.list_4buy = function(req, res, next) {
           list_info_subtypes: results[3],
           for_tables: [ results[0] , [results[1], results[2], results[3] ] , req.params.buyID ],
           for_buyform: '[{"sel_id":"'+req.params.buyID+'"},'+stringify(results[2])+"]" ,
-          room_n: results[4].roomCode
+          room_n: results[4].roomCode,
+          expressFlash: req.flash('success'), 
+          expressFailureFlash: req.flash('error')
+
       });
     }
   });
@@ -226,7 +232,9 @@ exports.list_4guest = function(req, res, next) {
           for_tables: [ results[0] , [results[1], results[2], results[3] ] ],
           room_n: results[4].roomCode,
           list_bookings: results[5],
-          list_buys: results[6]
+          list_buys: results[6],
+          expressFlash: req.flash('success'), 
+          expressFailureFlash: req.flash('error')
       });
     }
   });
@@ -338,65 +346,74 @@ exports.login_room = [
 //   }];
 
 
+isValidDate = () => {
+  console.log("in DATE CHECK");
+  if (!value.match(/^\d{4}-\d{2}-\d{2}$/)) return false;
 
+  const date = new Date(value);
+  if (!date.getTime()) return false;
+  return date.toISOString().slice(0, 10) === value;
+}
 
 // Handle bst create on POST.
 exports.users_booking_create_post = [
 
-  // Validate that the name field is not empty.
-  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
-
-  // Sanitize (trim and escape) the name field.
-  //sanitizeBody('name').trim().escape(),
-
-  // Process request after validation and sanitization.
-
+  //check('date').custom(isValidDate).withMessage('valid date was not entered'),
 
   (req, res, next) => {
 
-    // var name = HeaderType.findOne({ '_id': req.params.id })
-    //             .exec( function(err, found_bt) {
-    //                  if (err) { return next(err); }
+    const errors = validationResult(req);
 
-    //                  return found_bt;
-    //              });
+    if (!errors.isEmpty()) {
 
-    console.log("name="+req.body.bname);
-    console.log("stime="+req.body.bstarttime);
-    console.log("stime2="+req.body.bstarttime2);
-    console.log("date="+req.body.bdate);
-    console.log("date2="+req.body.bdate2);
-    var date = req.body.bdate;
-    var TimeStart = req.body.bstarttime;
-    let datePlusTimeStart = req.body.bdate+" "+req.body.bstarttime;
-    var momentDate = moment(datePlusTimeStart, 'DD MMM YYYY HH:mm:ss');
-    var jsDateStart = momentDate.toDate();
+      const errors2 = errors.array();
+      let errorsText="";
+      // console.log('ABCABC1  err='+stringify(errors2));
+      // console.log('ABCABC2  err='+errors2[0].msg);
+    
+      for (var i = 0, len = errors2.length; i < len; i++) {
+        errorsText = errorsText + errors2[i].msg+". ";
+      }    
+      req.flash('error', 'Ooops, ' + errorsText);
+      res.redirect('/users//bookform/'+req.body.bid);
+    
 
-    var TimeEnd = req.body.bendtime;
-    //var momentDate = moment(datePlusTimeEnd, 'DD MMM YYYY HH:mm');
-    //var jsDateEnd = momentDate.toString();
+    } else {
 
-    // console.log("name="+name.name);
-    var sbt = new Users_Booking({
-      bookingID : req.body.bid,
-      bookingname : req.body.bname,
-      userID : req.session.userId,
-      date : jsDateStart,
-      dateStr : date,
-      starttime : TimeStart,
-      endtime   : TimeEnd
-    });
-      
-      sbt.save(function (err) {
-        if (err) { return next(err); }
-        // Success
-        req.flash('success', 'Successfuly created event! 11');
-        console.log("flash= Successfuly created event! 11");
-        console.log("from system = " + req.flash('success'));
-        res.redirect('/users/guestsummary');
+      console.log("name="+req.body.bname);
+      console.log("stime="+req.body.bstarttime);
+      console.log("stime2="+req.body.bstarttime2);
+      console.log("date="+req.body.bdate);
+      console.log("date2="+req.body.bdate2);
+      var date = req.body.bdate;
+      var TimeStart = req.body.bstarttime;
+      let datePlusTimeStart = req.body.bdate+" "+req.body.bstarttime;
+      var momentDate = moment(datePlusTimeStart, 'DD MMM YYYY HH:mm:ss');
+      var jsDateStart = momentDate.toDate();
+
+      var TimeEnd = req.body.bendtime;
+      //var momentDate = moment(datePlusTimeEnd, 'DD MMM YYYY HH:mm');
+      //var jsDateEnd = momentDate.toString();
+
+      // console.log("name="+name.name);
+      var sbt = new Users_Booking({
+        bookingID : req.body.bid,
+        bookingname : req.body.bname,
+        userID : req.session.userId,
+        date : jsDateStart,
+        dateStr : date,
+        starttime : TimeStart,
+        endtime   : TimeEnd
       });
+        
+        sbt.save(function (err) {
+          if (err) { return next(err); }
+          // Success
+          req.flash('success', 'Successfully created a new booking');
+          res.redirect('/users/guestsummary');
+        });
 
-
+    }
   }];
 
 // Handle bst create on POST.

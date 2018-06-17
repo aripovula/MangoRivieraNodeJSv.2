@@ -43,7 +43,14 @@
 
 
       <div id="right">
-          <br/>
+          {{#if expressFlash}}
+              <div class="alert alert-success">{{ expressFlash }}</div>
+          {{/if}}
+
+          {{#if expressFailureFlash}}
+              <div class="alert alert-warning">{{ expressFailureFlash }}</div>
+          {{/if}}
+
         <div class="boxedtransp">
         {{!-- <div id="rightpanel"></div>
         {{> sendform}} --}}
