@@ -100,7 +100,7 @@ exports.list_4book = function(req, res, next) {
       User.findById(req.session.userId).exec(callback);
     },
   ], function(err, results){
-      if (results[4] == null) {
+      if (results[5] == null) {
         res.redirect('/users/homelocked'); 
       } else {
         res.render('bookform.hbs',{
@@ -179,7 +179,7 @@ exports.list_4info = function(req, res, next) {
       User.findById(req.session.userId).exec(callback);
     },
   ], function(err, results){
-      if (results[4] == null) {
+      if (results[5] == null) {
         res.redirect('/users/homelocked'); 
       } else {
         res.render('infoform.hbs',{
@@ -508,7 +508,7 @@ exports.users_booking_cancel_post = [
 
           Users_Booking.update({_id: req.params.bookingID}, {$set: {isActive: false}}, function (err,cback) {
             if (err) { return next(err); }
-            req.flash('success', 'Your Booking has been cancelled !');
+            req.flash('success', 'Selected booking has been cancelled !');
             res.redirect('/users/guestsummary');
           });
 
