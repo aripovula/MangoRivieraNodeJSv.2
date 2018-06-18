@@ -346,19 +346,16 @@ exports.login_room = [
 //   }];
 
 
-isValidDate = () => {
-  console.log("in DATE CHECK");
-  if (!value.match(/^\d{4}-\d{2}-\d{2}$/)) return false;
-
-  const date = new Date(value);
-  if (!date.getTime()) return false;
-  return date.toISOString().slice(0, 10) === value;
-}
-
 // Handle bst create on POST.
 exports.users_booking_create_post = [
 
-  //check('date').custom(isValidDate).withMessage('valid date was not entered'),
+  // Since we are using the Bootstrap DateTimePicker there is no need to check validity of Date
+  // As long as length is not zero it should be valid date and time
+  check('bdate', 'Date is required').isLength({ min: 1 }).escape(),
+
+  check('bstarttime', 'Start time is required').isLength({ min: 1 }).escape(),
+
+  check('bendtime', 'End time is required').isLength({ min: 1 }).escape(),
 
   (req, res, next) => {
 
@@ -375,7 +372,7 @@ exports.users_booking_create_post = [
         errorsText = errorsText + errors2[i].msg+". ";
       }    
       req.flash('error', 'Ooops, ' + errorsText);
-      res.redirect('/users//bookform/'+req.body.bid);
+      res.redirect('/users/bookform/'+req.body.bid);
     
 
     } else {
@@ -419,55 +416,58 @@ exports.users_booking_create_post = [
 // Handle bst create on POST.
 exports.users_buy_create_post = [
 
-  // Validate that the name field is not empty.
-  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
-
-  // Sanitize (trim and escape) the name field.
-  //sanitizeBody('name').trim().escape(),
-
-  // Process request after validation and sanitization.
-
+  // Since we are using the Bootstrap Datepicker there is no need to check validity of Date
+  // As long as length is not zero it should be valid date
+  check('pdate', 'Date is required').isLength({ min: 1 }).escape(),
 
   (req, res, next) => {
 
-    // var name = HeaderType.findOne({ '_id': req.params.id })
-    //             .exec( function(err, found_bt) {
-    //                  if (err) { return next(err); }
+    const errors = validationResult(req);
 
-    //                  return found_bt;
-    //              });
+    if (!errors.isEmpty()) {
 
-    console.log("name="+req.body.bname);
-    console.log("date="+req.body.pdate);
+      const errors2 = errors.array();
+      let errorsText="";
+      // console.log('ABCABC1  err='+stringify(errors2));
+      // console.log('ABCABC2  err='+errors2[0].msg);
     
-    var date = req.body.pdate;
-    var momentDate = moment(date, 'DD MMM YYYY');
-    var jsDate = momentDate.toDate();
+      for (var i = 0, len = errors2.length; i < len; i++) {
+        errorsText = errorsText + errors2[i].msg+". ";
+      }    
+      req.flash('error', 'Ooops, ' + errorsText);
+      res.redirect('/users/buyform/'+req.body.bid);
+    
 
-    console.log("date="+date);
-    console.log("jsDate="+jsDate);
+    } else {
 
-    var sbt = new Users_Buy({ 
-      buyID : req.body.bid,
-      buyname : req.body.bname,
-      date : jsDate,
-      dateStr : date,
-      userID : req.session.userId,
-      price : req.body.bprice,
-      qnty : req.body.bqnty[1],
-      total : req.body.bqnty[1] * req.body.bprice
-    });
+      console.log("name="+req.body.bname);
+      console.log("date="+req.body.pdate);
       
-      sbt.save(function (err) {
-        if (err) { return next(err); }
-        // Success
-        req.flash('success', 'Successfuly created event! 11');
-        console.log("flash= Successfuly created event! 11");
-        console.log("from system = " + req.flash('success'));
-        res.redirect('/users/guestsummary');
+      var date = req.body.pdate;
+      var momentDate = moment(date, 'DD MMM YYYY');
+      var jsDate = momentDate.toDate();
+
+      console.log("date="+date);
+      console.log("jsDate="+jsDate);
+
+      var sbt = new Users_Buy({ 
+        buyID : req.body.bid,
+        buyname : req.body.bname,
+        date : jsDate,
+        dateStr : date,
+        userID : req.session.userId,
+        price : req.body.bprice,
+        qnty : req.body.bqnty[1],
+        total : req.body.bqnty[1] * req.body.bprice
       });
-
-
+        
+        sbt.save(function (err) {
+          if (err) { return next(err); }
+          // Success
+          req.flash('success', 'Successfully created a new purchase');
+          res.redirect('/users/guestsummary');
+        });
+      }
   }];
 
 
@@ -557,7 +557,7 @@ exports.users_buy_cancel_post = [
       } else {
           Users_Buy.update({_id: req.params.buyID}, {$set: {isActive: false}}, function (err,cback) {
             if (err) { return next(err); }
-            req.flash('success', 'Your Booking has been cancelled !');
+            req.flash('success', 'Selected purchase has been cancelled !');
             res.redirect('/users/guestsummary');
           });
 
