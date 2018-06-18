@@ -121,14 +121,13 @@ exports.admins_list = function(req, res, next) {
 // Handle bst create on POST.
 exports.register_room = [
 
-  // Validate that the name field is not empty.
-  // body('type', 'Type name required').isLength({ min: 1 }).trim(),
-
-  // Sanitize (trim and escape) the name field.
-  //sanitizeBody('name').trim().escape(),
-
-  // Process request after validation and sanitization.
-
+  check('room').custom(value => {
+    return User.find({roomCode : value}).then(user => {
+      if (user) {
+        return Promise.reject('Room number already registered');
+      }
+    });
+  }),
 
   (req, res, next) => {
     // confirm that user typed same password twice
@@ -189,6 +188,14 @@ exports.headertype_create_post = [
   // Validate that the name field is not empty.
   check('name', 'Name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
+  check('name').custom(value => {
+    return HeaderType.find({name : value}).then(exists => {
+      if (exists) {
+        return Promise.reject('Header type with this name already exists');
+      }
+    });
+  }),
+
   // Process request after validation and sanitization.
   (req, res, next) => {
       
@@ -210,7 +217,7 @@ exports.headertype_create_post = [
             return next(err); 
           }
           // Success 
-          req.flash('success', 'Successfully created a new Header type: ' + req.body.name.toUpperCase());
+          req.flash('success', 'Successfully created a new Header type');
 
           // req.session.room_code = "520";
 
@@ -234,6 +241,14 @@ exports.booking_subtype_create_post = [
 
   // Validate that the name field is not empty.
   check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+
+  check('subname').custom(value => {
+    return Booking_SubType.find({subname : value}).then(exists => {
+      if (exists) {
+        return Promise.reject('Booking sub-type with this name already exists');
+      }
+    });
+  }),
 
   check('infotype').custom((infotype, { req }) => {
     if (infotype == "themessage" || infotype == "webpage") {
@@ -276,7 +291,7 @@ exports.booking_subtype_create_post = [
       sbt.save(function (err) {
         if (err) { return next(err); }
         // Success
-        req.flash('success', 'Successfully created a new Booking sub-type: ' + req.body.subname.toUpperCase());
+        req.flash('success', 'Successfully created a new Booking sub-type');
         res.redirect('/admin/infoforadmin');
       });
     }
@@ -290,6 +305,14 @@ exports.sell_subtype_create_post = [
   // Validate that the name field is not empty.
     // Validate that the name field is not empty.
     check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+
+    check('subname').custom(value => {
+      return Sell_SubType.find({subname : value}).then(exists => {
+        if (exists) {
+          return Promise.reject('Sell sub-type with this name already exists');
+        }
+      });
+    }),  
 
     check('infotype').custom((infotype, { req }) => {
       if (infotype == "themessage" || infotype == "webpage") {
@@ -340,7 +363,7 @@ exports.sell_subtype_create_post = [
       sbt.save(function (err) {
         if (err) { return next(err); }
         // Success
-        req.flash('success', 'Successfully created a new Sell sub-type: ' + req.body.subname.toUpperCase());
+        req.flash('success', 'Successfully created a new Sell sub-type');
         res.redirect('/admin/infoforadmin');
       });
     }
@@ -354,6 +377,14 @@ exports.info_subtype_create_post = [
 
   // Validate that the name field is not empty.
   check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+
+  check('subname').custom(value => {
+    return Info_SubType.find({subname : value}).then(exists => {
+      if (exists) {
+        return Promise.reject('Info sub-type with this name already exists');
+      }
+    });
+  }),
 
   check('infotype').custom((infotype, { req }) => {
     if (infotype == "themessage" || infotype == "webpage") {
@@ -396,7 +427,7 @@ exports.info_subtype_create_post = [
       sbt.save(function (err) {
         if (err) { return next(err); }
         // Success
-        req.flash('success', 'Successfully created a new Info sub-type: ' + req.body.subname.toUpperCase());
+        req.flash('success', 'Successfully created a new Info sub-type');
         res.redirect('/admin/infoforadmin');
       });
     }
@@ -409,6 +440,14 @@ exports.headertype_update_post = [
    
   // Validate that the name field is not empty.
   check('name', 'Name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+
+  check('name').custom(value => {
+    return HeaderType.find({name : value}).then(exists => {
+      if (exists) {
+        return Promise.reject('Header type with this name already exists');
+      }
+    });
+  }),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -433,7 +472,7 @@ exports.headertype_update_post = [
           HeaderType.findByIdAndUpdate(req.params.id, bt, {}, function (err,cback) {
               if (err) { return next(err); }
                  // Successful - redirect to genre detail page.
-                 req.flash('success', 'Successfully updated Header type: ' + req.body.name.toUpperCase());
+                 req.flash('success', 'Successfully updated Header type');
                  res.redirect('/admin/infoforadmin');
               });
     }
@@ -448,6 +487,14 @@ exports.headertype_update_post = [
    
   // Validate that the name field is not empty.
   check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+
+  check('subname').custom(value => {
+    return Booking_SubType.find({subname : value}).then(exists => {
+      if (exists) {
+        return Promise.reject('Booking sub-type with this name already exists');
+      }
+    });
+  }),
 
   check('infotype').custom((infotype, { req }) => {
     if (infotype == "themessage" || infotype == "webpage") {
@@ -489,7 +536,7 @@ exports.headertype_update_post = [
   
             Booking_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
                 if (err) { return next(err); }
-                req.flash('success', 'Successfully updated Booking sub-type: ' + req.body.subname.toUpperCase());
+                req.flash('success', 'Successfully updated Booking sub-type');
                 res.redirect('/admin/infoforadmin');
               });
       }
@@ -505,6 +552,14 @@ exports.headertype_update_post = [
    
   // Validate that the name field is not empty.
   check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+
+  check('subname').custom(value => {
+    return Sell_SubType.find({subname : value}).then(exists => {
+      if (exists) {
+        return Promise.reject('Sell sub-type with this name already exists');
+      }
+    });
+  }),
 
   check('infotype').custom((infotype, { req }) => {
     if (infotype == "themessage" || infotype == "webpage") {
@@ -546,7 +601,7 @@ exports.headertype_update_post = [
             Sell_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
                 if (err) { return next(err); }
                 // Successful - redirect to genre detail page.
-                req.flash('success', 'Successfully updated Sell sub-type: ' + req.body.subname.toUpperCase());
+                req.flash('success', 'Successfully updated Sell sub-type');
                 res.redirect('/admin/infoforadmin');
               });
       }
@@ -562,6 +617,14 @@ exports.headertype_update_post = [
    
   // Validate that the name field is not empty.
   check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+
+  check('subname').custom(value => {
+    return Info_SubType.find({subname : value}).then(exists => {
+      if (exists) {
+        return Promise.reject('Info sub-type with this name already exists');
+      }
+    });
+  }),
 
   check('infotype').custom((infotype, { req }) => {
     if (infotype == "themessage" || infotype == "webpage") {
@@ -603,7 +666,7 @@ exports.headertype_update_post = [
             Info_SubType.findByIdAndUpdate(req.params.id, sbt, {}, function (err,cback) {
                 if (err) { return next(err); }
                 // Successful - redirect to genre detail page.
-               req.flash('success', 'Successfully updated Info sub-type: ' + req.body.subname.toUpperCase());
+               req.flash('success', 'Successfully updated Info sub-type');
                res.redirect('/admin/infoforadmin');
             });
       }
@@ -636,7 +699,7 @@ exports.headertype_delete_post = function(req, res, next) {
       // Success
       if (results.booking_subtypes.length > 0 || results.sell_subtypes.length > 0 || results.info_subtypes.length > 0) {
           // Genre has books. Render in same way as for GET route.
-          req.flash('error', 'Can not delete the Header type of ' + results.headertype[0].name.toUpperCase()+' - it has existing sub-type(s)');
+          req.flash('error', 'Can not delete this Header type - it has existing sub-type(s)');
           res.redirect('/admin/infoforadmin');
  }
       else {
@@ -644,7 +707,7 @@ exports.headertype_delete_post = function(req, res, next) {
           HeaderType.findByIdAndRemove(req.body.id, function deleteHeader(err) {
               if (err) { return next(err); }
               // Success - go to genres list.
-              req.flash('success', 'Header type of ' + results.headertype[0].name.toUpperCase()+' has been deleted !');
+              req.flash('success', 'Header type has been deleted !');
               res.redirect('/admin/infoforadmin');
           });
       }
@@ -669,14 +732,14 @@ exports.booking_subtype_delete_post = function(req, res, next) {
       if (err) { return next(err); }
       // Success
       if (results.users_bookings.length > 0 || results.users_buys.length > 0 ) {
-          req.flash('error', 'Can not delete the Booking sub-type of ' + results.booking_subtype[0].subname.toUpperCase()+' - it has existing users bookings');
+          req.flash('error', 'Can not delete this Booking sub-type - it has existing users bookings');
           res.redirect('/admin/infoforadmin');
   }
       else {
         Booking_SubType.findByIdAndRemove(req.body.id, function deleteBookingSubType(err) {
               if (err) { return next(err); }
               // Success - go to genres list.
-              req.flash('success', 'Booking sub-type of ' + results.booking_subtype[0].subname.toUpperCase()+' has been deleted !');
+              req.flash('success', 'Booking sub-type has been deleted !');
               res.redirect('/admin/infoforadmin');
           });
       }
@@ -701,14 +764,14 @@ exports.sell_subtype_delete_post = function(req, res, next) {
       if (err) { return next(err); }
       // Success
       if (results.users_bookings.length > 0 || results.users_buys.length > 0 ) {
-          req.flash('error', 'Can not delete the Sell sub-type of ' + results.sell_subtype[0].subname.toUpperCase()+' - it has existing users buys');
+          req.flash('error', 'Can not delete this Sell sub-type - it has existing users buys');
           res.redirect('/admin/infoforadmin');
   }
       else {
         Sell_SubType.findByIdAndRemove(req.body.id, function deleteSellSubType(err) {
               if (err) { return next(err); }
               // Success - go to genres list.
-              req.flash('success', 'Sell sub-type of ' + results.sell_subtype[0].subname.toUpperCase()+' has been deleted !');
+              req.flash('success', 'Sell sub-type has been deleted !');
               res.redirect('/admin/infoforadmin');
           });
       }
@@ -730,7 +793,7 @@ exports.info_subtype_delete_post = function(req, res, next) {
         Info_SubType.findByIdAndRemove(req.body.id, function deleteInfoSubType(err) {
               if (err) { return next(err); }
               // Success - go to genres list.
-              req.flash('success', 'Info sub-type of ' + results.info_subtype[0].subname.toUpperCase()+' has been deleted !');
+              req.flash('success', 'Info sub-type has been deleted !');
               res.redirect('/admin/infoforadmin');
         });
   });

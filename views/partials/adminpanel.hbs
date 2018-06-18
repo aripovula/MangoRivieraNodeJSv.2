@@ -5,7 +5,7 @@
           <span style="display:inline-block; width: 80px;"></span>
           <a data-toggle="tooltip" data-placement="bottom" title='Upon a click it deletes all changes made by you to Mongoose collections, restores all initial entries to collections as if you never had changed anything. Defaults are auto-restored every night at 4 a.m. EST !' onclick="" href="#">( Undo all changes, restore defaults )</a>
         </li>
-        <li><a  href="#"  onclick="myFunction('myDIV')">edit / delete existing header type</a><span style="color:dimgrey;font-size:12px;"> &nbsp; ( {{headertypes}} added )</span><br/></li>
+        <li><a  href="#"  onclick="myFunction('myDIV')">edit / delete existing header type</a><span style="color:dimgrey;font-size:12px;"> &nbsp; ( {{{headertypes}}} added )</span><br/></li>
         <div id="myDIV" style="display:none">
           
           {{#if list_headertypes }}
@@ -15,9 +15,9 @@
           {{/if}}
           <ul>
           {{#each list_headertypes}}
-            <li><span>{{name}}</span> &nbsp; 
-            <a class="addn" onclick="showModal( 11, '{{id}}', '', '{{name}}','sub-name','',0, 'Edit the header type name:', '','', '', 0)" href="#"> edit </a> &nbsp; 
-            <a class="addn" onclick="showModal( 12, '{{id}}', '', '{{name}}','sub-name','',0, 'Delete the header type ?', '','', '', 0)" href="#"> delete </a> &nbsp;
+            <li><span>{{{name}}}</span> &nbsp; 
+            <a class="addn" onclick="showModal( 11, '{{id}}', '', '{{{name}}}','sub-name','',0, 'Edit the header type name:', '','', '', 0)" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 12, '{{id}}', '', '{{{name}}}','sub-name','',0, 'Delete the header type ?', '','', '', 0)" href="#"> delete </a> &nbsp;
             {{!-- <a class="addn" onclick="showModal( 20, '', '{{id}}', '{{name}}','','',0, 'Add a new booking SUB-type:', '', '', '')" href="#"> add new SUB-type </a> --}}
             <br/>
           {{/each}}
@@ -34,8 +34,8 @@
           {{/if}}
           <ul>
           {{#each list_headertypes}}
-            <li><span>{{name}}</span> &nbsp; 
-            <a class="addn" onclick="showModal( 20, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{name}}','','',0, 'Add a new booking SUB-type:', '','', '', 0)" href="#"> add new SUB-type </a>
+            <li><span>{{{name}}}</span> &nbsp; 
+            <a class="addn" onclick="showModal( 20, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{{name}}}','','',0, 'Add a new booking SUB-type:', '','', '', 0)" href="#"> add new SUB-type </a>
             <br/>
           {{/each}}
           </ul>
@@ -54,9 +54,9 @@
 
           <ul>
           {{#each list_booking_subtypes}}
-            <li><span>{{subname}} &nbsp; &nbsp; ( {{parent.name}} )</span> &nbsp; 
-            <a class="addn" onclick="showModal( 21, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the booking SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}', 0)" href="#"> edit </a> &nbsp; 
-            <a class="addn" onclick="showModal( 22, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','',0, 'Delete the booking SUB-type ?', '','', '', 0)" href="#"> delete </a> &nbsp; 
+            <li><span>{{{subname}}} &nbsp; &nbsp; ( {{{parent.name}}} )</span> &nbsp; 
+            <a class="addn" onclick="showModal( 21, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{{parent.name}}}','{{{subname}}}','{{{message}}}',0, 'Edit the booking SUB-type name:', '{{{infotype}}}','{{{infowebpage}}}', '{{{actionmsg}}}', 0)" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 22, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{{parent.name}}}','{{{subname}}}','',0, 'Delete the booking SUB-type ?', '','', '', 0)" href="#"> delete </a> &nbsp; 
             <br/>
           {{/each}}
           </ul>
@@ -74,8 +74,8 @@
           {{/if}}
           <ul>
           {{#each list_headertypes}}
-            <li><span>{{name}}</span> &nbsp; 
-            <a class="addn" onclick="showModal( 30, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{name}}','','',0, 'Add a new sell SUB-type:', '','', '', 0)" href="#"> add new SUB-type </a>
+            <li><span>{{{name}}}</span> &nbsp; 
+            <a class="addn" onclick="showModal( 30, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{{name}}}','','',0, 'Add a new sell SUB-type:', '','', '', 0)" href="#"> add new SUB-type </a>
             <br/>
           {{/each}}
           </ul>
@@ -95,9 +95,9 @@
 
           <ul>
           {{#each list_sell_subtypes}}
-            <li><span>{{subname}} &nbsp; &nbsp; ( {{parent.name}} )</span> &nbsp; 
-            <a class="addn" onclick="showModal( 31, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the sell SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}', '{{price}}')" href="#"> edit </a> &nbsp; 
-            <a class="addn" onclick="showModal( 32, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','',0, 'Delete the sell SUB-type ?', '','', '', 0)" href="#"> delete </a> &nbsp; 
+            <li><span>{{{subname}}} &nbsp; &nbsp; ( {{{parent.name}}} )</span> &nbsp; 
+            <a class="addn" onclick="showModal( 31, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{{parent.name}}}','{{{subname}}}','{{{message}}}',0, 'Edit the sell SUB-type name:', '{{infotype}}','{{{infowebpage}}}', '{{{actionmsg}}}', '{{price}}')" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 32, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{{parent.name}}}','{{{subname}}}','',0, 'Delete the sell SUB-type ?', '','', '', 0)" href="#"> delete </a> &nbsp; 
             <br/>
           {{/each}}
           </ul>
@@ -115,7 +115,7 @@
           {{/if}}
           <ul>
           {{#each list_headertypes}}
-            <li><span>{{name}}</span> &nbsp; 
+            <li><span>{{{name}}}</span> &nbsp; 
             <a class="addn" onclick="showModal( 40, '', '{{id}}', 'Header type: &nbsp; &nbsp;{{name}}','','',0, 'Add a new info SUB-type:', '','', '',0)" href="#"> add new SUB-type </a>
             <br/>
           {{/each}}
@@ -136,9 +136,9 @@
 
           <ul>
           {{#each list_info_subtypes}}
-            <li><span>{{subname}} &nbsp; &nbsp; ( {{parent.name}} )</span> &nbsp; 
-            <a class="addn" onclick="showModal( 41, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','{{message}}',0, 'Edit the info SUB-type name:', '{{infotype}}','{{infowebpage}}', '{{actionmsg}}', 0)" href="#"> edit </a> &nbsp; 
-            <a class="addn" onclick="showModal( 42, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{parent.name}}','{{subname}}','',0, 'Delete the info SUB-type ?', '','', '',0)" href="#"> delete </a> &nbsp; 
+            <li><span>{{{subname}}} &nbsp; &nbsp; ( {{{parent.name}}} )</span> &nbsp; 
+            <a class="addn" onclick="showModal( 41, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{{parent.name}}}','{{{subname}}}','{{{message}}}',0, 'Edit the info SUB-type name:', '{{infotype}}','{{{infowebpage}}}', '{{{actionmsg}}}', 0)" href="#"> edit </a> &nbsp; 
+            <a class="addn" onclick="showModal( 42, '{{id}}', '{{parent._id}}', 'Header type: &nbsp;&nbsp;{{{parent.name}}}','{{{subname}}}','',0, 'Delete the info SUB-type ?', '','', '',0)" href="#"> delete </a> &nbsp; 
             <br/>
           {{/each}}
           </ul>

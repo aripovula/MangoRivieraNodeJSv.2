@@ -98,12 +98,19 @@ window.onclick = function(event) {
 }
 
 function formSubmit() {
-      var fe = getElementVars();
-      console.log("message22="+fe.dmsg.value);
+    
+    var fe = getElementVars();
+    var type = fe.type.value;
+    console.log("message22="+fe.dmsg.value);
+    if (type < 15 && fe.dname.value.includes("'") || type > 15 && fe.dsubname.value.includes("'")) {
+        fe.dtext.style.display = "block";
+        fe.dtext.innerHTML = "Please avoid using single quote ( symbol ' ) - use double quotes instead";
+        return false;
+    } else {
       var idn = fe.idn.value;
       var parent_id = fe.parent_id.value;
       //var name = fe.dname.value;
-      var type = fe.type.value;
+      
       //var subname = fe.dsubname.value;
       var infotype = $("input:radio[name='displaytype']:checked").val();
       console.log("infotype - "+infotype);
@@ -125,7 +132,9 @@ function formSubmit() {
       formuniv.setAttribute('action',act).submit();
       formuniv.reset();
       //resetForm($('#universalForm'));
+    
       return false;
+    }
     };
 
     function myFunction(divName) {

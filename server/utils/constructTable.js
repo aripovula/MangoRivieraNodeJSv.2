@@ -14,7 +14,7 @@ var constructTable = (items) => {
     headername = ''; 
     items[0].forEach(function(entry) {
       // escape all entries that will be made by users
-    html += "<li>" + hbs.Utils.escapeExpression(entry.name) + "</li>";
+    html += "<li>" + entry.name + "</li>";
     headername = entry.name;
     html += "<table><tbody>";
     //console.log('item 0 subname='+item1[0].subname);
@@ -32,7 +32,7 @@ var constructTable = (items) => {
           html += "<tr>";    
            //html += "<td>" + hbs.Utils.escapeExpression(entry2.parent.name) + "</td>";
            //html += "<td>" + hbs.Utils.escapeExpression(entry2.infotype) + "</td>";
-          html += "<td style='min-width: 150px;'>" + hbs.Utils.escapeExpression(entry2.subname) + "</td>";
+          html += "<td style='min-width: 150px;'>" + entry2.subname + "</td>";
           if (entry2.infotype == "occupancy") {
               html += "<td id='"+entry2._id+"'>? updating... </td>";
               bookingIDs2simulate[nextbooking] = entry2._id;
@@ -46,14 +46,14 @@ var constructTable = (items) => {
             nextbuy++;
         }
   
-          if (entry2.infotype == "themessage") html += "<td style='min-width: 150px;'>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
-          if (subtype == 3 && entry2.infotype == "webpage") html += "<td style='min-width: 150px;'>" + hbs.Utils.escapeExpression(entry2.message) + "</td>";
+          if (entry2.infotype == "themessage") html += "<td style='min-width: 150px;'>" + entry2.message + "</td>";
+          if (subtype == 3 && entry2.infotype == "webpage") html += "<td style='min-width: 150px;'>" + entry2.message + "</td>";
           if (subtype == 1 || subtype == 2) {
-            if (entry2.infotype == "webpage") html += "<td style='min-width: 150px;'><a onclick=\"window.open('http://" + hbs.Utils.escapeExpression(entry2.infowebpage) + "', '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=200,left=300,width=600,height=400');\">" + hbs.Utils.escapeExpression(entry2.message) + "</a></td>";
+            if (entry2.infotype == "webpage") html += "<td style='min-width: 150px;'><a onclick=\"window.open('http://" + entry2.infowebpage + "', '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=200,left=300,width=600,height=400');\">" + entry2.message + "</a></td>";
           }
-          if (subtype == 1) html += "<td style='min-width: 150px;'><a href='/users/bookform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
-          if (subtype == 2) html += "<td style='min-width: 150px;'><a href='/users/buyform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
-          if (subtype == 3) html += "<td style='min-width: 150px;'><a href='/users/infoform/" + hbs.Utils.escapeExpression(entry2._id) + "'>"+hbs.Utils.escapeExpression(entry2.actionmsg)+"</a></td>";
+          if (subtype == 1) html += "<td style='min-width: 150px;'><a href='/users/bookform/" + entry2._id + "'>"+entry2.actionmsg+"</a></td>";
+          if (subtype == 2) html += "<td style='min-width: 150px;'><a href='/users/buyform/" + entry2._id + "'>"+entry2.actionmsg+"</a></td>";
+          if (subtype == 3) html += "<td style='min-width: 150px;'><a href='/users/infoform/" + entry2._id + "'>"+entry2.actionmsg+"</a></td>";
           //html += "<td><a href=`/booking/${hbs.Utils.escapeExpression(entry2)`>{{bookNow}}</a></td>";
           html += "</tr>";
         }
