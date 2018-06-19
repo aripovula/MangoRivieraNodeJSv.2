@@ -24,7 +24,8 @@ deleteOldChatsEveryDay();
 const {deleteOldShoutsEveryMinute} = require('./utils/shoutDeleteScheduler');
 deleteOldShoutsEveryMinute();
 const {constructTable}  = require('./utils/constructTable');
-
+const {ReConstructTableData} = require('./utils/restoreTables');
+ReConstructTableData();
 const {getSubname}  = require('./utils/getSubname');
 
 
@@ -401,24 +402,30 @@ app.get('/home', (req, res) => {
   res.redirect('/users/home');
 });
 
-app.get('/users/home', (req, res) => {
+app.get('/restoredefaults', (req, res) => {
+  ReConstructTableData();
+
   res.redirect('/users/home');
 });
 
-app.get('/admin', (req, res) => {
-  res.render('/adminpage.hbs', {
-    pageTitle: 'Admin Page',
-    welcomeMessage: 'A page that in real life would require an admin password'
-  });
-});
+// app.get('/users/home', (req, res) => {
+//   res.redirect('/users/home');
+// });
 
-app.get('/datepick/:bookingID', (req, res) => {
-  res.render('datepick.hbs', {
-    bookingID: req.params.bookingID,
-    pageTitle: 'Admin Page',
-    welcomeMessage: 'A page that in real life would require an admin password'
-  });
-});
+// app.get('/admin', (req, res) => {
+//   res.render('/adminpage.hbs', {
+//     pageTitle: 'Admin Page',
+//     welcomeMessage: 'A page that in real life would require an admin password'
+//   });
+// });
+
+// app.get('/datepick/:bookingID', (req, res) => {
+//   res.render('datepick.hbs', {
+//     bookingID: req.params.bookingID,
+//     pageTitle: 'Admin Page',
+//     welcomeMessage: 'A page that in real life would require an admin password'
+//   });
+// });
 
 app.get('/error', (req, res) => {
   res.render('error.hbs',{
@@ -435,12 +442,13 @@ app.get('/error', (req, res) => {
 // });
 
 // /bad - send back json with errorMessage
-app.get('/bad', (req, res) => {
-  res.send({
-    errorMessage: 'Unable to handle request'
-  });
-});
+// app.get('/bad', (req, res) => {
+//   res.send({
+//     errorMessage: 'Unable to handle request'
+//   });
+// });
 
+// error handler 
 app.use(function (err, req, res, next) {
   console.error(err.stack);
   errorOnly = err;

@@ -26,7 +26,7 @@ var constructTable = (items) => {
 
         //console.log("entry2a="+entry2.parent.name);
         //console.log("entry2b="+headername);
-        if (entry2.parent.name === headername) {
+        if (entry2.parent != null && entry2.parent.name != null && entry2.parent.name === headername) {
           //console.log("entry2="+entry2);
           // escape all entries that will be made by users
           html += "<tr>";    
