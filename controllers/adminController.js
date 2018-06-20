@@ -186,21 +186,32 @@ function isURL(str) {
 exports.headertype_create_post = [
 
   // Validate that the name field is not empty.
-  check('name', 'Name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
+  check('name').custom( value => {
+    console.log('AAAA NAME = '+value);
+    return new Promise ((resolve, reject) => { HeaderType.find({name: value})
+        .sort('-createdAt')
+        .exec(function (err, names) {
+          console.log('AAAAnames.length = '+names.length);
+          if (err) Promise.reject('Error when checking duplicate names');
+          if (names.length > 0) {
+            console.log('AAAA NAME exists= ');
+            reject('Header type with this name already exists');
+          } else {
+            console.log('AAAA NAME DOES NOT exists= ');
+            resolve('valid');   
+          }
+        });
+      });
+    }),
 
-  check('name').custom(value => {
-    return HeaderType.find({name : value}).then(exists => {
-      if (exists) {
-        return Promise.reject('Header type with this name already exists');
-      }
-    });
-  }),
+
+  check('name', 'Name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
-      
+    
       const errors = validationResult(req);
-
+      console.log('AAAA AFTER req ');
       if (!errors.isEmpty()) {
 
         adminPageWithErrors(errors, res, req);
@@ -242,13 +253,20 @@ exports.booking_subtype_create_post = [
   // Validate that the name field is not empty.
   check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-  check('subname').custom(value => {
-    return Booking_SubType.find({subname : value}).then(exists => {
-      if (exists) {
-        return Promise.reject('Booking sub-type with this name already exists');
-      }
-    });
-  }),
+  check('subname').custom( value => {
+    return new Promise ((resolve, reject) => { 
+      Booking_SubType.find({subname: value})
+        .sort('-createdAt')
+        .exec(function (err, subnames) {
+          if (err) reject('Error when checking duplicate bookings');
+          if (subnames.length > 0) {
+            reject('Booking sub-type with this name already exists');
+          } else {
+            resolve('valid');   
+          }
+        });
+      });
+    }),
 
   check('infotype').custom((infotype, { req }) => {
     if (infotype == "themessage" || infotype == "webpage") {
@@ -306,14 +324,21 @@ exports.sell_subtype_create_post = [
     // Validate that the name field is not empty.
     check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-    check('subname').custom(value => {
-      return Sell_SubType.find({subname : value}).then(exists => {
-        if (exists) {
-          return Promise.reject('Sell sub-type with this name already exists');
-        }
-      });
-    }),  
-
+    check('subname').custom( value => {
+      return new Promise ((resolve, reject) => { 
+        Sell_SubType.find({subname: value})
+          .sort('-createdAt')
+          .exec(function (err, subnames) {
+            if (err) reject('Error when checking duplicate sells');
+            if (subnames.length > 0) {
+              reject('Sell sub-type with this name already exists');
+            } else {
+              resolve('valid');   
+            }
+          });
+        });
+      }),
+  
     check('infotype').custom((infotype, { req }) => {
       if (infotype == "themessage" || infotype == "webpage") {
         if (req.body.msg.length<3) return Promise.reject('Message is required. Min. length = 3');
@@ -378,13 +403,20 @@ exports.info_subtype_create_post = [
   // Validate that the name field is not empty.
   check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-  check('subname').custom(value => {
-    return Info_SubType.find({subname : value}).then(exists => {
-      if (exists) {
-        return Promise.reject('Info sub-type with this name already exists');
-      }
-    });
-  }),
+  check('subname').custom( value => {
+    return new Promise ((resolve, reject) => { 
+      Info_SubType.find({subname: value})
+        .sort('-createdAt')
+        .exec(function (err, subnames) {
+          if (err) reject('Error when checking duplicate info types');
+          if (subnames.length > 0) {
+            reject('Info sub-type with this name already exists');
+          } else {
+            resolve('valid');   
+          }
+        });
+      });
+    }),
 
   check('infotype').custom((infotype, { req }) => {
     if (infotype == "themessage" || infotype == "webpage") {
@@ -488,13 +520,20 @@ exports.headertype_update_post = [
   // Validate that the name field is not empty.
   check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-  check('subname').custom(value => {
-    return Booking_SubType.find({subname : value}).then(exists => {
-      if (exists) {
-        return Promise.reject('Booking sub-type with this name already exists');
-      }
-    });
-  }),
+  check('subname').custom( value => {
+    return new Promise ((resolve, reject) => { 
+      Booking_SubType.find({subname: value})
+        .sort('-createdAt')
+        .exec(function (err, subnames) {
+          if (err) reject('Error when checking duplicate bookings');
+          if (subnames.length > 0) {
+            reject('Booking sub-type with this name already exists');
+          } else {
+            resolve('valid');   
+          }
+        });
+      });
+    }),
 
   check('infotype').custom((infotype, { req }) => {
     if (infotype == "themessage" || infotype == "webpage") {
@@ -553,13 +592,20 @@ exports.headertype_update_post = [
   // Validate that the name field is not empty.
   check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-  check('subname').custom(value => {
-    return Sell_SubType.find({subname : value}).then(exists => {
-      if (exists) {
-        return Promise.reject('Sell sub-type with this name already exists');
-      }
-    });
-  }),
+  check('subname').custom( value => {
+    return new Promise ((resolve, reject) => { 
+      Sell_SubType.find({subname: value})
+        .sort('-createdAt')
+        .exec(function (err, subnames) {
+          if (err) reject('Error when checking duplicate sells');
+          if (subnames.length > 0) {
+            reject('Sell sub-type with this name already exists');
+          } else {
+            resolve('valid');   
+          }
+        });
+      });
+    }),
 
   check('infotype').custom((infotype, { req }) => {
     if (infotype == "themessage" || infotype == "webpage") {
@@ -618,14 +664,21 @@ exports.headertype_update_post = [
   // Validate that the name field is not empty.
   check('subname', 'Sub-name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-  check('subname').custom(value => {
-    return Info_SubType.find({subname : value}).then(exists => {
-      if (exists) {
-        return Promise.reject('Info sub-type with this name already exists');
-      }
-    });
-  }),
-
+  check('subname').custom( value => {
+    return new Promise ((resolve, reject) => { 
+      Info_SubType.find({subname: value})
+        .sort('-createdAt')
+        .exec(function (err, subnames) {
+          if (err) reject('Error when checking duplicate info types');
+          if (subnames.length > 0) {
+            reject('Info sub-type with this name already exists');
+          } else {
+            resolve('valid');   
+          }
+        });
+      });
+    }),
+    
   check('infotype').custom((infotype, { req }) => {
     if (infotype == "themessage" || infotype == "webpage") {
       if (req.body.msg.length<3) return Promise.reject('Message is required. Min. length = 3');

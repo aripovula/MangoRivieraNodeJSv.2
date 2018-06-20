@@ -33,34 +33,41 @@ const infoData4Table = [];
 
 // cirque du ciel, motor show, dolphin show, restaurant à la carte discuss menu	request booking, 
 
+// MANY OTHER PROMISES (DEFINED BELOW THIS FUNCTION) ARE USED INSIDE OF NEWLY DEFINED PROMISE. 
+// THIS PROMISE IS USED IN SERVER.JS
+// I.E. PROMISES USED INSIDE OF ANOTHER PROMISE
 
 let ReConstructTableData = () => {
-    return wipeOffAllHeaderTypePromise()
-    .then(() => {
-        return wipeOffAllBookingSubTypePromise();
-    })
-    .then(() => {
-        return wipeOffAllSellSubTypePromise();
-    })
-    .then(() => {
-        return wipeOffAllInfoSubTypePromise();
-    })
-    .then(() => {
-        return addAllDefaultHeaderTypes();
-    })
-    .then(() => {
-        return readHeadersPromise();
-    })
-    .then((data) => {
-        return addAllDefaultBookingSubTypes(data);
-    })
-    .then((data) => {
-        return addAllDefaultSellSubTypes(data);
-    })
-    .then((data) => {
-        return addAllDefaultInfoSubTypes(data);
-    })
-    .catch(err => console.log(err.message));
+    return new Promise ( (resolve, reject)=> {
+        return wipeOffAllHeaderTypePromise()
+        .then(() => {
+            return wipeOffAllBookingSubTypePromise();
+        })
+        .then(() => {
+            return wipeOffAllSellSubTypePromise();
+        })
+        .then(() => {
+            return wipeOffAllInfoSubTypePromise();
+        })
+        .then(() => {
+            return addAllDefaultHeaderTypes();
+        })
+        .then(() => {
+            return readHeadersPromise();
+        })
+        .then((data) => {
+            return addAllDefaultBookingSubTypes(data);
+        })
+        .then((data) => {
+            return addAllDefaultSellSubTypes(data);
+        })
+        .then((data) => {
+            return addAllDefaultInfoSubTypes(data);
+        })
+        // WHEN OTHER PROMISES ARE RESOLVED THEN RESOLVE THIS PROMISE
+        .then(() => resolve())
+        .catch(err => console.log(err.message));
+    });
 }
 
 
@@ -106,7 +113,8 @@ wipeOffAllInfoSubTypePromise = () => {
 
 addAllDefaultHeaderTypes = () => {
     return new Promise((resolve, reject) => {
-        let count = 0; 
+        let count = 0;
+        if (headingData4Table.length == 0) resolve();
         for (let i = 0, len = headingData4Table.length; i < len; i++) {
             let bt = new HeaderType(
                 { name: headingData4Table[i].name }
@@ -140,6 +148,7 @@ readHeadersPromise = () => {
 addAllDefaultBookingSubTypes = (HeadersData) => {
     return new Promise ( (resolve, reject) => {
         let count = 0;
+        if (bookingsData4Table.length == 0) resolve();
         for (let i = 0, len = bookingsData4Table.length; i < len; i++) {
 
             let bt = new Booking_SubType({ 
@@ -167,10 +176,8 @@ addAllDefaultBookingSubTypes = (HeadersData) => {
 addAllDefaultSellSubTypes = (HeadersData) => {
     return new Promise ( (resolve, reject) => {
         let count = 0;
+        if (sellData4Table.length == 0) resolve();
         for (let i = 0, len = sellData4Table.length; i < len; i++) {
-            console.log('B4 addAllDefaultSellSubTypes done i='+i+'  count = '+count);
-            console.log('HeadersData[0]._id = '+HeadersData[0]._id);
-            console.log('HeadersData[sellData4Table[i].parentID]._id = '+HeadersData[sellData4Table[i].parentID]._id);
             let bt = new Sell_SubType({ 
                 parent : HeadersData[sellData4Table[i].parentID]._id,
                 subname : sellData4Table[i].subname,
@@ -197,6 +204,8 @@ addAllDefaultSellSubTypes = (HeadersData) => {
 addAllDefaultInfoSubTypes = (HeadersData) => {
     return new Promise ( (resolve, reject) => {
         let count = 0;
+        console.log('IN IN INFO');
+        if (infoData4Table.length == 0) resolve();
         for (let i = 0, len = infoData4Table.length; i < len; i++) {
 
             let bt = new Info_SubType({ 

@@ -25,7 +25,6 @@ const {deleteOldShoutsEveryMinute} = require('./utils/shoutDeleteScheduler');
 deleteOldShoutsEveryMinute();
 const {constructTable}  = require('./utils/constructTable');
 const {ReConstructTableData} = require('./utils/restoreTables');
-ReConstructTableData();
 const {getSubname}  = require('./utils/getSubname');
 
 
@@ -403,9 +402,12 @@ app.get('/home', (req, res) => {
 });
 
 app.get('/restoredefaults', (req, res) => {
-  ReConstructTableData();
-
-  res.redirect('/users/home');
+  console.log('IN IN FIIIRST restoredefaults');
+  return ReConstructTableData()
+  .then(() => {
+    console.log('IN IN THEEEN');
+    res.redirect('/users/home');
+  });
 });
 
 // app.get('/users/home', (req, res) => {
