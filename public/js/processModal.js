@@ -1,9 +1,9 @@
 
 // Get the modal
-const modal = document.getElementById('myModal');
+let modal = document.getElementById('myModal');
 
 // Get the <span> element that closes the modal
-const span = document.getElementsByClassName("close")[0];
+let span = document.getElementsByClassName("close")[0];
 
 
 
@@ -108,24 +108,25 @@ function formSubmit() {
         return false;
     } else {
       let idn = fe.idn.value;
+      let act = '';
       let parent_id = fe.parent_id.value;
       //let name = fe.dname.value;
       
       //let subname = fe.dsubname.value;
       let infotype = $("input:radio[name='displaytype']:checked").val();
       console.log("infotype - "+infotype);
-      if ( type == 10 ) let act = "/admin/headertype/save";
-      if ( type == 11 ) let act = "/admin/headertype/"+idn+"/update";
-      if ( type == 12 ) let act = "/admin/headertype/"+idn+"/delete";
-      if ( type == 20 ) let act = "/admin/booking_subtype/"+parent_id+"/"+infotype+"/save";
-      if ( type == 21 ) let act = "/admin/booking_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
-      if ( type == 22 ) let act = "/admin/booking_subtype/"+idn+"/delete";
-      if ( type == 30 ) let act = "/admin/sell_subtype/"+parent_id+"/"+infotype+"/save";
-      if ( type == 31 ) let act = "/admin/sell_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
-      if ( type == 32 ) let act = "/admin/sell_subtype/"+idn+"/delete";
-      if ( type == 40 ) let act = "/admin/info_subtype/"+parent_id+"/"+infotype+"/save";
-      if ( type == 41 ) let act = "/admin/info_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
-      if ( type == 42 ) let act = "/admin/info_subtype/"+idn+"/delete";
+      if ( type == 10 )  act = "/admin/headertype/save";
+      if ( type == 11 )  act = "/admin/headertype/"+idn+"/update";
+      if ( type == 12 )  act = "/admin/headertype/"+idn+"/delete";
+      if ( type == 20 )  act = "/admin/booking_subtype/"+parent_id+"/"+infotype+"/save";
+      if ( type == 21 )  act = "/admin/booking_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 22 )  act = "/admin/booking_subtype/"+idn+"/delete";
+      if ( type == 30 )  act = "/admin/sell_subtype/"+parent_id+"/"+infotype+"/save";
+      if ( type == 31 )  act = "/admin/sell_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 32 )  act = "/admin/sell_subtype/"+idn+"/delete";
+      if ( type == 40 )  act = "/admin/info_subtype/"+parent_id+"/"+infotype+"/save";
+      if ( type == 41 )  act = "/admin/info_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 42 )  act = "/admin/info_subtype/"+idn+"/delete";
 
       //alert("type = "+type);
       let formuniv = document.getElementById('universalForm');
