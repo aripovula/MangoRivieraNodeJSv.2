@@ -1,19 +1,19 @@
 // $(document).ready(function () {
   
-  var context;
-  var apiReadTime;
+  let  context;
+  let  apiReadTime;
 
   function updateWeatherInfo(apiKey) {
     return new Promise((resolve, reject) => {
-      var html = '<div class="boxed">... updating weather info ...</div> ';
+      let  html = '<div class="boxed">... updating weather info ...</div> ';
       $("#weather_placeholder").html(html);
-      var updated = false;
+      let  updated = false;
       
       // Since I did not learn how to pass data from server to front end (may be using webpacks)
       // as a TEMPORARY measure I am reading API from local file to protect it from saving in github.com
-      //var apiTemp;
+      //let  apiTemp;
 
-      var url              = 'https://api.darksky.net/forecast/',
+      let  url              = 'https://api.darksky.net/forecast/',
       locationData         = '41.299968,69.2707328', //'39.3469952,-84.4013568',  //'25.8102247,-80.2101822',
       api_call = url + apiKey + "/" + locationData + "?extend=hourly&callback=?";
   
@@ -23,19 +23,19 @@
         
           console.log("IN FORECAST REQUEST");
 
-          var open = "</span><i style='color:#FF69B4' class='wi ";
-          var close = "'></i><span>";
+          let  open = "</span><i style='color:#FF69B4' class='wi ";
+          let  close = "'></i><span>";
         
-          var forDetailed="";
+          let  forDetailed="";
           forDetailed = forDetailed + `Currently - &nbsp; &nbsp; &nbsp; ${forecast.currently.summary}&nbsp; &nbsp; &nbsp;  Temp.: ${forecast.currently.temperature} &nbsp; &nbsp; &nbsp;Feels like ${forecast.currently.apparentTemperature}&nbsp; &nbsp; &nbsp; Wind: ${forecast.currently.windSpeed} mph &nbsp; &nbsp; &nbsp;Humidity: ${forecast.currently.humidity} &nbsp; &nbsp; &nbsp;uv-Index: ${forecast.currently.uvIndex}\n`;  
           forDetailed = forDetailed + "\n";
           
-          for(var i = 1; i < 6; i++) {
+          for(let  i = 1; i < 6; i++) {
             forDetailed = forDetailed + `In ${i} hour(s) - &nbsp; &nbsp; &nbsp; ${forecast.hourly.data[i].summary}&nbsp; &nbsp; &nbsp;  Temp.: ${forecast.hourly.data[i].temperature} &nbsp; &nbsp; &nbsp;Feels like ${forecast.hourly.data[i].apparentTemperature}&nbsp; &nbsp; &nbsp; Wind: ${forecast.hourly.data[i].windSpeed} mph&nbsp; &nbsp; &nbsp; Humidity: ${forecast.hourly.data[i].humidity}&nbsp; &nbsp; &nbsp; uv-Index: ${forecast.hourly.data[i].uvIndex}\n`;  
             forDetailed = forDetailed + "\n";
           }
           
-          for(var i = 1; i < 3; i++) {
+          for(let  i = 1; i < 3; i++) {
             forDetailed = forDetailed + `In ${i} day(s) - &nbsp; &nbsp; &nbsp; ${forecast.daily.data[i].summary}&nbsp; &nbsp; &nbsp;  High: ${forecast.daily.data[i].temperatureHigh}&nbsp; &nbsp; &nbsp; Low ${forecast.daily.data[i].temperatureLow}&nbsp; &nbsp; &nbsp; Wind: ${forecast.daily.data[i].windSpeed} mph &nbsp; &nbsp; &nbsp;Humidity: ${forecast.daily.data[i].humidity}&nbsp; &nbsp; &nbsp;uv-Index: ${forecast.daily.data[i].uvIndex}\n`;  
             forDetailed = forDetailed + "\n";
           }
@@ -66,19 +66,19 @@
     myPromise.then((successMessage) => {
 
       if (successMessage==="Success!") {
-        var l1 = `<div class="boxed" data-toggle="tooltip" data-placement="bottom" title=`;
-        var l2 = `"Miami Beach, Florida, USA\n\n ${context.detailed}`;
-        var l3 = ` \nUpdated every 20 minutes. Last updated at ${apiReadTime} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ( for demo purposes updated every minute )"`;
-        var l4 = ` >Weather:  &nbsp; ${context.brief}. &nbsp; more ...`;
-        var l5 = `</div>`;
+        let  l1 = `<div class="boxed" data-toggle="tooltip" data-placement="bottom" title=`;
+        let  l2 = `"Miami Beach, Florida, USA\n\n ${context.detailed}`;
+        let  l3 = ` \nUpdated every 20 minutes. Last updated at ${apiReadTime} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ( for demo purposes updated every minute )"`;
+        let  l4 = ` >Weather:  &nbsp; ${context.brief}. &nbsp; more ...`;
+        let  l5 = `</div>`;
 
-        var html = l1 + l2 + l3 + l4 + l5;
+        let  html = l1 + l2 + l3 + l4 + l5;
         $("#weather_placeholder").html(html);
         $('[data-toggle="tooltip"]').tooltip();
       }
     }).catch((e) => {
       console.log("Error = "+ e.message);
-      var html = '<div class="boxed">... could not update the weather info ...</div> ';
+      let  html = '<div class="boxed">... could not update the weather info ...</div> ';
       $("#weather_placeholder").html(html);
       
 

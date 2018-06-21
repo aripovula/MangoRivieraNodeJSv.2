@@ -1,11 +1,11 @@
-var socket = io();
-var htmlPrev="";
-//var html="";
+const socket = io();
+let htmlPrev="";
+//let html="";
 
-var intGrType=1;
-var intGrTypePrev=1;
+let intGrType=1;
+let intGrTypePrev=1;
 if (document.getElementById('bb1') != null) setInterestGroup(1);
-var bbel = document.getElementById("bb1");
+let bbel = document.getElementById("bb1");
 if (bbel != null ) bbel.style.color = "blue";
 
 
@@ -26,11 +26,11 @@ socket.emit('readShoutMessages',
 
 socket.on('newShoutMessage',function(message){
 
-  var chatData = [{from:message.from, createdAt:message.createdAt, text:message.text }];
-   var theTemplateScript = $("#shout-template").html(); 
+  let chatData = [{from:message.from, createdAt:message.createdAt, text:message.text }];
+   let theTemplateScript = $("#shout-template").html(); 
    if (theTemplateScript != null) {
-      var theTemplate = Handlebars.compile(theTemplateScript);
-      var html = theTemplate(chatData);
+      let theTemplate = Handlebars.compile(theTemplateScript);
+      let html = theTemplate(chatData);
       $("#shoutboard").html(html+htmlPrev); 
       htmlPrev = html + htmlPrev;
    }
@@ -38,18 +38,18 @@ socket.on('newShoutMessage',function(message){
 
 socket.on('newMessage',function(message){
 
-  //var timePosted = moment().format('h:mm a');
+  //let timePosted = moment().format('h:mm a');
   //console.log("it works: "+message.text + " timePosted = "+timePosted);
-  // var html = `<p><span style="color:red">${message.from}}</span> - <span style="color:gray">@ ${timePosted}} </span> : <span style="color:green"> ${message.text}} </span></p>`;
-  // var html = `<p>${message.from} @ ${timePosted}: ${message.text}</p>`;
+  // let html = `<p><span style="color:red">${message.from}}</span> - <span style="color:gray">@ ${timePosted}} </span> : <span style="color:green"> ${message.text}} </span></p>`;
+  // let html = `<p>${message.from} @ ${timePosted}: ${message.text}</p>`;
   // jQuery('#messages').append(html);
 
   //console.log("intGrType = " + message.intGr);
-  var changedForPrivacy = "##"+message.from.substring(2);
-  var chatData = [{from:changedForPrivacy, timePosted:message.createdAt, text:message.text }];
-  var theTemplateScript = $("#chat-template").html(); 
+  let changedForPrivacy = "##"+message.from.substring(2);
+  let chatData = [{from:changedForPrivacy, timePosted:message.createdAt, text:message.text }];
+  let theTemplateScript = $("#chat-template").html(); 
    if (theTemplateScript != null && message.intGr == intGrType) {
-      var theTemplate = Handlebars.compile(theTemplateScript); 
+      let theTemplate = Handlebars.compile(theTemplateScript); 
       //  console.log("data = " + chatData[0].from);
       //  console.log("data = " + chatData[0].text);
       //  console.log("html = " + theTemplate(chatData));
@@ -67,16 +67,16 @@ socket.on('topicMessages',function(topicChats){
   // console.log("topicChats = "+topicChats.length);
   if (topicChats != null) {
     
-    for (var i = 0, len = topicChats.length; i < len; i++) {
+    for (let i = 0, len = topicChats.length; i < len; i++) {
       let message = topicChats[i];
       // console.log("message = "+message);
       // console.log("message room = "+message.room_n);
       if (message != null && message.room_n != null) {
-        var changedForPrivacy = "##"+message.room_n.substring(2);
-        var chatData = [{from:changedForPrivacy, timePosted:message.dateTimeStr, text:message.text }];
-        var theTemplateScript = $("#chat-template").html(); 
+        let changedForPrivacy = "##"+message.room_n.substring(2);
+        let chatData = [{from:changedForPrivacy, timePosted:message.dateTimeStr, text:message.text }];
+        let theTemplateScript = $("#chat-template").html(); 
         if (theTemplateScript != null && message.intGr == intGrType) {
-            var theTemplate = Handlebars.compile(theTemplateScript); 
+            let theTemplate = Handlebars.compile(theTemplateScript); 
             $("#messages").append(theTemplate(chatData));
         }
       }
@@ -93,18 +93,18 @@ socket.on('shoutMessages',function(topicChats){
   //console.log("topicChats = "+topicChats[0].createdAt);
   if (topicChats != null) {
     
-    for (var i = 0, len = topicChats.length; i < len; i++) {
+    for (let i = 0, len = topicChats.length; i < len; i++) {
       let message = topicChats[i];
 
       if (message != null ) {
-        var chatData = [{from:message.from, createdAt:message.createdAt, text:message.text }];
-        var theTemplateScript = $("#shout-template").html(); 
+        let chatData = [{from:message.from, createdAt:message.createdAt, text:message.text }];
+        let theTemplateScript = $("#shout-template").html(); 
         if (theTemplateScript != null) {
-          var theTemplate = Handlebars.compile(theTemplateScript);
+          let theTemplate = Handlebars.compile(theTemplateScript);
           
           console.log("i="+i);
           // console.log("htmlPrev = " + htmlPrev);
-          var html = theTemplate(chatData);
+          let html = theTemplate(chatData);
           $("#shoutboard").html(html+htmlPrev); 
           htmlPrev = html + htmlPrev;
         }
@@ -131,8 +131,8 @@ jQuery('#message-form').on('submit', function (e) {
     e.preventDefault();
   
   // Do somethin g else
-  var createdAt = moment().format('h:mm a');
-  var messageTextbox = jQuery('[name=message]');
+  let createdAt = moment().format('h:mm a');
+  let messageTextbox = jQuery('[name=message]');
   //console.log(createdAt);
   socket.emit('createMessage', 
   {
@@ -151,8 +151,8 @@ jQuery('#shoutMessage-form').on('submit', function (e) {
   e.preventDefault();
 
 // Do somethin g else
-var createdAt = moment().format('h:mm a');
-var messageTextbox = jQuery('[name=message]');
+let createdAt = moment().format('h:mm a');
+let messageTextbox = jQuery('[name=message]');
 //console.log(createdAt);
 socket.emit('createShoutMessage', 
 {
@@ -188,8 +188,8 @@ function setInterestGroup(groupType){
   });
 }
 
-var video = document.getElementById("myVideo");
-var btn = document.getElementById("videoBtn");
+let video = document.getElementById("myVideo");
+let btn = document.getElementById("videoBtn");
 
 function videoCtrl() {
   if (video.paused) {
@@ -200,8 +200,8 @@ function videoCtrl() {
   }
 }
 
-var audio = document.getElementById("theaudio");
-var abtn = document.getElementById("audioBtn");
+let audio = document.getElementById("theaudio");
+let abtn = document.getElementById("audioBtn");
 
 function audioCtrl() {
   if (audio.paused) {
@@ -222,11 +222,11 @@ function videoPause() {
 setTimeout(function(){ videoPause() }, 4600);
 
 // function getJSessionId(){
-//   var sid;
-//   var strCookies = document.cookie;
+//   let sid;
+//   let strCookies = document.cookie;
 //   console.log("strCookies="+strCookies);
-//   var cookiearray = strCookies.split(';')
-//   for(var i=0; i<cookiearray.length; i++){
+//   let cookiearray = strCookies.split(';')
+//   for(let i=0; i<cookiearray.length; i++){
 //     name = cookiearray[i].split('=')[0];
 //     value = cookiearray[i].split('=')[1];
 //     if(name == 'sid')

@@ -1,11 +1,11 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 //var resNo = getResValue();
 //var HeaderType = mongoose.model('HeaderType', HeaderType);
 
-var All_ChatsSchema = new Schema({
+let All_ChatsSchema = new Schema({
 
     room_n: {type: String},
     dateTime: {type: Date},

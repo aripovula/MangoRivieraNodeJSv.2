@@ -12,7 +12,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
 
-// var Book = require('../models/book');
+// const Book = require('../models/book');
 const async = require('async');
 const stringify = require('json-stringify');
 
@@ -248,7 +248,7 @@ exports.list_4guest = function(req, res, next) {
 //   HeaderType.find()
 //     .sort([['name', 'ascending']])
 //     .exec(function (err, list_headertypes) {
-//       var theheadertypes = list_headertypes;
+//       let theheadertypes = list_headertypes;
         
 //       if (err) { return next(err); }
 //       // Successful, so render.
@@ -265,7 +265,7 @@ exports.list_4guest = function(req, res, next) {
 //   Booking_SubType.find()
 //     .sort([['name', 'ascending']])
 //     .exec(function (err, list_booking_subtypes) {
-//       var thebooking_subtypes = list_booking_subtypes;
+//       let thebooking_subtypes = list_booking_subtypes;
         
 //       if (err) { return next(err); }
 //       // Successful, so render.
@@ -293,7 +293,7 @@ exports.login_room = [
 
       User.authenticate(req.body.room, req.body.code1, function (error, user) {
         if (error || !user) {
-          var err = new Error('Wrong email or password.');
+          let err = new Error('Wrong email or password.');
           err.status = 401;
           return next(err);
         } else {
@@ -303,7 +303,7 @@ exports.login_room = [
         }
       });
     } else {
-      var err = new Error('All fields required.');
+      let err = new Error('All fields required.');
       err.status = 400;
       return next(err);
     }
@@ -323,7 +323,7 @@ exports.login_room = [
 //   (req, res, next) => {
 
 //     console.log("type="+req.body.name);
-//     var bt = new HeaderType(
+//     let bt = new HeaderType(
 //         { name: req.body.name }
 //       );
       
@@ -368,7 +368,7 @@ exports.users_booking_create_post = [
       // console.log('ABCABC1  err='+stringify(errors2));
       // console.log('ABCABC2  err='+errors2[0].msg);
     
-      for (var i = 0, len = errors2.length; i < len; i++) {
+      for (let i = 0, len = errors2.length; i < len; i++) {
         errorsText = errorsText + errors2[i].msg+". ";
       }    
       req.flash('error', 'Ooops, ' + errorsText);
@@ -382,18 +382,18 @@ exports.users_booking_create_post = [
       console.log("stime2="+req.body.bstarttime2);
       console.log("date="+req.body.bdate);
       console.log("date2="+req.body.bdate2);
-      var date = req.body.bdate;
-      var TimeStart = req.body.bstarttime;
+      let date = req.body.bdate;
+      let TimeStart = req.body.bstarttime;
       let datePlusTimeStart = req.body.bdate+" "+req.body.bstarttime;
-      var momentDate = moment(datePlusTimeStart, 'DD MMM YYYY HH:mm:ss');
-      var jsDateStart = momentDate.toDate();
+      let momentDate = moment(datePlusTimeStart, 'DD MMM YYYY HH:mm:ss');
+      let jsDateStart = momentDate.toDate();
 
-      var TimeEnd = req.body.bendtime;
-      //var momentDate = moment(datePlusTimeEnd, 'DD MMM YYYY HH:mm');
-      //var jsDateEnd = momentDate.toString();
+      let TimeEnd = req.body.bendtime;
+      //let momentDate = moment(datePlusTimeEnd, 'DD MMM YYYY HH:mm');
+      //let jsDateEnd = momentDate.toString();
 
       // console.log("name="+name.name);
-      var sbt = new Users_Booking({
+      let sbt = new Users_Booking({
         bookingID : req.body.bid,
         bookingname : req.body.bname,
         userID : req.session.userId,
@@ -431,7 +431,7 @@ exports.users_buy_create_post = [
       // console.log('ABCABC1  err='+stringify(errors2));
       // console.log('ABCABC2  err='+errors2[0].msg);
     
-      for (var i = 0, len = errors2.length; i < len; i++) {
+      for (let i = 0, len = errors2.length; i < len; i++) {
         errorsText = errorsText + errors2[i].msg+". ";
       }    
       req.flash('error', 'Ooops, ' + errorsText);
@@ -443,14 +443,14 @@ exports.users_buy_create_post = [
       console.log("name="+req.body.bname);
       console.log("date="+req.body.pdate);
       
-      var date = req.body.pdate;
-      var momentDate = moment(date, 'DD MMM YYYY');
-      var jsDate = momentDate.toDate();
+      let date = req.body.pdate;
+      let momentDate = moment(date, 'DD MMM YYYY');
+      let jsDate = momentDate.toDate();
 
       console.log("date="+date);
       console.log("jsDate="+jsDate);
 
-      var sbt = new Users_Buy({ 
+      let sbt = new Users_Buy({ 
         buyID : req.body.bid,
         buyname : req.body.bname,
         date : jsDate,
@@ -585,7 +585,7 @@ exports.users_buy_cancel_post = [
 
 //   (req, res, next) => {
 
-//     // var name = HeaderType.findOne({ '_id': req.params.id })
+//     // let name = HeaderType.findOne({ '_id': req.params.id })
 //     //             .exec( function(err, found_bt) {
 //     //                  if (err) { return next(err); }
 
@@ -594,7 +594,7 @@ exports.users_buy_cancel_post = [
 
 //     console.log("subname="+req.body.subname);
 //     // console.log("name="+name.name);
-//     var sbt = new Sell_SubType({ 
+//     let sbt = new Sell_SubType({ 
 //       parent : req.params.parent_id,
 //       subname : req.body.subname,
 //       infotype : req.params.infotype,
@@ -632,7 +632,7 @@ exports.users_buy_cancel_post = [
 
 //   (req, res, next) => {
 
-//     // var name = HeaderType.findOne({ '_id': req.params.id })
+//     // let name = HeaderType.findOne({ '_id': req.params.id })
 //     //             .exec( function(err, found_bt) {
 //     //                  if (err) { return next(err); }
 
@@ -641,7 +641,7 @@ exports.users_buy_cancel_post = [
 
 //     console.log("subname="+req.body.subname);
 //     // console.log("name="+name.name);
-//     var sbt = new Info_SubType({ 
+//     let sbt = new Info_SubType({ 
 //       parent : req.params.parent_id,
 //       subname : req.body.subname,
 //       infotype : req.params.infotype,
@@ -680,7 +680,7 @@ exports.users_buy_cancel_post = [
 //       // const errors = validationResult(req);
 
 //   // Create a genre object with escaped and trimmed data (and the old id!)
-//       var bt = new HeaderType(
+//       let bt = new HeaderType(
 //         {
 //         name: req.body.name,
 //         _id: req.params.id
@@ -726,7 +726,7 @@ exports.users_buy_cancel_post = [
 //         // const errors = validationResult(req);
   
 //     // Create a genre object with escaped and trimmed data (and the old id!)
-//     var sbt = new Booking_SubType({ 
+//     let sbt = new Booking_SubType({ 
 //       _id: req.params.id,
 //       parent:req.params.parent_id,
 //       subname: req.body.subname,
@@ -774,7 +774,7 @@ exports.users_buy_cancel_post = [
 //         // const errors = validationResult(req);
   
 //     // Create a genre object with escaped and trimmed data (and the old id!)
-//     var sbt = new Sell_SubType({ 
+//     let sbt = new Sell_SubType({ 
 //       _id: req.params.id,
 //       parent:req.params.parent_id,
 //       subname: req.body.subname,
@@ -823,7 +823,7 @@ exports.users_buy_cancel_post = [
 //         // const errors = validationResult(req);
   
 //     // Create a genre object with escaped and trimmed data (and the old id!)
-//     var sbt = new Info_SubType({ 
+//     let sbt = new Info_SubType({ 
 //       _id: req.params.id,
 //       parent:req.params.parent_id,
 //       subname: req.body.subname,

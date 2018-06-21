@@ -77,7 +77,7 @@ const defaultChatsData = [
     timeAgo: 1000 * 60 * 60 * 24 * 1.65,
     text: 'Also try taking trip to Miami Bay - it is a beautiful bay boat trip',
     intGr:4},
-    {roomN:'C232', 
+    {roomN:'C232',
     timeAgo: 1000 * 60 * 60 * 24 * 1.83,
     text: 'Did anyone go to the dolphin show ? Are you really permitted to swim with dolphines ?',
     intGr:1},

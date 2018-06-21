@@ -1,9 +1,9 @@
 
 // Get the modal
-var modal = document.getElementById('myModal');
+const modal = document.getElementById('myModal');
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+const span = document.getElementsByClassName("close")[0];
 
 
 
@@ -18,7 +18,7 @@ function showModal(type, idn, parent_id, name, subname, msg, price, maintext, in
 
     modal.style.display = "block";
 
-    var fe = getElementVars();
+    let fe = getElementVars();
 
     fe.type.setAttribute('value',type);
     fe.idn.setAttribute('value',idn);
@@ -57,12 +57,12 @@ function showModal(type, idn, parent_id, name, subname, msg, price, maintext, in
 //function showModalByTypes(subtypes) {
 //  console.log('modalbytpes = '+subtypes);
 //      modal.style.display = "block";
-//    var fe = getElementVars();
+//    let fe = getElementVars();
 //    fe.type.setAttribute('value',subtypes);
 //}
 
 function getElementVars(){
-  var fe = new Object();
+  let fe = new Object();
     fe.type = document.getElementById('bttype');
     fe.idn = document.getElementById('btid');    
     fe.parent_id = document.getElementById('btparent_id');
@@ -99,33 +99,33 @@ window.onclick = function(event) {
 
 function formSubmit() {
     
-    var fe = getElementVars();
-    var type = fe.type.value;
+    let fe = getElementVars();
+    let type = fe.type.value;
     console.log("message22="+fe.dmsg.value);
     if (type < 15 && fe.dname.value.includes("'") || type > 15 && fe.dsubname.value.includes("'")) {
         fe.dtext.style.display = "block";
         fe.dtext.innerHTML = "Please avoid using single quote ( symbol ' ) - use double quotes instead";
         return false;
     } else {
-      var idn = fe.idn.value;
-      var parent_id = fe.parent_id.value;
-      //var name = fe.dname.value;
+      let idn = fe.idn.value;
+      let parent_id = fe.parent_id.value;
+      //let name = fe.dname.value;
       
-      //var subname = fe.dsubname.value;
-      var infotype = $("input:radio[name='displaytype']:checked").val();
+      //let subname = fe.dsubname.value;
+      let infotype = $("input:radio[name='displaytype']:checked").val();
       console.log("infotype - "+infotype);
-      if ( type == 10 ) var act = "/admin/headertype/save";
-      if ( type == 11 ) var act = "/admin/headertype/"+idn+"/update";
-      if ( type == 12 ) var act = "/admin/headertype/"+idn+"/delete";
-      if ( type == 20 ) var act = "/admin/booking_subtype/"+parent_id+"/"+infotype+"/save";
-      if ( type == 21 ) var act = "/admin/booking_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
-      if ( type == 22 ) var act = "/admin/booking_subtype/"+idn+"/delete";
-      if ( type == 30 ) var act = "/admin/sell_subtype/"+parent_id+"/"+infotype+"/save";
-      if ( type == 31 ) var act = "/admin/sell_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
-      if ( type == 32 ) var act = "/admin/sell_subtype/"+idn+"/delete";
-      if ( type == 40 ) var act = "/admin/info_subtype/"+parent_id+"/"+infotype+"/save";
-      if ( type == 41 ) var act = "/admin/info_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
-      if ( type == 42 ) var act = "/admin/info_subtype/"+idn+"/delete";
+      if ( type == 10 ) let act = "/admin/headertype/save";
+      if ( type == 11 ) let act = "/admin/headertype/"+idn+"/update";
+      if ( type == 12 ) let act = "/admin/headertype/"+idn+"/delete";
+      if ( type == 20 ) let act = "/admin/booking_subtype/"+parent_id+"/"+infotype+"/save";
+      if ( type == 21 ) let act = "/admin/booking_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 22 ) let act = "/admin/booking_subtype/"+idn+"/delete";
+      if ( type == 30 ) let act = "/admin/sell_subtype/"+parent_id+"/"+infotype+"/save";
+      if ( type == 31 ) let act = "/admin/sell_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 32 ) let act = "/admin/sell_subtype/"+idn+"/delete";
+      if ( type == 40 ) let act = "/admin/info_subtype/"+parent_id+"/"+infotype+"/save";
+      if ( type == 41 ) let act = "/admin/info_subtype/"+idn+"/"+parent_id+"/"+infotype+"/update";
+      if ( type == 42 ) let act = "/admin/info_subtype/"+idn+"/delete";
 
       //alert("type = "+type);
       let formuniv = document.getElementById('universalForm');
@@ -139,7 +139,7 @@ function formSubmit() {
 
     function myFunction(divName) {
         console.log("divName = "+divName);
-        var x = document.getElementById(divName);
+        let x = document.getElementById(divName);
         if (x.style.display === "none") {
             x.style.display = "block";
         } else {

@@ -6,12 +6,12 @@
     console.log("Price2 = "+a2);
     let a2 = a1[0];
     console.log("Price2 = "+a2);*/
-    var sel_id = for_buyform2[0].sel_id;
-    var sid;
-    var subname;
-    var loop_id;
-    var qnty=1;
-    var price;
+    let sel_id = for_buyform2[0].sel_id;
+    let sid;
+    let subname;
+    let loop_id;
+    let qnty=1;
+    let price;
 
     console.log("sel_id = " + sel_id);
     console.log("sel_id0 = " + for_buyform2[0]);
@@ -94,7 +94,7 @@
 
         console.log("namefromCont="+nameel.value);
         
-        var act = "/users/userbuy/save";
+        let act = "/users/userbuy/save";
 
         //alert("act = "+act);
         let formsubm = document.getElementById('userBuyForm');

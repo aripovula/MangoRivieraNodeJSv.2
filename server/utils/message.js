@@ -1,12 +1,12 @@
 const moment = require('moment');
 const All_Chats = require('../../models/all_chats');
 
-var generateMessage = (from, text, intGr) => {
+let generateMessage = (from, text, intGr) => {
 
-    var momentDate = moment().format('DD MMM YYYY HH:mm:ss')
-    var jsDateStart = moment();
+    let momentDate = moment().format('DD MMM YYYY HH:mm:ss')
+    let jsDateStart = moment();
 
-    var sbt = new All_Chats({
+    let sbt = new All_Chats({
         room_n: from,
         dateTime: jsDateStart,
         dateTimeStr: moment().format('DD MMM h:mm a'),

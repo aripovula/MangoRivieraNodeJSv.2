@@ -1,6 +1,6 @@
 const hbs = require('hbs');
 
-var getSubname = (items) => {
+let getSubname = (items) => {
 
   let html = "";
   let subtype = 0; 

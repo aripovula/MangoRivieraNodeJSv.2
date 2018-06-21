@@ -1,4 +1,4 @@
-var found1, found2, apikey1, apikey2, apiKey;
+let  found1, found2, apikey1, apikey2, apiKey;
 
 $(document).ready(function () {
     // reading API key from a local file is used as a temporary measure during the development stage.
@@ -7,16 +7,16 @@ $(document).ready(function () {
 });
 
 function updateWeatherEvery20mins() {
-    var myPromise = updateWeatherInfo(apiKey);
+    let  myPromise = updateWeatherInfo(apiKey);
     applyWeatherInfo(myPromise);
     setTimeout(updateWeatherEvery20mins, 10*60*1000); // for demo purposes updates every minute
 }
 
-var getApiKey = function () {
-    // depending on the current page path to APIKEY.txt file varies. 
+let  getApiKey = function () {
+    // depending on the current page path to APIKEY.txt file let ies. 
     // It tries both paths     '../../api.txt'     AND      '../api.txt'
 
-    var html = '<div class="boxed">... updating weather info ...</div> ';
+    let  html = '<div class="boxed">... updating weather info ...</div> ';
     $("#weather_placeholder").html(html);
 
     Promise.race([getApiKey1, getApiKey2])
@@ -26,7 +26,7 @@ var getApiKey = function () {
         })
 };
 
-var getApiKey1 = new Promise(
+let  getApiKey1 = new Promise(
     function (resolve, reject) {
         found1 = false;
         jQuery.get('../api.txt', function(apiTemp, status) {
@@ -44,7 +44,7 @@ var getApiKey1 = new Promise(
     }
 );
 
-var getApiKey2 = new Promise(
+let  getApiKey2 = new Promise(
     function (resolve, reject) {
         found2 = false;
         jQuery.get('../../api.txt', function(apiTemp, status) {

@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
-var UserSchema = new mongoose.Schema({
+let UserSchema = new mongoose.Schema({
   roomCode: {
     type: String,
     unique: true,
@@ -38,7 +38,7 @@ UserSchema.statics.authenticate = function (roomCode, passcode, callback) {
 
 //hashing a passcode before saving it to the database
 UserSchema.pre('save', function (next) {
-  var user = this;
+  let user = this;
   bcrypt.hash(user.passcode, 10, function (err, hash) {
     if (err) {
       return next(err);
@@ -49,6 +49,6 @@ UserSchema.pre('save', function (next) {
 });
 
 
-var User = mongoose.model('User', UserSchema);
+let User = mongoose.model('User', UserSchema);
 module.exports = User;
 

@@ -69,9 +69,9 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // PART TO CUSTOM SAVE TO DB
-// var HeaderType = require('../models/headertype');
+// let  HeaderType = require('../models/headertype');
 
-// var bt = new HeaderType(
+// let  bt = new HeaderType(
 //   { name: "bt2 yes, shukur" }
 // );
 
@@ -86,7 +86,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 // HeaderType.find()
 // .sort([['name', 'ascending']])
 // .exec(function (err, list_headertypes) {
-//   var theheadertypes = list_headertypes;
+//   let  theheadertypes = list_headertypes;
 
 //   //console.log('in controLLER 22 = '+list_headertypes +list_headertypes.name );
 //   console.log('in 22 1='+theheadertypes[0].name);
@@ -96,19 +96,19 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // END OF CUSTOM READ PART
 
-// var MongoClient = require('mongodb').MongoClient;
-// var url = "mongodb://localhost:27017/MangoRivDB";
+// let  MongoClient = require('mongodb').MongoClient;
+// let  url = "mongodb://localhost:27017/MangoRivDB";
 
 // MongoClient.connect(url, function(err, db) {
 //   if (err) throw err;
 //   console.log("Database created!");
   
-//   var dbo = db.db("MangoRivDB");
+//   let  dbo = db.db("MangoRivDB");
 //   dbo.createCollection("headertype", function(err, res) {
 //     if (err) throw err;
 //     console.log("Collection created!");
 //   });
-//   var myobj = { name: "fitness trainer" };
+//   let  myobj = { name: "fitness trainer" };
 //   dbo.collection("headertype").insertOne(myobj, function(err, res) {
 //     if (err) throw err;
 //     console.log("1 document inserted");
@@ -212,11 +212,11 @@ io.on('connection',(socket) => {
   // to emit broadcast message TO ALL EXcluding MYSELF by sending default message
   //socket.broadcast.emit('newMessage', generateMessage4admin('--Admin','New user joined'));
 
-  // var x2;
+  // let  x2;
   //xco = 0;
   //console.log('new x = '+x);
   // if ( x2 == null || x2 != "true" ) {
-  //var intervalID = setInterval(function () {
+  //let  intervalID = setInterval(function () {
 
       // x2 = true;
       //console.log('SENT IT x = '+x);
@@ -256,7 +256,7 @@ io.on('connection',(socket) => {
     });
 
     // to emit broadcast message TO ALL INcluding MYSELF
-    // var topicMessages = generateTopicMessages(intGr);
+    // let  topicMessages = generateTopicMessages(intGr);
     // console.log("topicMessages in server ="+stringify(topicMessages));
     // io.emit('topicMessages', topicMessages);
     //callback('from DB_Reader = '+data  );
@@ -343,7 +343,7 @@ function readShouts (callback){
 });
 
 function sendBroadcastMessageEvery10secs() {
-  //var myPromise = updateWeatherInfo(apiKey);
+  //let  myPromise = updateWeatherInfo(apiKey);
   xco++;
   if (xco >= 8) xco = 0;
   let message = generateShoutMessage(xco);
@@ -354,7 +354,7 @@ function sendBroadcastMessageEvery10secs() {
 function simulateTableInfo() {
   //console.log('Simulator = '+bookingIDs2simulate.length);
 
-  for (var i = 0, len = bookingIDs2simulate.length; i < len; i++) {
+  for (let  i = 0, len = bookingIDs2simulate.length; i < len; i++) {
     
     // IF LIVE REAL DATA EXISTED I WOULD GET PERCENTAGE DATA AS FOLLOWS
     
@@ -381,7 +381,7 @@ function simulateTableInfo() {
     //console.log('Simulator = '+bookingID+" x="+counter);
   }
 
-  for (var i = 0, len = buyIDs2simulate.length; i < len; i++) {
+  for (let  i = 0, len = buyIDs2simulate.length; i < len; i++) {
     let buyID = buyIDs2simulate[i];
     let change = Math.floor(Math.random()*(2-1+1)+1);
     if (onlyleft[i] == null) onlyleft[i] = Math.floor(Math.random()*(70-50+1)+50);
@@ -463,9 +463,9 @@ app.use(function (err, req, res, next) {
 });
 
 
-// var Forecast = require('forecast.io-bluebird');
+// let  Forecast = require('forecast.io-bluebird');
 
-// var forecast = new Forecast({
+// let  forecast = new Forecast({
 //   key: process.env.WEATHERAPIKEY,
 //   timeout: 9500
 // });
@@ -480,6 +480,6 @@ app.use(function (err, req, res, next) {
 
 
 server.listen(port, () => {
-  var createdAt = moment().format('h:mm a');
+  let  createdAt = moment().format('h:mm a');
   console.log(`Server is up on port ${port} - started at ${createdAt}`);
 });

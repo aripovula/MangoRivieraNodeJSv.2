@@ -1,7 +1,7 @@
 const hbs = require('hbs');
 
 
-var constructTable = (items) => {
+let constructTable = (items) => {
     //safeItems = hbs.Utils.escapeExpression(items);  
     //console.log('headers='+items);
 

@@ -1,10 +1,10 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 var HeaderType = mongoose.model('HeaderType', HeaderType);
 
-var Info_SubTypeSchema = new Schema({
+let Info_SubTypeSchema = new Schema({
     parent: { type: Schema.Types.ObjectId, ref: 'HeaderType' },
     subname: {type: String, required: true, unique: true, min: 3, max: 100},
     infotype : {type: String},
@@ -20,8 +20,6 @@ Info_SubTypeSchema
     console.log('READ FROM ');
   return '/info_subtype/'+this._id;
 });
-
-
 
 // Export model.
 module.exports = mongoose.model('Info_SubType', Info_SubTypeSchema);

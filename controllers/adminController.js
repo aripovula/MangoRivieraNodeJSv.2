@@ -1,16 +1,16 @@
-var HeaderType = require('../models/headertype');
-var Booking_SubType = require('../models/booking_subtype');
-var Sell_SubType = require('../models/sell_subtype');
-var Info_SubType = require('../models/info_subtype');
+const HeaderType = require('../models/headertype');
+const Booking_SubType = require('../models/booking_subtype');
+const Sell_SubType = require('../models/sell_subtype');
+const Info_SubType = require('../models/info_subtype');
 const Users_Booking = require('../models/users_booking');
 const Users_Buy = require('../models/users_buy');
-var User = require('../models/user');
-// var Book = require('../models/book');
+const User = require('../models/user');
+// const Book = require('../models/book');
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
-var async = require('async');
+const async = require('async');
 const flash = require('express-flash');
 const stringify = require('json-stringify');
 
@@ -89,7 +89,7 @@ exports.admins_list = function(req, res, next) {
 //   HeaderType.find()
 //     .sort([['name', 'ascending']])
 //     .exec(function (err, list_headertypes) {
-//       var theheadertypes = list_headertypes;
+//       let theheadertypes = list_headertypes;
         
 //       if (err) { return next(err); }
 //       // Successful, so render.
@@ -107,7 +107,7 @@ exports.admins_list = function(req, res, next) {
 //   Booking_SubType.find()
 //     .sort([['name', 'ascending']])
 //     .exec(function (err, list_booking_subtypes) {
-//       var thebooking_subtypes = list_booking_subtypes;
+//       let thebooking_subtypes = list_booking_subtypes;
         
 //       if (err) { return next(err); }
 //       // Successful, so render.
@@ -137,7 +137,7 @@ exports.register_room = [
       req.body.code1 &&
       req.body.code1 === req.body.code2) {
   
-      var userData = {
+      let userData = {
         roomCode: req.body.room,
         passcode: req.body.code1
       }
@@ -152,7 +152,7 @@ exports.register_room = [
       });
   
     } else {
-      var err = new Error('All fields required.');
+      let err = new Error('All fields required.');
       err.status = 400;
       return next(err);
     }
@@ -165,7 +165,7 @@ adminPageWithErrors = (errors, res, req) => {
   // console.log('ABCABC1  err='+stringify(errors2));
   // console.log('ABCABC2  err='+errors2[0].msg);
 
-  for (var i = 0, len = errors2.length; i < len; i++) {
+  for (let i = 0, len = errors2.length; i < len; i++) {
     errorsText = errorsText + errors2[i].msg+". ";
   }    
   req.flash('error', 'Ooops, ' + errorsText);
@@ -173,7 +173,7 @@ adminPageWithErrors = (errors, res, req) => {
 }
 
 function isURL(str) {
-  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+  const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
   '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
   '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
   '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
@@ -219,7 +219,7 @@ exports.headertype_create_post = [
       } else {
 
         console.log("type="+req.body.name);
-        var bt = new HeaderType(
+        let bt = new HeaderType(
           { name: req.body.name }
         );
   
@@ -297,7 +297,7 @@ exports.booking_subtype_create_post = [
 
       console.log("subname="+req.body.subname);
       // console.log("name="+name.name);
-      var sbt = new Booking_SubType({ 
+      let sbt = new Booking_SubType({ 
         parent : req.params.parent_id,
         subname : req.body.subname,
         infotype : req.params.infotype,
@@ -358,7 +358,7 @@ exports.sell_subtype_create_post = [
   
   (req, res, next) => {
 
-    // var name = HeaderType.findOne({ '_id': req.params.id })
+    // let name = HeaderType.findOne({ '_id': req.params.id })
     //             .exec( function(err, found_bt) {
     //                  if (err) { return next(err); }
 
@@ -375,7 +375,7 @@ exports.sell_subtype_create_post = [
 
       console.log("subname="+req.body.subname);
       // console.log("name="+name.name);
-      var sbt = new Sell_SubType({ 
+      let sbt = new Sell_SubType({ 
         parent : req.params.parent_id,
         subname : req.body.subname,
         infotype : req.params.infotype,
@@ -447,7 +447,7 @@ exports.info_subtype_create_post = [
 
       console.log("subname="+req.body.subname);
       // console.log("name="+name.name);
-      var sbt = new Info_SubType({ 
+      let sbt = new Info_SubType({ 
         parent : req.params.parent_id,
         subname : req.body.subname,
         infotype : req.params.infotype,
@@ -497,7 +497,7 @@ exports.headertype_update_post = [
       adminPageWithErrors(errors, res, req);
 
     } else {
-      var bt = new HeaderType(
+      let bt = new HeaderType(
         {
         name: req.body.name,
         _id: req.params.id
@@ -568,7 +568,7 @@ exports.headertype_update_post = [
         adminPageWithErrors(errors, res, req);
   
       } else {
-        var sbt = new Booking_SubType({ 
+        let sbt = new Booking_SubType({ 
           _id: req.params.id,
           parent:req.params.parent_id,
           subname: req.body.subname,
@@ -639,7 +639,7 @@ exports.headertype_update_post = [
         adminPageWithErrors(errors, res, req);
   
       } else {
-        var sbt = new Sell_SubType({ 
+        let sbt = new Sell_SubType({ 
           _id: req.params.id,
           parent:req.params.parent_id,
           subname: req.body.subname,
@@ -712,7 +712,7 @@ exports.headertype_update_post = [
         adminPageWithErrors(errors, res, req);
   
       } else {
-        var sbt = new Info_SubType({ 
+        let sbt = new Info_SubType({ 
           _id: req.params.id,
           parent:req.params.parent_id,
           subname: req.body.subname,

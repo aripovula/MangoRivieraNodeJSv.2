@@ -2,9 +2,9 @@ const moment = require('moment');
 const All_Shouts = require('../../models/all_shouts');
 
 // messages to simulate Broadcast messages
-var messages = [
+let messages = [
     
-    "Today's special - enjoy specialties from Chef Gustau at 'SeaSide Garden' restaurant",
+    "Today's special - enjoy specialties from Chef Gustau at 'SeaSide Garden' lounge",
     "Our Wellness club offers today 50% discount to all procedures not already included to your resort package",
     "to greet Fashion show participants we invite you to a Fireworks show to start at 9 p.m. this evening",
     "DJ Piligrim's club night laser show starts at MangoClub 9 p.m. - join us to enjoy music, laser show and for a lot of fun !",
@@ -14,9 +14,9 @@ var messages = [
     "NEW: Please visit our 'Rent a film' spot in the main lobby to rent your favourite movies in DVDs"
 ];
 
-var generateShoutMessage = (intGr) => {
+let generateShoutMessage = (intGr) => {
 
-    var sbt = new All_Shouts({
+    let sbt = new All_Shouts({
         text: messages[intGr],
         dateTime: moment(),
         createdAt: moment().format('DD MMM h:mm a')

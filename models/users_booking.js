@@ -1,11 +1,11 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 //var resNo = getResValue();
 //var HeaderType = mongoose.model('HeaderType', HeaderType);
 
-var Users_BookingSchema = new Schema({
+let Users_BookingSchema = new Schema({
     bookingID: {type: String, required: true},
     bookingname: {type: String, required: true, min: 3, max: 100},
     //date : {type: Date, required: true},

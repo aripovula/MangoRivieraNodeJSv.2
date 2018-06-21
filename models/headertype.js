@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var HeaderTypeSchema = new Schema({
+let HeaderTypeSchema = new Schema({
     name: {type: String, required: true, unique: true, min: 3, max: 100},
     sequence: {type: Number},
 });

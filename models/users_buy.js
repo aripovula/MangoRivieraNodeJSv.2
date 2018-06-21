@@ -1,11 +1,11 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 //var resNo = getResValue();
 //var HeaderType = mongoose.model('HeaderType', HeaderType);
 
-var Users_BuySchema = new Schema({
+let Users_BuySchema = new Schema({
     buyID: {type: String, required: true},
     buyname: {type: String, required: true, min: 3, max: 100},
     //date : {type: Date, required: true},
