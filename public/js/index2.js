@@ -63,12 +63,14 @@ socket.on('topicMessages',function(topicChats){
 
   $("#messages").html('');
   console.log("topicChats == null - ", topicChats == null );
-  //console.log("topicChats = "+topicChats[0].text);
+  // console.log("topicChats = "+topicChats[0].text);
+  // console.log("topicChats = "+topicChats.length);
   if (topicChats != null) {
     
     for (var i = 0, len = topicChats.length; i < len; i++) {
       let message = topicChats[i];
-
+      // console.log("message = "+message);
+      // console.log("message room = "+message.room_n);
       if (message != null && message.room_n != null) {
         var changedForPrivacy = "##"+message.room_n.substring(2);
         var chatData = [{from:changedForPrivacy, timePosted:message.dateTimeStr, text:message.text }];

@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 //var HeaderType = mongoose.model('HeaderType', HeaderType);
 
 var All_ChatsSchema = new Schema({
-    userID: {type: String},
+
     room_n: {type: String},
     dateTime: {type: Date},
     dateTimeStr: {type: String},

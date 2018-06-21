@@ -23,7 +23,7 @@ exports.admins_list = function(req, res, next) {
   //console.log("req.flash('success') 11="+req.flash('success'));
   async.series([
     function(callback){
-      HeaderType.find({}).sort('-createdAt').exec(callback);
+      HeaderType.find({}).sort([['sequence', 'ascending']]).exec(callback);
     },
     function(callback){
       Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
@@ -189,7 +189,7 @@ exports.headertype_create_post = [
   check('name').custom( value => {
     console.log('AAAA NAME = '+value);
     return new Promise ((resolve, reject) => { HeaderType.find({name: value})
-        .sort('-createdAt')
+        .sort([['sequence', 'ascending']])
         .exec(function (err, names) {
           console.log('AAAAnames.length = '+names.length);
           if (err) Promise.reject('Error when checking duplicate names');
@@ -473,13 +473,19 @@ exports.headertype_update_post = [
   // Validate that the name field is not empty.
   check('name', 'Name is required. Min. length = 3').trim().isLength({ min: 3 }).escape(),
 
-  check('name').custom(value => {
-    return HeaderType.find({name : value}).then(exists => {
-      if (exists) {
-        return Promise.reject('Header type with this name already exists');
-      }
-    });
-  }),
+  check('name').custom( value => {
+    return new Promise ((resolve, reject) => { HeaderType.find({name: value})
+        .sort([['sequence', 'ascending']])
+        .exec(function (err, names) {
+          if (err) Promise.reject('Error when checking duplicate names');
+          if (names.length > 0) {
+            reject('Header type with this name already exists');
+          } else {
+            resolve('valid');   
+          }
+        });
+      });
+    }),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -733,7 +739,7 @@ exports.headertype_delete_post = function(req, res, next) {
 
   async.parallel({
       headertype: function(callback) {
-          HeaderType.find({ '_id': req.params.id }).exec(callback);
+          HeaderType.find({ '_id': req.params.id }).sort([['sequence', 'ascending']]).exec(callback);
       },
       booking_subtypes: function(callback) {
           Booking_SubType.find({ 'parent': req.params.id }).exec(callback);

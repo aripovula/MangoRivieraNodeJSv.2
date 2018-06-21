@@ -3,7 +3,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var HeaderTypeSchema = new Schema({
-    name: {type: String, required: true, unique: true, min: 3, max: 100}
+    name: {type: String, required: true, unique: true, min: 3, max: 100},
+    sequence: {type: Number},
 });
 
 // Virtual for this genre instance URL.

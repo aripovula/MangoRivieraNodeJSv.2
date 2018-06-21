@@ -24,7 +24,7 @@ const { sanitizeBody } = require('express-validator/filter');
 exports.list_4home = function(req, res, next) {
   async.series([
     function(callback){
-      HeaderType.find({}).sort('-createdAt').exec(callback);
+      HeaderType.find({}).sort([['sequence', 'ascending']]).exec(callback);
     },
     function(callback){
       Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
@@ -57,7 +57,7 @@ exports.list_4home = function(req, res, next) {
 exports.list_4home_locked = function(req, res, next) {
   async.series([
     function(callback){
-      HeaderType.find({}).sort('-createdAt').exec(callback);
+      HeaderType.find({}).sort([['sequence', 'ascending']]).exec(callback);
     },
     function(callback){
       Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
@@ -82,7 +82,7 @@ exports.list_4home_locked = function(req, res, next) {
 exports.list_4book = function(req, res, next) {
   async.series([
     function(callback){
-      HeaderType.find({}).sort('-createdAt').exec(callback);
+      HeaderType.find({}).sort([['sequence', 'ascending']]).exec(callback);
     },
     function(callback){
       Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
@@ -123,7 +123,7 @@ exports.list_4book = function(req, res, next) {
 exports.list_4buy = function(req, res, next) {
   async.series([
     function(callback){
-      HeaderType.find({}).sort('-createdAt').exec(callback);
+      HeaderType.find({}).sort([['sequence', 'ascending']]).exec(callback);
     },
     function(callback){
       Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
@@ -161,7 +161,7 @@ exports.list_4buy = function(req, res, next) {
 exports.list_4info = function(req, res, next) {
   async.series([
     function(callback){
-      HeaderType.find({}).sort('-createdAt').exec(callback);
+      HeaderType.find({}).sort([['sequence', 'ascending']]).exec(callback);
     },
     function(callback){
       Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);
@@ -200,7 +200,7 @@ exports.list_4guest = function(req, res, next) {
 
   async.series([
     function(callback){
-      HeaderType.find({}).sort('-createdAt').exec(callback);
+      HeaderType.find({}).sort([['sequence', 'ascending']]).exec(callback);
     },
     function(callback){
       Booking_SubType.find({}).populate('parent').sort([['subname', 'ascending']]).exec(callback);

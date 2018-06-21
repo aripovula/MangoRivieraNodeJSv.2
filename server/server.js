@@ -24,7 +24,7 @@ deleteOldChatsEveryDay();
 const {deleteOldShoutsEveryMinute} = require('./utils/shoutDeleteScheduler');
 deleteOldShoutsEveryMinute();
 const {constructTable}  = require('./utils/constructTable');
-const {ReConstructTableData} = require('./utils/restoreTables');
+const {RestoreDefaultDataInMongoDB} = require('./utils/restoreDefaultsInMongoDB');
 const {getSubname}  = require('./utils/getSubname');
 
 
@@ -271,11 +271,15 @@ io.on('connection',(socket) => {
 
   function readTopicChats (intGr, callback){
 
+    //console.log('IN readTopicChats');
     All_Chats
     .find({ 'intGr': intGr.intGr })
     //.find()
     .sort([['dateTime', 'ascending']])
     .exec(function (err, data){
+      if (err) console.log('IN readTopicChats ERROR');
+      //console.log('IN readTopicChats data.len = '+data.length);
+      //console.log('IN readTopicChats data Str = '+stringify(data));
       return callback(data);
     });
    }
@@ -403,7 +407,7 @@ app.get('/home', (req, res) => {
 
 app.get('/restoredefaults', (req, res) => {
   console.log('IN IN FIIIRST restoredefaults');
-  return ReConstructTableData()
+  return RestoreDefaultDataInMongoDB()
   .then(() => {
     console.log('IN IN THEEEN');
     res.redirect('/users/home');

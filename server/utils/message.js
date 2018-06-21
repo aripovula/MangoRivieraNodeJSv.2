@@ -7,7 +7,6 @@ var generateMessage = (from, text, intGr) => {
     var jsDateStart = moment();
 
     var sbt = new All_Chats({
-        userID: "a_user",
         room_n: from,
         dateTime: jsDateStart,
         dateTimeStr: moment().format('DD MMM h:mm a'),
