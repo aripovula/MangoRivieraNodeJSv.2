@@ -1,9 +1,9 @@
 const All_Chats = require('../../models/all_chats');
 //const mongoose = require('mongoose');
 
-function deleteOldChatsEveryDay() {
+function deleteOldChatsEveryWeek() {
     deleteOldChats();
-    setTimeout(deleteOldChatsEveryDay, 24*60*60*1000); // for demo purposes updates every minute
+    setTimeout(deleteOldChatsEveryWeek, 7*24*60*60*1000);
 }
 
 function deleteOldChats(){
@@ -14,4 +14,4 @@ function deleteOldChats(){
     All_Chats.deleteMany({ dateTime: {$lt: sevenDayAgo}}, function(err) {});
 }
 
-module.exports = {deleteOldChatsEveryDay};
+module.exports = {deleteOldChatsEveryWeek};

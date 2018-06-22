@@ -54,8 +54,8 @@ socket.on('newMessage',function(message){
       //  console.log("data = " + chatData[0].text);
       //  console.log("html = " + theTemplate(chatData));
       $("#messages").append(theTemplate(chatData));
-
       jQuery('[name=message]').val('');
+      scrollToBottom();
   }
 });
 
@@ -81,6 +81,7 @@ socket.on('topicMessages',function(topicChats){
         }
       }
     }
+    scrollToBottom();
   }
 });
 
@@ -220,6 +221,12 @@ function videoPause() {
 }
 
 setTimeout(function(){ videoPause() }, 4600);
+
+
+function scrollToBottom() {
+  var element = document.getElementById('messages');
+   element.scrollIntoView(false);
+}
 
 // function getJSessionId(){
 //   let sid;

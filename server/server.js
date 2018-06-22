@@ -19,12 +19,14 @@ const MongoStore = require('connect-mongo')(session);
 const {generateMessage} = require('./utils/message');
 const {generateMessage4admin} = require('./utils/message4admin');
 const {generateShoutMessage} = require('./utils/shoutMessage');
-const {deleteOldChatsEveryDay} = require('./utils/chatDeleteScheduler');
-deleteOldChatsEveryDay();
+const {deleteOldChatsEveryWeek} = require('./utils/chatDeleteScheduler');
+deleteOldChatsEveryWeek();
 const {deleteOldShoutsEveryMinute} = require('./utils/shoutDeleteScheduler');
 deleteOldShoutsEveryMinute();
 const {constructTable}  = require('./utils/constructTable');
 const {RestoreDefaultDataInMongoDB} = require('./utils/restoreDefaultsInMongoDB');
+const {scheduleRestoreDefaults} = require('./utils/scheduleRestoreDefaults');
+scheduleRestoreDefaults();
 const {getSubname}  = require('./utils/getSubname');
 
 

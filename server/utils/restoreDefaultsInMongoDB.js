@@ -49,7 +49,7 @@ const sellData4Table = [
 
 const infoData4Table = [
     { parentID: 0, subname: "sports fun games", infotype: 'themessage',
-        message: 'start today at 11:00', infowebpage: '', actionmsg: 'location: beach area'},
+        message: 'starts today at 11:00', infowebpage: '', actionmsg: 'location: beach area'},
     { parentID: 0, subname: "visit ancient artefacts", infotype: 'themessage',
         message: 'organized every day', infowebpage: '', actionmsg: 'tour agent by the front desk'},
     { parentID: 3, subname: "order a taxi", infotype: 'themessage',
