@@ -53,7 +53,10 @@ const infoData4Table = [
     { parentID: 0, subname: "visit ancient artefacts", infotype: 'themessage',
         message: 'organized every day', infowebpage: '', actionmsg: 'tour agent by the front desk'},
     { parentID: 3, subname: "order a taxi", infotype: 'themessage',
-        message: 'call 422 to order a taxi', infowebpage: '', actionmsg: 'more info'}
+        message: 'ordering number changed', infowebpage: '', actionmsg: 'call 422 from now on'},
+    { parentID: 3, subname: "HBO is now available", infotype: 'themessage',
+        message: 'new channel is added', infowebpage: '', actionmsg: 'switch to channel 346'}
+
 ];
 
 const defaultChatsData = [

@@ -8,6 +8,8 @@ if (document.getElementById('bb1') != null) setInterestGroup(1);
 let bbel = document.getElementById("bb1");
 if (bbel != null ) bbel.style.color = "blue";
 
+let  html = '<div class="boxed">... updating weather info ...</div> ';
+$("#weather_placeholder").html(html);
 
 socket.on('connect', function() {
   let time = new Date();
@@ -21,7 +23,18 @@ socket.on('disconnect', function() {
 
 socket.emit('readShoutMessages', 
   function(data){
-    console.log('Got it', data);
+    //console.log('Got it', data);
+});
+
+socket.emit('requestWeatherData', 
+  function(data){
+    console.log('INDEX2 HTML B41=');
+    updateWeatherInfo(data);
+});
+
+socket.on('weatherData',function(data){
+  console.log('INDEX2 HTML B42=');
+  updateWeatherInfo(data);
 });
 
 socket.on('newShoutMessage',function(message){
@@ -115,15 +128,16 @@ socket.on('shoutMessages',function(topicChats){
 });
 
 
-socket.on('data4table', function(pack){
-  //console.log("book id - "+id);
+socket.on('data4table', function(data){
+  for (let i = 0, len = data.length; i < len; i++) {
+    let pack = data[i];
+
     let elem = document.getElementById(pack.id);
-    //elem.setAttribute('value',"40% occupied");
-    //elem.html = 'Occupancy: 40%';
-    
-    if (pack.evenTime) elem.style.color = "blue";
+
+    if (pack.evenTime) elem.style.color = "black";
     if (!pack.evenTime) elem.style.color = "green";
     elem.innerHTML = pack.msg;
+  }
 });
 
 // window.addEventListener('submit', function(evt) {
@@ -226,6 +240,18 @@ setTimeout(function(){ videoPause() }, 4600);
 function scrollToBottom() {
   var element = document.getElementById('messages');
    element.scrollIntoView(false);
+}
+
+function updateWeatherInfo(html) {
+    if (html != null) {
+      // console.log('INDEX ABCD 3344 HTML ='+html);
+      $("#weather_placeholder").html(html);
+      $('[data-toggle="tooltip"]').tooltip();
+    } else {
+      // console.log("Error = "+ e.message);
+      let  html = '<div class="boxed">... could not update the weather info ...</div> ';
+      $("#weather_placeholder").html(html);
+    }
 }
 
 // function getJSessionId(){

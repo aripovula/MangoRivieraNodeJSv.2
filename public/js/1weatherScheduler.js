@@ -1,4 +1,4 @@
-let  found1, found2, apikey1, apikey2, apiKey;
+/*let  found1, found2, apikey1, apikey2, apiKey;
 
 $(document).ready(function () {
     // reading API key from a local file is used as a temporary measure during the development stage.
@@ -60,4 +60,4 @@ let  getApiKey2 = new Promise(
             resolve('Success');
         }, 2000);
     }
-);
+);*/
