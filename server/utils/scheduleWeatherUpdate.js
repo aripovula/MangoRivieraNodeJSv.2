@@ -1,12 +1,14 @@
 const Forecast = require('forecast.io-bluebird');
 const moment = require('moment');
 
+let evenTime = false;
 let forecast = new Forecast({
   key: process.env.WEATHERAPIKEY,
   timeout: 10000
 });
 
 sendBackForecastTable = () => {
+    console.log("IN FORECAST 11 evenTime = "+evenTime);
     return new Promise((resolve, reject)=>{
         return forecast.fetch(41.299968, 69.2707328) //'39.3469952,-84.4013568',  //'25.8102247,-80.2101822',
         .then( data => {
@@ -31,7 +33,7 @@ constructForecastTable = (forecast) => {
         let context;
         let  html = '<div class="boxed">... updating weather info ...</div> ';
         
-        console.log("IN FORECAST REQUEST");
+        //console.log("IN FORECAST 22 REQUEST evenTime = "+evenTime);
 
         let  open = "</span><i style='color:#FF69B4' class='wi ";
         let  close = "'></i><span>";
@@ -55,8 +57,11 @@ constructForecastTable = (forecast) => {
 
         if (forDetailed != null && brief != null) {
             html="";
+            let color = 'darkcyan';
+            evenTime = !evenTime;
+            if (evenTime) {color = 'green';} else {color='darkcyan';}
             let ctime = moment().format('h:mm a');
-            let  l1 = `<div class="boxed" data-toggle="tooltip" data-placement="bottom" title=`;
+            let  l1 = `<div class="boxed" style="color:${color}" data-toggle="tooltip" data-placement="bottom" title=`;
             let  l2 = `"Miami Beach, Florida, USA\n\n ${forDetailed}`;
             let  l3 = ` \nUpdated every 20 minutes. Last updated at ${ctime} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ( for demo purposes updated every minute )"`;
             let  l4 = ` >Weather:  &nbsp; ${brief}. &nbsp; more ...`;

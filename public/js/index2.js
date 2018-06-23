@@ -6,7 +6,7 @@ let intGrType=1;
 let intGrTypePrev=1;
 if (document.getElementById('bb1') != null) setInterestGroup(1);
 let bbel = document.getElementById("bb1");
-if (bbel != null ) bbel.style.color = "blue";
+if (bbel != null ) bbel.style.color = "darkcyan";
 
 let  html = '<div class="boxed">... updating weather info ...</div> ';
 $("#weather_placeholder").html(html);
@@ -134,7 +134,7 @@ socket.on('data4table', function(data){
 
     let elem = document.getElementById(pack.id);
 
-    if (pack.evenTime) elem.style.color = "black";
+    if (pack.evenTime) elem.style.color = "darkcyan";
     if (!pack.evenTime) elem.style.color = "green";
     elem.innerHTML = pack.msg;
   }
@@ -190,7 +190,7 @@ function setInterestGroup(groupType){
   let b1 = 'bb'+groupType;
   let b2 = 'bb'+intGrTypePrev;
 
-  document.getElementById(b1).style.color = "blue";
+  document.getElementById(b1).style.color = "darkcyan";
   document.getElementById(b2).style.color = "green";
   console.log("InterestGroup = " + groupType );
   

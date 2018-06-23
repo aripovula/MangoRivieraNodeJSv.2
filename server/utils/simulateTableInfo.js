@@ -1,10 +1,9 @@
 const Users_Booking = require('../../models/users_booking');
 const Users_Buy = require('../../models/users_buy');
-
+let thepercentage = [];
+let onlyleft = [];
 
 function simulateTableInfo(evenTime, bookingIDs2simulate, buyIDs2simulate) {
-    let thepercentage = [];
-    let onlyleft = [];
     let result = [];
     let i2 = 0;
 

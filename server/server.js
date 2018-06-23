@@ -237,14 +237,16 @@ function simulateInfo4table() {
 }
 
 function scheduleWeatherUpdate() {
+  setTimeout(scheduleWeatherUpdate, 10 * 60 * 1000);
+  let  html = '<div class="boxed">... updating weather info ...</div> ';
+  io.emit('weatherData', html);
+  //console.log("IN FORECAST REQUEST SERVER = "+new Date);
   return sendBackForecastTable()
   .then((data) => {
     //console.log('SERVER detailed='+data.detailed);
     weatherData = data;
     io.emit('weatherData', data);
   });
-  
-  setTimeout(scheduleWeatherUpdate, 1 * 60 * 1000);
 }
 
 app.get('/', (req, res) => {
