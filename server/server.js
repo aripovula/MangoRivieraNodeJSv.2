@@ -176,28 +176,6 @@ io.on('connection',(socket) => {
       return callback(data);
     });
   }
-    
-  // socket.on('checkSessionStatus', (callback) => {
-  //     checkIfSessionIsActive(function (data){
-  //       io.emit('SessionStatusBack', data);
-  //     });
-  // });
-
-  // function checkIfSessionIsActive(callback){
-  //     User.findById(req.session.userId)
-  //     .exec(function (error, user) {
-    
-  //       if (error) {
-  //         callback(false);
-  //       } else {
-  //         if (user === null) {
-  //           callback(false);
-  //         } else {
-  //           callback(true);
-  //         }
-  //       }
-  //     });
-  // }
 
   socket.on('createShoutMessage', (message, callback) => {
     io.emit('newShoutMessage',generateMessage4admin("", message.text, 1));
