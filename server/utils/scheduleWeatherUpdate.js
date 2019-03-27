@@ -64,7 +64,7 @@ constructForecastTable = (forecast) => {
             let  l1 = `<div class="boxed" style="color:${color}" data-toggle="tooltip" data-placement="bottom" title=`;
             let l2 = `"Miami Beach, Florida, USA ( actual weather right now - uses real API )\n\n ${forDetailed}`;
             let  l3 = ` \nUpdated every 20 minutes. Last updated at ${ctime} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ( for demo purposes updated every minute )"`;
-            let  l4 = ` >Weather:  &nbsp; ${brief}.\n\r( uses real API. Hover mouse here for details )`;
+            let  l4 = ` >Weather:  &nbsp; ${brief}.\n\r( uses real API. Hover mouse here for details. Updates every minute )`;
             let  l5 = `</div>`;
       
             html = l1 + l2 + l3 + l4 + l5;

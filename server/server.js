@@ -44,7 +44,7 @@ const auth = require('../routes/auth');
 const users = require('../routes/users');
 const admin = require('../routes/admin');
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT;
 
 const app = express();
 
@@ -64,7 +64,7 @@ sendBroadcastMessageEvery10secs();
 //console.log("API = "+process.env.WEATHERAPIKEY); 
 
 //Set up default mongoose connection
-const mongoDB = 'mongodb://localhost:27017/MangoRivDB';
+const mongoDB = process.env.MONGODB_URL;
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
@@ -215,7 +215,7 @@ function simulateInfo4table() {
 }
 
 function scheduleWeatherUpdate() {
-  setTimeout(scheduleWeatherUpdate, 10 * 60 * 1000);
+  setTimeout(scheduleWeatherUpdate, 1 * 60 * 1000);
   let  html = '<div class="boxed">... updating weather info ...</div> ';
   io.emit('weatherData', html);
   //console.log("IN FORECAST REQUEST SERVER = "+new Date);

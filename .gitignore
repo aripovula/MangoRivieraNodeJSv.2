@@ -2,3 +2,8 @@ node_modules/
 public/static/images/
 .env
 public/api.txt
+config
+
+cd /Users/myfamily/Documents/00CurWorks/AllCode/0_databases/mongo.2/bin
+
+./mongod --dbpath /Users/myfamily/Documents/00CurWorks/AllCode/0_databases/mongo-data
