@@ -46,7 +46,7 @@ getRidOfOlderShoutsPromise = () => {
     .then(() => {
         return readShoutsPromise('AFTER')
     })
-    .catch(err => console.log(err.message));
+    .catch(err => console.log(err));
 }
 
 deleteOlderShoutsPromise = () => {
