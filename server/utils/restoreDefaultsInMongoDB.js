@@ -149,7 +149,7 @@ let RestoreDefaultDataInMongoDB = () => {
         })
         // WHEN OTHER PROMISES ARE RESOLVED THEN RESOLVE THIS PROMISE
         .then(() => resolve())
-        .catch(err => console.log(err.message));
+        .catch(err => console.log('at end of chained promises-, err-', err, err.message));
     });
 }
 

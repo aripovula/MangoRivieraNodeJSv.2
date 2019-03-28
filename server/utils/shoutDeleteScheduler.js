@@ -39,6 +39,7 @@ function deleteOldShoutsEveryMinute() {
 // }
 
 getRidOfOlderShoutsPromise = () => {
+    console.log("in getRidOfOlderShoutsPromise");
     return readShoutsPromise('BEFORE')
     .then(() => {
         return deleteOlderShoutsPromise();
@@ -46,7 +47,7 @@ getRidOfOlderShoutsPromise = () => {
     .then(() => {
         return readShoutsPromise('AFTER')
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log('in err getRidOfOlderShoutsPromise, err-', err));
 }
 
 deleteOlderShoutsPromise = () => {
