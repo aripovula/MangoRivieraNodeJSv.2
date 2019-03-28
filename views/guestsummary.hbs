@@ -53,7 +53,7 @@
 
         <div class="boxedtransp">
           <h4>List of your bookings and purchases:</h4>
-          <span style="font-size=14px;color:gray;">(to make a new booking or purchase use action buttons in the last column of the table. In this demo version all bookings / purchases are cleared off every night or if defaults are restored)</span>
+          <span style="font-size=14px;color:gray;">(to make a new booking or purchase use action buttons in the last column of the table. In this demo version all bookings / purchases are cleared off every night or if defaults are restored by any user visiting the app at the same time you visit this app )</span>
         </div>
         <div class="boxedtransp">
         {{!-- <div id="rightpanel"></div>
@@ -85,7 +85,7 @@
             {{/each}}
             </ul>
           {{else}}
-            <label style="color:green;font-size:18px;">&nbsp; &nbsp; &nbsp; - no bookings made by you are found</label>
+            <label style="color:green;font-size:18px;">&nbsp; &nbsp; &nbsp; - you have not made any bookings yet</label>
           {{/if}}
 
         <br/><br/>
@@ -115,7 +115,7 @@
             {{/each}}
             </ul>
           {{else}}
-            <label style="color:green;font-size:18px;">&nbsp; &nbsp; &nbsp; - no buys made by you are found</label>
+            <label style="color:green;font-size:18px;">&nbsp; &nbsp; &nbsp; - you have not made any purchases yet</label>
           {{/if}}
         </div>
       </div>

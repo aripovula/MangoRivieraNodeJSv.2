@@ -61,8 +61,6 @@ scheduleWeatherUpdate();
 simulateInfo4table();
 sendBroadcastMessageEvery10secs();
 
-//console.log("API = "+process.env.WEATHERAPIKEY); 
-
 //Set up default mongoose connection
 const mongoDB = process.env.MONGODB_URL;
 mongoose.connect(mongoDB);
@@ -113,22 +111,17 @@ app.use('/admin', admin);
 app.use('/users', users);
 
 app.use(function (req, res, next) {
-  console.log('SSSSS Time:', Date.now());
-  console.log('req.session.userId:', req.session.userId);
   User.findById(req.session.userId)
   .exec(function (error, user) {
 
-    console.log('USER:', user );
     if (error) {
-      console.log('ERROR 1');
+      console.log('ERROR -', error);
       res.redirect('/users/homelocked');
     } else {
       if (user === null) {
         console.log('USER NULL');
         res.redirect('/users/homelocked');      
       } else {
-        // console.log('user2 = ' + user.roomCode);
-        // req.session.room_code = user.roomCode;
         console.log('SESSION ID = ' + req.sessionID); 
         next();
       }
@@ -136,6 +129,7 @@ app.use(function (req, res, next) {
   });
 });
 
+// setups related to Socket IO
 io.on('connection',(socket) => {
   console.log('New user connected');
   console.log(__dirname);
