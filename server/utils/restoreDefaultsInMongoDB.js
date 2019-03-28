@@ -110,19 +110,19 @@ const defaultChatsData = [
 
 let RestoreDefaultDataInMongoDB = () => {
     return new Promise ( (resolve, reject)=> {
-        // return wipeOffAllHeaderTypePromise()
-        // .then(() => {
-        //     return wipeOffAllBookingSubTypePromise();
-        // })
-        // .then(() => {
-        //     return wipeOffAllSellSubTypePromise();
-        // })
-        // .then(() => {
-        //     return wipeOffAllInfoSubTypePromise();
-        // })
-        // .then(() => {
-            return addAllDefaultHeaderTypes()
-        // })
+        return wipeOffAllHeaderTypePromise()
+        .then(() => {
+            return wipeOffAllBookingSubTypePromise();
+        })
+        .then(() => {
+            return wipeOffAllSellSubTypePromise();
+        })
+        .then(() => {
+            return wipeOffAllInfoSubTypePromise();
+        })
+        .then(() => {
+            return addAllDefaultHeaderTypes();
+        })
         .then(() => {
             return readHeadersPromise();
         })
