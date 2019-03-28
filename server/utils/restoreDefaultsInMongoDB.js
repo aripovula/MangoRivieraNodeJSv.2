@@ -110,19 +110,19 @@ const defaultChatsData = [
 
 let RestoreDefaultDataInMongoDB = () => {
     return new Promise ( (resolve, reject)=> {
-        return wipeOffAllHeaderTypePromise()
-        .then(() => {
-            return wipeOffAllBookingSubTypePromise();
-        })
-        .then(() => {
-            return wipeOffAllSellSubTypePromise();
-        })
-        .then(() => {
-            return wipeOffAllInfoSubTypePromise();
-        })
-        .then(() => {
-            return addAllDefaultHeaderTypes();
-        })
+        // return wipeOffAllHeaderTypePromise()
+        // .then(() => {
+        //     return wipeOffAllBookingSubTypePromise();
+        // })
+        // .then(() => {
+        //     return wipeOffAllSellSubTypePromise();
+        // })
+        // .then(() => {
+        //     return wipeOffAllInfoSubTypePromise();
+        // })
+        // .then(() => {
+            return addAllDefaultHeaderTypes()
+        // })
         .then(() => {
             return readHeadersPromise();
         })
@@ -149,7 +149,7 @@ let RestoreDefaultDataInMongoDB = () => {
         })
         // WHEN OTHER PROMISES ARE RESOLVED THEN RESOLVE THIS PROMISE
         .then(() => resolve())
-        .catch(err => console.log('at end of chained promises-, err-', err, err.message));
+        .catch(err => console.log('at end of chained promises-, err-', err));
     });
 }
 

@@ -42,13 +42,15 @@ getRidOfOlderShoutsPromise = () => {
     console.log("in getRidOfOlderShoutsPromise");
     return readShoutsPromise('BEFORE')
     .then(() => {
+        console.log("in getRidOfOlderShoutsPromise 1");
         return deleteOlderShoutsPromise();
     })
     .then(() => {
+        console.log("in getRidOfOlderShoutsPromise 2");
         return readShoutsPromise('AFTER')
     })
     .catch((err) => {
-        console.log('in err getRidOfOlderShoutsPromise SEPARATE, err-', err);
+        return console.log('in err getRidOfOlderShoutsPromise SEPARATE, err-', err);
     });
 }
 
@@ -59,6 +61,7 @@ deleteOlderShoutsPromise = () => {
         let TwoMinuteAgo = d - 1000 * 90 ;
         All_Shouts.deleteMany({ dateTime: {$lt: TwoMinuteAgo}}, function(err) {
             if (err) reject();
+            console.log("DELETED OLDs err " + err);
             console.log("DELETED OLDs at "+d);
             resolve();        
         });
